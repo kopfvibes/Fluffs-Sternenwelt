@@ -1,0 +1,41 @@
+name: fluffs_sternenwelt
+description: Fluffs Sternenwelt – kleine Aufgaben, große Schritte.
+publish_to: none
+version: 4.0.0+40
+environment:
+  sdk: '>=3.9.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  sqflite: ^2.4.2
+  path: ^1.9.1
+  crypto: ^3.0.6
+  intl: ^0.20.2
+  audioplayers: ^6.1.0
+  file_picker: ^10.3.3
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/art/
+    - assets/audio/fluff/
+    - assets/audio/sfx/
+    - assets/audio/music/
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-400.ttf
+          weight: 400
+        - asset: assets/fonts/Nunito-600.ttf
+          weight: 600
+        - asset: assets/fonts/Nunito-700.ttf
+          weight: 700
+        - asset: assets/fonts/Nunito-800.ttf
+          weight: 800
+        - asset: assets/fonts/Nunito-900.ttf
+          weight: 900
