@@ -1,0 +1,45 @@
+{
+  "tool": "image_gen.imagegen (built-in)",
+  "date": "2026-10-04",
+  "referenceImages": [
+    "370281.png: supplied Fluff identity",
+    "372060.png: supplied twelve-screen mockup"
+  ],
+  "assets": [
+    {
+      "id": "fluff-celebrate-v2",
+      "prompt": "Use case: precise-object-edit. Asset type: transparent mascot sprite for a children's Flutter app. Input image 1 is the EDIT TARGET. Input image 2 is the canonical CHARACTER IDENTITY REFERENCE. Repair the celebration sprite from image 1: remove the detached cropped blue hand fragment at the left edge and restore all clipped hair at the top and body edges. Preserve the same adorable light-blue fluffy Fluff character, purple eyebrows, rosy cheeks, two small white upper teeth, joyfully closed eyes, happy open smile, both arms hugging the single large glowing golden five-pointed star, and short fluffy feet. Match the fur color, facial identity and 3D rendering of image 2. One complete isolated character only, centered on a square canvas, with a clear 10 percent transparent margin around the complete silhouette including hair and star glow. Keep the joyful pose and star. Genuine alpha transparency, no background, no ground, no text, no detached fragments, no other characters or objects.",
+      "file": "assets/art/fluff-celebrate-v2.png"
+    },
+    {
+      "id": "icon-cinema-v2",
+      "prompt": "Use case: precise-object-edit. Asset type: transparent 3D task/reward icon for a children's app. The input image is the EDIT TARGET. Clean this exact red-and-white striped popcorn tub icon. Preserve the cheerful glossy 3D style, golden popped corn, red-and-white stripes and front view. Remove the brown clipped neighboring object on the left and the two brown fragments under the tub. Show only one complete popcorn tub, no face, no legs, no other object. Center it inside a square canvas with a 12 percent genuinely transparent margin on every side. Full silhouette intact, no clipping, no background, no text, no watermark.",
+      "file": "assets/art/icon-cinema-v2.png"
+    },
+    {
+      "id": "icon-game-v2",
+      "prompt": "Use case: precise-object-edit. Asset type: transparent glossy 3D reward icon for a children's app. The input image is the EDIT TARGET. Clean this exact blue video game controller icon. Preserve the bright royal-blue glossy body, white plus shaped directional pad, two blue sticks and small red, yellow and green buttons. Remove the tiny detached blue fragments below and above the controller. Only one complete centered game controller, with a 12 percent genuinely transparent margin on every side of a square canvas. Keep its cute smooth 3D style, no clipping, no background, no text, no other objects.",
+      "file": "assets/art/icon-game-v2.png"
+    },
+    {
+      "id": "icon-icecream-v2",
+      "prompt": "Use case: precise-object-edit. Asset type: transparent glossy 3D reward icon for a children's app. The input image is the EDIT TARGET. Clean this pink ice cream cone icon by removing the tiny isolated red and blue pixels touching the top edge. Preserve the round shiny strawberry-pink ice cream scoop, curved drips and golden waffle cone, with the same cute glossy 3D rendering. One complete centered cone only with a 12 percent genuinely transparent margin on every side of a square canvas. Full silhouette intact, no clipping, no background, no text or other objects.",
+      "file": "assets/art/icon-icecream-v2.png"
+    },
+    {
+      "id": "icon-zoo-v2",
+      "prompt": "Use case: precise-object-edit. Asset type: transparent glossy 3D reward icon for a children's app. The input image is the EDIT TARGET. Restore the clipped top of this cute sitting yellow giraffe icon so both little brown horns are fully visible. Preserve the friendly giraffe's appearance, yellow body, brown spots and hooves, big eyes and smiling mouth, and the same cute glossy 3D rendering. One complete giraffe centered in a square canvas with a 12 percent genuinely transparent margin on every side including above both horns. No clipping, no background, no text, no extra objects or detached fragments.",
+      "file": "assets/art/icon-zoo-v2.png"
+    },
+    {
+      "id": "day-world-v2",
+      "prompt": "Use case: style-transfer. Asset type: portrait background painting for the app shown in the design reference. Input image 1 is the design reference: the master poster containing twelve phone screens. Input image 2 is the EDIT TARGET, an existing day-world background that is too dense and strongly saturated. Redraw ONLY the environmental background to closely match the background visible in the FIRST phone screen, upper left, and the star-jar screen, upper right, of image 1. Keep the same cheerful 3D children's storybook world, but use its soft pastel palette: light cyan blue sky, fluffy cream clouds, simple rounded lime and teal trees, a few distant little cream houses with orange roofs, rolling green hills, a warm yellow winding path, sparse little pink and purple flowers at the edges, soft dreamy depth. Open quiet central space for a mascot and UI. Portrait composition for a mobile phone, width:height approximately 1:2, calm sky in the upper third, winding path in the lower two thirds. Match the simple soft shapes and gentle colors in image 1, reduce the dense flower carpet and intricate foreground detail of image 2. Background ONLY: no Fluff, no characters, no phone frame, no UI, no text, no logos, no buttons, no jars, no watermark.",
+      "file": "assets/art/day-world-v2.jpg"
+    },
+    {
+      "id": "evening-world",
+      "prompt": "Use case: stylized-concept. Asset type: portrait background painting for a children's mobile app. The input image is the exact DESIGN REFERENCE containing twelve phone screens. Recreate ONLY the background environment of the 'Abendroutine' screen (second row, fourth column). A calm navy and blue-purple bedtime sky with tiny gentle golden stars and a softly glowing golden crescent near the top left. Warm peach and lavender glows down the sides. At the bottom third, a cozy storybook bed with soft rounded lavender-blue and pink pillows and an inviting blue-purple quilt, as in the reference. Soft 3D children's illustration style, dreamy diffuse lighting. Portrait phone composition, width:height approximately 1:2. The upper 65 percent is a calm dark starry backdrop where the UI will be drawn separately; the lower 35 percent is the bed and pillows where a mascot will be placed separately. Closely match the palette and soft forms of the reference's bedtime screen. BACKGROUND ONLY. Do not include Fluff, a teddy bear, any characters, any checklist, UI, headings, text, logos, phone frames, buttons or watermark. No forest, no village, no detailed busy landscape.",
+      "file": "assets/art/evening-world.jpg"
+    }
+  ]
+}
