@@ -172,9 +172,11 @@ class _DrawingPageState extends State<DrawingPage> {
           const SnackBar(content: Text('Dein Bild ist im Album gespeichert.')));
       }
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e is StateError ? e.message.toString() :
-          'Dein Bild konnte nicht gespeichert werden. Bitte versuche es noch einmal.')));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e is StateError ? e.message.toString() :
+            'Dein Bild konnte nicht gespeichert werden. Bitte versuche es noch einmal.')));
+      }
     } finally { if (mounted) setState(() => saving = false); }
   }
   Future<bool> confirmLeave() async {

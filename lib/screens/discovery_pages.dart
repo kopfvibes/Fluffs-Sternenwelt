@@ -177,11 +177,13 @@ class _LearningGamePageState extends State<LearningGamePage> {
         FluffAudio.instance.star();
       }
     } catch (_) {
-      if (mounted) setState(() {
-        saving = false;
-        feedback = 'Dein Fortschritt konnte nicht gespeichert werden. '
-          'Du kannst es noch einmal versuchen.';
-      });
+      if (mounted) {
+        setState(() {
+          saving = false;
+          feedback = 'Dein Fortschritt konnte nicht gespeichert werden. '
+            'Du kannst es noch einmal versuchen.';
+        });
+      }
     }
   }
 

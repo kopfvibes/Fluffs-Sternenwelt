@@ -17,7 +17,7 @@ class _ProPageState extends State<ProPage> {
   String? error;
   @override
   void dispose() { code.dispose(); super.dispose(); }
-  Future<void> activate() async {
+  Future<void> activateCode() async {
     if (checking) return;
     FocusManager.instance.primaryFocus?.unfocus();
     setState(() { checking = true; error = null; });
@@ -29,8 +29,10 @@ class _ProPageState extends State<ProPage> {
           content: Text('Fluff Pro ist für alle Kinderprofile freigeschaltet.')));
       }
     } catch (e) {
-      if (mounted) setState(() => error = e is FormatException ? e.message :
-        'Der Code konnte nicht gespeichert werden. Bitte versuche es noch einmal.');
+      if (mounted) {
+        setState(() => error = e is FormatException ? e.message :
+          'Der Code konnte nicht gespeichert werden. Bitte versuche es noch einmal.');
+      }
     } finally { if (mounted) setState(() => checking = false); }
   }
   @override
@@ -58,7 +60,7 @@ class _ProPageState extends State<ProPage> {
             decoration: InputDecoration(labelText: 'Dein Pro-Code', errorText: error)),
           const SizedBox(height: 14),
           GlossyButton(checking ? 'Code wird geprüft …' : 'Pro-Code aktivieren',
-            key: const ValueKey('activate-pro'), onPressed: checking ? null : activate),
+            key: const ValueKey('activate-pro'), onPressed: checking ? null : activateCode),
           const SizedBox(height: 16),
           const Text('Bewahre deinen Code auf. Nach einer Neuinstallation kannst du '
             'ihn erneut eingeben. In der App wird kein Kauf ausgelöst.'),
