@@ -1,20 +1,27 @@
-# Prüfung der Version 4.0.0+40
+# Prüfung der Version 5.0.0+50
 
-Stand: 4. Oktober 2026. Flutter 3.35.7, Dart 3.9.2.
+Stand: 9. Oktober 2026. Flutter 3.35.7, Dart 3.9.2, Java 17.
 
 | Prüfung | Ergebnis |
 | --- | --- |
-| Statische Dart-Prüfung | `flutter analyze --no-pub`: keine Probleme |
-| Logik und Speicherung | 25 bestandene Tests mit MemoryRepository, einschließlich fehlgeschlagener Schreibvorgänge |
-| Bedienung der echten App | 7 bestandene Widget-Tests: Einrichtung, PIN, Kinderwechsel, Aufgaben, Gefühle, Wunschfreigabe und Elternformulare |
-| Darstellung und Bewegung | 3 bestandene Widget-Tests: zwölf Ansichten, 15 Ansichten bei 320 Pixeln und doppelter Schriftgröße, Bewegung ein/aus |
-| Gesamtlauf | 35 Tests bestanden mit `flutter test --no-pub --concurrency=1` |
-| Vorschau | Zwölf echte Flutter-Ansichten als PNG; 5,6 Sekunden Video aus 84 tatsächlich gerenderten Animationsbildern |
-| Android-APK | Release-Build erfolgreich; App 4.0.0, Build 40, mindestens Android 7 (API 24), ARM64 |
-| APK-Signatur und Inhalt | Signatur mit `apksigner verify` geprüft; ausschließlich ARM64-Bibliotheken und alle sieben überarbeiteten Bilder enthalten |
+| Statische Dart-Prüfung | `flutter analyze`: keine Probleme |
+| Gesamtlauf | 46 Tests bestanden; alle 35 bisherigen Tests plus elf Prüfungen für Entdeckerwelt, Pro und Malatelier |
+| Pro und Daten | Signaturen, abgewiesene gefälschte Codes, Neustart, v4-Migration, Kinderwechsel und Sicherungen geprüft |
+| Bedienung | Quiz mit fünf Runden, Memory mit Fehlversuch und vollständigem Abschluss, Pro-Sperre und Zeichnen bei 320 Pixeln mit großer Schrift geprüft |
+| Druckausgabe | Alle zwölf mitgelieferten Vorlagen erzeugen eine PDF |
+| Darstellung | Bestehende Ansichten und neun neue Ansichten als echte Flutter-Bilder gerendert; neue Symbole verwenden feste Grafiken |
+| Android | APK und AAB erfolgreich gebaut; Version 5.0.0, Build 50, API 24 bis Ziel-API 36, ARM64 |
+| APK-Signatur | Dauerhafte Release-Signatur, v2 und v3 mit `apksigner verify` geprüft |
+| App-Bundle | JAR-Signatur mit `jarsigner -verify` geprüft |
+| Inhalt | Paket, Version, Buildnummer, Mindest-Android, Release-Modus und ARM64 direkt in der APK geprüft; 83 Bild-, Audio- und Schriftdateien bytegleich zum Quellcode |
 
-Die Vorschau verwendet erfundene Daten aus `test/fixtures.dart`. In der installierten App werden das erste Kind und eine eigene Eltern-PIN beim Start angelegt. Sternzahlen, Datum und Statistiken hängen im echten Betrieb von den gespeicherten Daten ab.
+[Erfolgreicher Build und Testlauf](https://github.com/kopfvibes/Fluffs-Sternenwelt/actions/runs/37989190840).
+Geprüfter Funktionsstand: `da3b626e39d3b7583d55595719716a8d56b0b5cd`. Die anschließende Dokumentation ändert keinen App-Code.
 
-Die automatisierten Prüfungen ersetzen noch keinen Test auf einem echten Android-Gerät. SQLite, Dateiauswahl, Audio und Vibration sind eingebunden, wurden in dieser Umgebung aber nicht auf einem Telefon erprobt. Die Ansichten orientieren sich an der Bildvorlage; eine Pixelgleichheit aller Figuren, Hintergründe und Displaygrößen ist nicht bestätigt.
+APK: `39298913` Bytes, SHA-256 `f4e5bfd83d6f0f5578dbcf5f658e50258aa2b0ba3c0cb6d7fc088d4c18f3feca`.
+AAB: `34702346` Bytes, SHA-256 `87c1f7f4d9fd45b1e9e5c8eb0cc53a4239e555151dd8eecb3d8cbbcc38dce620`.
+Android-Zertifikat: SHA-256 `e7a52a2378a10fa7794d15a6a11b64e8c6e678994dd00dbba70801f7128715e5`.
 
-APK-Datei: `Fluffs-Sternenwelt-v4.apk`, 35937631 Bytes. SHA-256: `23ce7db564c79af6dcfa74a9589e9306e1102220ce87d77049c10b11d3177eac`. Die APK verwendet eine Entwicklungssignatur.
+Die private Lizenzsignierung und der Android-Keystore liegen außerhalb des Repositorys. Pro wird offline aus einem signierten Familiencode abgeleitet. Automatische Zahlungen und eine Play-Store-Veröffentlichung sind nicht eingerichtet.
+
+Die bisherigen Fluff-Aufnahmen sind erhalten. Neue Fragen nutzen die auf dem Gerät installierte deutsche Text-zu-Sprache-Stimme. Installation, Audio, SQLite, Dateiauswahl und die externen Druckdialoge wurden noch nicht auf einem echten Telefon erprobt. Die bisherigen Profile lassen sich über eine v4-Sicherung übernehmen. Wegen der neuen Release-Signatur vor einer nötigen Deinstallation unbedingt die Sicherung außerhalb der App speichern.
