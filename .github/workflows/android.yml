@@ -2,10 +2,15 @@ name: Android-App prüfen und bauen
 on:
   push:
     branches: [main, master, fluff-v4, fluff-v5-pro-entdeckerwelt]
+    paths-ignore: ['**/*.md']
   pull_request:
+    paths-ignore: ['**/*.md']
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: android-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 jobs:
   android:
     runs-on: ubuntu-latest
@@ -24,6 +29,7 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test --concurrency=1 --dart-define=RENDER_PREVIEWS=true
+        timeout-minutes: 8
       - run: flutter build apk --release --target-platform android-arm64
       - run: flutter build appbundle --release
       - name: APK und Signierwerkzeug vorbereiten

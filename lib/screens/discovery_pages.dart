@@ -174,7 +174,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
       await widget.controller.completeGame(widget.game, childId: childId);
       if (mounted) {
         setState(() { finished = true; saving = false; });
-        FluffAudio.instance.star();
+        if (widget.controller.data.sound) FluffAudio.instance.star();
       }
     } catch (_) {
       if (mounted) {

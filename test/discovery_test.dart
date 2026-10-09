@@ -206,11 +206,13 @@ void main() {
         RepaintBoundary(key: key, child: item.$2)));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
-      final boundary = key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      final image = await boundary.toImage(pixelRatio: 2);
-      final data = await image.toByteData(format: ui.ImageByteFormat.png);
-      File('${dir.path}/${item.$1}.png').writeAsBytesSync(data!.buffer.asUint8List());
-      image.dispose();
+      await tester.runAsync(() async {
+        final boundary = key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+        final image = await boundary.toImage(pixelRatio: 2);
+        final data = await image.toByteData(format: ui.ImageByteFormat.png);
+        File('${dir.path}/${item.$1}.png').writeAsBytesSync(data!.buffer.asUint8List());
+        image.dispose();
+      });
     }
   });
 }
