@@ -14,9 +14,15 @@ const gameDescriptions = {
   'feelings': 'Alle Gefühle dürfen da sein.',
   'kindness': 'Kleine Situationen aus deinem Alltag.',
 };
-const gameEmojis = {
-  'memory': '🧸', 'count': '⭐', 'shapes': '🔵',
-  'patterns': '🌈', 'feelings': '💙', 'kindness': '🤝',
+const gameArtwork = {
+  'memory': 'teddy', 'count': 'star', 'shapes': 'game',
+  'patterns': 'book', 'feelings': 'heart', 'kindness': 'family',
+};
+const symbolNames = {
+  '🔵': 'blauer Kreis', '🟡': 'gelber Kreis', '🟣': 'lila Kreis',
+  '🟢': 'grüner Kreis', '⭐': 'Stern', '💙': 'Herz', '🌸': 'Blume',
+  '🍀': 'Baum', '🧸': 'Teddybär', '📘': 'Buch', '🌙': 'Mond',
+  '☀️': 'Sonne', '🌈': 'Regenbogen',
 };
 
 class LearningQuestion {
@@ -66,7 +72,8 @@ class GameFactory {
         final answers = [next, ...options.take(2)]..shuffle(random);
         return LearningQuestion('Was kommt als Nächstes?',
           '${List.generate(length, (i) => p[i % p.length]).join(' ')}  ?',
-          answers, answers.indexOf(next), 'Das Muster beginnt wieder mit $next.');
+          answers, answers.indexOf(next),
+          'Das Muster beginnt wieder mit ${symbolNames[next]}.');
       case 'feelings':
         return feelingQuestions[random.nextInt(feelingQuestions.length)];
       case 'kindness':

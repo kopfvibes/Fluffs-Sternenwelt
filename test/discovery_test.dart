@@ -248,6 +248,10 @@ void main() {
       ('Malatelier', CreativeStudioPage(controller: c)),
       ('Paare-finden', LearningGamePage(controller: c, game: 'memory')),
       ('Sterne-zaehlen', LearningGamePage(controller: c, game: 'count')),
+      ('Formen-entdecken', LearningGamePage(controller: c, game: 'shapes')),
+      ('Muster-weiterdenken', LearningGamePage(controller: c, game: 'patterns')),
+      ('Gefuehle-verstehen', LearningGamePage(controller: c, game: 'feelings')),
+      ('Gemeinsam-handeln', LearningGamePage(controller: c, game: 'kindness')),
       ('Ausmalen', DrawingPage(controller: c, template: 1)),
     ]) {
       final key = GlobalKey();

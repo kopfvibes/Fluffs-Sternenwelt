@@ -31,7 +31,7 @@ class DiscoveryPage extends StatelessWidget {
           Padding(padding: const EdgeInsets.only(bottom: 12),
             child: GlossyPanel(onTap: () => _open(context, id),
               child: Row(children: [
-                Text(gameEmojis[id]!, style: const TextStyle(fontSize: 32)),
+                ArtIcon(gameArtwork[id]!, size: 40),
                 const SizedBox(width: 12),
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                   children: [Text(gameTitles[id]!, style: const TextStyle(
@@ -55,8 +55,9 @@ class DiscoveryPage extends StatelessWidget {
               '${controller.gameCount(id) > 0 ? 'entdeckt' : 'noch nicht entdeckt'}',
               child: CircleAvatar(radius: 26,
                 backgroundColor: controller.gameCount(id) > 0 ? gold : Colors.white,
-                child: Text(controller.gameCount(id) > 0 ? gameEmojis[id]! : '☆',
-                  style: const TextStyle(fontSize: 26)))),
+                child: controller.gameCount(id) > 0
+                  ? ArtIcon(gameArtwork[id]!, size: 32)
+                  : const Icon(Icons.star_border_rounded, color: blue, size: 30))),
         ]),
         const SizedBox(height: 12),
         const Text('Jedes Abenteuer darfst du wiederholen. Es gibt keinen Zeitdruck.'),
@@ -120,7 +121,8 @@ class _LearningGamePageState extends State<LearningGamePage> {
   void readPrompt() {
     if (!widget.controller.data.sound || !widget.controller.proActive) return;
     FluffAudio.instance.read(widget.game == 'memory' ? 'Finde zwei gleiche Bilder.'
-      : '${question!.prompt} Du kannst wählen: ${question!.answers.join('. ')}.');
+      : '${question!.prompt} Du kannst wählen: '
+        '${question!.answers.map((a) => symbolNames[a] ?? a).join('. ')}.');
   }
   void nextQuestion() {
     final q = factory.question(widget.game, age);
@@ -250,15 +252,25 @@ class _LearningGamePageState extends State<LearningGamePage> {
               Text(question!.prompt, textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w900)),
               const SizedBox(height: 16),
-              GlossyPanel(child: Text(question!.visual, textAlign: TextAlign.center,
-                style: TextStyle(fontSize: widget.game == 'shapes' ? 82 : 36,
-                  color: blue))),
+              GlossyPanel(child: Wrap(alignment: WrapAlignment.center,
+                spacing: 10, runSpacing: 10, children: [
+                  for (final symbol in question!.visual.trim().split(RegExp(r'\s+')))
+                    LearningSymbol(symbol, size: widget.game == 'shapes' ? 82
+                      : widget.game == 'feelings' ? 100 : 42),
+                ])),
               const SizedBox(height: 18),
               for (var i = 0; i < question!.answers.length; i++)
                 Padding(padding: const EdgeInsets.only(bottom: 11),
-                  child: GlossyButton(question!.answers[i], key: ValueKey('answer-$i'),
-                    color: answered && i == question!.correct ? green : blue,
-                    onPressed: answered ? null : () => chooseAnswer(i))),
+                  child: widget.game == 'patterns'
+                    ? Semantics(button: true, label: symbolNames[question!.answers[i]],
+                        child: GlossyPanel(key: ValueKey('answer-$i'),
+                          color: answered && i == question!.correct ? green :
+                            const Color(0xffb6e4ff),
+                          onTap: answered ? null : () => chooseAnswer(i),
+                          child: Center(child: LearningSymbol(question!.answers[i], size: 42))))
+                    : GlossyButton(question!.answers[i], key: ValueKey('answer-$i'),
+                        color: answered && i == question!.correct ? green : blue,
+                        onPressed: answered ? null : () => chooseAnswer(i))),
               if (answered) GlossyButton(round == 4 ? 'Sticker sammeln' : 'Weiter',
                 key: const ValueKey('next-question'), color: green,
                 onPressed: saving ? null : () {
@@ -278,4 +290,51 @@ class _LearningGamePageState extends State<LearningGamePage> {
           ],
         ])))),
   );
+}
+
+class LearningSymbol extends StatelessWidget {
+  const LearningSymbol(this.symbol, {super.key, required this.size});
+  final String symbol;
+  final double size;
+  @override
+  Widget build(BuildContext context) {
+    const circles = {'🔵': blue, '🟡': gold, '🟣': Color(0xff9a65d6), '🟢': green};
+    const artwork = {'💙': 'heart', '🧸': 'teddy', '📘': 'book', '🌙': 'moon',
+      '🧥': 'shirt', '🧩': 'help', '🤝': 'family'};
+    const faces = {'😢': 'sad', '😠': 'angry', '🥱': 'tired', '😊': 'proud',
+      '😟': 'unsure', '😄': 'proud'};
+    final circle = circles[symbol];
+    if (circle != null) {
+      return Container(width: size, height: size,
+        decoration: BoxDecoration(color: circle, shape: BoxShape.circle));
+    }
+    final art = artwork[symbol];
+    if (art != null) return ArtIcon(art, size: size);
+    final face = faces[symbol];
+    if (face != null) return FluffSprite(pose: face, size: size, animate: false);
+    final icon = switch (symbol) {
+      '⭐' || '★' => Icons.star_rounded,
+      '●' => Icons.circle,
+      '▲' => Icons.change_history_rounded,
+      '■' => Icons.square,
+      '🌸' => Icons.local_florist_rounded,
+      '🍀' => Icons.park_rounded,
+      '☀️' => Icons.wb_sunny_rounded,
+      '🌈' => Icons.looks_rounded,
+      '💧' => Icons.water_drop_rounded,
+      '✋' => Icons.back_hand_rounded,
+      '🚦' => Icons.traffic_rounded,
+      '🌬️' => Icons.air_rounded,
+      _ => null,
+    };
+    if (icon == null) return Text(symbol,
+      style: TextStyle(fontSize: size, color: blue, fontWeight: FontWeight.w900));
+    final color = switch (symbol) {
+      '⭐' || '☀️' => gold,
+      '🌸' => const Color(0xffef5d8a),
+      '🍀' => green,
+      _ => blue,
+    };
+    return Icon(icon, size: size, color: color);
+  }
 }
