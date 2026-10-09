@@ -327,8 +327,10 @@ class LearningSymbol extends StatelessWidget {
       '🌬️' => Icons.air_rounded,
       _ => null,
     };
-    if (icon == null) return Text(symbol,
-      style: TextStyle(fontSize: size, color: blue, fontWeight: FontWeight.w900));
+    if (icon == null) {
+      return Text(symbol,
+        style: TextStyle(fontSize: size, color: blue, fontWeight: FontWeight.w900));
+    }
     final color = switch (symbol) {
       '⭐' || '☀️' => gold,
       '🌸' => const Color(0xffef5d8a),
