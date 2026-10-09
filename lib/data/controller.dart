@@ -5,10 +5,18 @@ import 'package:flutter/foundation.dart';
 import 'models.dart';
 import 'repository.dart';
 import 'backup_validation.dart';
+import 'creative.dart';
+import 'discovery.dart';
+import '../services/pro_license.dart';
 
 class AppController extends ChangeNotifier {
-  AppController(this.repository, {DateTime Function()? clock})
-    : clock = clock ?? DateTime.now;
+  AppController(this.repository, {DateTime Function()? clock,
+    ProLicenseVerifier? licenses})
+    : clock = clock ?? DateTime.now,
+      licenses = licenses ?? const ProLicenseVerifier();
+  final ProLicenseVerifier licenses;
+  bool _proActive = false;
+  bool get proActive => _proActive;
   final StateRepository repository;
   final DateTime Function() clock;
   AppData data = AppData();
@@ -32,6 +40,7 @@ class AppController extends ChangeNotifier {
   Future<void> init() async {
     try {
       data = await repository.load() ?? AppData();
+      _proActive = await licenses.verify(data.proLicense);
       if (data.children.isNotEmpty && _recordToday(data)) {
         await repository.save(data);
       }
@@ -164,6 +173,8 @@ class AppController extends ChangeNotifier {
     d.requests.removeWhere((x) => x.childId == id);
     d.planChecks.removeWhere((x) => x.startsWith('$id|'));
     d.dailyPlans.removeWhere((k, v) => k.startsWith('$id|'));
+    d.gameWins.removeWhere((k, v) => k.startsWith('$id|'));
+    d.drawings.removeWhere((x) => x.childId == id);
     for (final t in d.tasks) {
       if (t.children.contains(id)) {
         t.children.remove(id);
@@ -456,15 +467,59 @@ class AppController extends ChangeNotifier {
   String exportBackup() => const JsonEncoder.withIndent(
     '  ',
   ).convert({'app': 'Fluffs Sternenwelt', 'backup': data.toJson()});
+  Future<void> activatePro(String code) async {
+    if (!await licenses.verify(code)) {
+      throw const FormatException('Der Pro-Code ist ungültig. Bitte prüfe ihn.');
+    }
+    await _change((d) => d.proLicense = code.replaceAll(RegExp(r'\s'), ''));
+    _proActive = true;
+    notifyListeners();
+  }
+  int gameCount(String id, {String? childId}) =>
+      data.gameWins['${childId ?? child.id}|$id'] ?? 0;
+  Future<void> completeGame(String id, {required String childId}) => _change((d) {
+    if (!proActive || !gameIds.contains(id) ||
+        !d.children.any((c) => c.id == childId)) {
+      throw StateError('Dieses Spiel ist aktuell nicht verfügbar.');
+    }
+    final key = '$childId|$id';
+    d.gameWins[key] = min((d.gameWins[key] ?? 0) + 1, 100000);
+  });
+  List<SavedDrawing> get childDrawings =>
+      data.drawings.where((d) => d.childId == child.id).toList().reversed.toList();
+  Future<void> saveDrawing(int template, List<DrawStroke> strokes,
+      {String? drawingId, required String childId}) => _change((d) {
+    if (!d.children.any((c) => c.id == childId) ||
+        template < 0 || template > 12 || (template > 0 && !proActive)) {
+      throw StateError('Dieses Malbild ist aktuell nicht verfügbar.');
+    }
+    if (strokes.length > 400 || strokes.any((s) => s.points.length > 3000)) {
+      throw StateError('Dein Bild ist sehr groß. Speichere eine kleinere Zeichnung.');
+    }
+    final id = drawingId ?? d.nextId('drawing');
+    d.drawings.removeWhere((x) => x.id == id && x.childId == childId);
+    final previous = d.drawings.where((x) => x.childId == childId).toList();
+    if (previous.length >= 12) {
+      throw StateError('Dein Album ist voll. Lösche zuerst ein älteres Bild.');
+    }
+    d.drawings.add(SavedDrawing(id: id, childId: childId, template: template,
+      createdAt: today, strokes: strokes.map((s) =>
+        DrawStroke.fromJson(s.toJson())).toList()));
+  });
+  Future<void> deleteDrawing(String id) => _change((d) {
+    d.drawings.removeWhere((x) => x.id == id && x.childId == d.selectedId);
+  });
   Future<void> restoreBackup(String text) async {
     if (busy) throw StateError('Bitte warte kurz.');
     final restored = parseBackup(text);
+    final restoredPro = await licenses.verify(restored.proLicense);
     _recordToday(restored, updateExisting: true);
     busy = true;
     notifyListeners();
     try {
       await repository.save(restored);
       data = restored;
+      _proActive = restoredPro;
       _pinBlockedUntil = null;
       _pinFailures = 0;
       error = null;

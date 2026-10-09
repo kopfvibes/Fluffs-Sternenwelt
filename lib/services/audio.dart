@@ -1,9 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class FluffAudio {
   FluffAudio._();
   static final instance = FluffAudio._();
   AudioPlayer? _voicePlayer, _effectPlayer;
+  FlutterTts? _reader;
   AudioPlayer get _voice => _voicePlayer ??= AudioPlayer();
   AudioPlayer get _effect => _effectPlayer ??= AudioPlayer();
   bool _enabled = true;
@@ -33,6 +35,7 @@ class FluffAudio {
     final request = ++_voiceRequest;
     try {
       await _voice.stop();
+      await _reader?.stop();
       if (!enabled || request != _voiceRequest) return;
       await _voice.setVolume(.70);
       if (!enabled || request != _voiceRequest) return;
@@ -48,11 +51,27 @@ class FluffAudio {
     } catch (_) {}
   }
 
+  Future<void> read(String text) async {
+    if (!enabled || text.trim().isEmpty) return;
+    final request = ++_voiceRequest;
+    try {
+      final reader = _reader ??= FlutterTts();
+      await _voicePlayer?.stop();
+      await reader.stop();
+      await reader.setLanguage('de-DE');
+      await reader.setSpeechRate(.42);
+      await reader.setPitch(1.05);
+      if (!enabled || request != _voiceRequest) return;
+      await reader.speak(text);
+    } catch (_) {}
+  }
+
   Future<void> stop() async {
     _voiceRequest++;
     try {
       await _voicePlayer?.stop();
       await _effectPlayer?.stop();
+      await _reader?.stop();
     } catch (_) {}
   }
 }

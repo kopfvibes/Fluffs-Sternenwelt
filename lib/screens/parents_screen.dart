@@ -8,6 +8,7 @@ import '../services/audio.dart';
 import '../widgets/common.dart';
 import 'extra_pages.dart';
 import 'statistics.dart';
+import 'pro_pages.dart';
 
 Future<void> openParents(BuildContext context, AppController controller) async {
   FluffAudio.instance.stop();
@@ -169,6 +170,10 @@ class ParentHub extends StatelessWidget {
               crossAxisSpacing: 15,
               childAspectRatio: textScale > 1.3 ? 0.49 : 1.00,
               children: [
+                _tile(context, 'Fluff Pro', 'game',
+                  () => ProPage(controller: controller)),
+                _tile(context, 'Malbuch drucken', 'book',
+                  () => PrintBookPage(controller: controller)),
                 _tile(
                   context,
                   'Kinderprofile\nverwalten',

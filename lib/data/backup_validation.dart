@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'models.dart';
+import 'discovery.dart';
 
 const artIcons = {
   'tooth',
@@ -75,6 +76,29 @@ void _validate(AppData d) {
   final rewards = ids(d.rewards.map((x) => x.id));
   final plans = ids(d.plans.map((x) => x.id));
   final requests = ids(d.requests.map((x) => x.id));
+  ids(d.drawings.map((x) => x.id));
+  if (d.proLicense.length > 1500 || d.drawings.length > children.length * 12) {
+    _invalid();
+  }
+  for (final e in d.gameWins.entries) {
+    final key = e.key.split('|');
+    if (key.length != 2 || !children.contains(key[0]) ||
+        !gameIds.contains(key[1]) || e.value < 0 || e.value > 100000) _invalid();
+  }
+  for (final drawing in d.drawings) {
+    if (!children.contains(drawing.childId) || !_validDate(drawing.createdAt) ||
+        drawing.template < 0 || drawing.template > 12 ||
+        drawing.strokes.length > 400) _invalid();
+    for (final stroke in drawing.strokes) {
+      if (stroke.color < 0 || stroke.color > 0xffffffff ||
+          !stroke.width.isFinite || stroke.width < 0.002 || stroke.width > 0.05 ||
+          stroke.points.length > 3000) _invalid();
+      for (final p in stroke.points) {
+        if (!p.x.isFinite || !p.y.isFinite || p.x < 0 || p.x > 1 ||
+            p.y < 0 || p.y > 1) _invalid();
+      }
+    }
+  }
   if (children.isEmpty ||
       !children.contains(d.selectedId) ||
       !RegExp(r'^[a-f0-9]{64}$').hasMatch(d.pinHash) ||

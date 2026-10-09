@@ -1,7 +1,7 @@
 name: Android-App prüfen und bauen
 on:
   push:
-    branches: [main, master, fluff-v4]
+    branches: [main, master, fluff-v4, fluff-v5-pro-entdeckerwelt]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -23,10 +23,28 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter analyze
-      - run: flutter test --concurrency=1
+      - run: flutter test --concurrency=1 --dart-define=RENDER_PREVIEWS=true
       - run: flutter build apk --release --target-platform android-arm64
+      - run: flutter build appbundle --release
+      - name: APK und Signierwerkzeug vorbereiten
+        run: |
+          mkdir -p delivery
+          cp build/app/outputs/flutter-apk/*.apk delivery/
+          cp build/app/outputs/bundle/release/*.aab delivery/
+          python3 - <<'PY'
+          import os, pathlib, shutil, re
+          root = pathlib.Path(os.environ['ANDROID_HOME']) / 'build-tools'
+          tools = sorted(root.glob('*/lib/apksigner.jar'), key=lambda p: [int(n) for n in re.findall(r'\d+', p.parts[-3])])
+          shutil.copyfile(tools[-1], 'delivery/apksigner.jar')
+          PY
       - uses: actions/upload-artifact@v4
         with:
-          name: Fluffs-Sternenwelt-Android
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: Fluffs-Sternenwelt-v5-Android
+          path: delivery/
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Fluffs-Sternenwelt-v5-Vorschau
+          path: previews/
           retention-days: 30
