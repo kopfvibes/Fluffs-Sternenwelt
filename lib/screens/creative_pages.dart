@@ -16,7 +16,7 @@ class CreativeStudioPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Fluffs Malatelier')),
       body: WorldBackground(child: SafeArea(child: ListView(
         padding: const EdgeInsets.fromLTRB(18, 8, 18, 24), children: [
-          Row(children: [FluffSprite(pose: 'happy', size: 112,
+          Row(children: [FluffSprite(pose: 'proud', size: 112,
             animate: controller.data.motion),
             const Expanded(child: Text('Deine Farben.\nDeine Ideen.',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900)))]),
@@ -259,7 +259,7 @@ class _DrawingPageState extends State<DrawingPage> {
               strokes.add(redo.removeLast()); dirty = true;
             })),
           const Text('Pinsel'),
-          SizedBox(width: 125, child: Slider(value: width, min: .005, max: .04,
+          Expanded(child: Slider(value: width, min: .005, max: .04,
             onChanged: (v) => setState(() => width = v))),
         ]),
         Padding(padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),

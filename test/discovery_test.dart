@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:cryptography/cryptography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:fluffs_sternenwelt/data/controller.dart';
@@ -25,11 +26,22 @@ class FixedFactory extends GameFactory {
 }
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late AppController c;
   late MemoryRepository repository;
   late String code;
   late ProLicenseVerifier verifier;
-  setUpAll(() async { await initializeDateFormatting('de_DE'); });
+  setUpAll(() async {
+    await initializeDateFormatting('de_DE');
+    final font = FontLoader('Nunito');
+    for (final weight in [400, 600, 700, 800, 900]) {
+      font.addFont(rootBundle.load('assets/fonts/Nunito-$weight.ttf'));
+    }
+    await font.load();
+    final material = FontLoader('MaterialIcons')
+      ..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'));
+    await material.load();
+  });
   setUp(() async {
     final algorithm = Ed25519();
     final key = await algorithm.newKeyPairFromSeed(List.generate(32, (i) => i + 1));
@@ -204,6 +216,15 @@ void main() {
       final key = GlobalKey();
       await tester.pumpWidget(MaterialApp(theme: fluffTheme(), home:
         RepaintBoundary(key: key, child: item.$2)));
+      await tester.pumpAndSettle();
+      final context = tester.element(find.byType(RepaintBoundary).first);
+      await tester.runAsync(() async {
+        final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+        for (final asset in manifest.listAssets().where((name) =>
+            name.startsWith('assets/art/') || name.startsWith('assets/coloring/'))) {
+          await precacheImage(AssetImage(asset), context);
+        }
+      });
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
       await tester.runAsync(() async {
