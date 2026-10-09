@@ -21,6 +21,9 @@ import 'package:fluffs_sternenwelt/widgets/common.dart';
 
 class FixedFactory extends GameFactory {
   @override
+  List<int> memoryCards(int age) => [0, 1, 0, 1];
+
+  @override
   LearningQuestion question(String game, int age) =>
     const LearningQuestion('Zähle die Sterne', '⭐ ⭐', ['2', '3', '1'], 0, 'Zwei Sterne.');
 }
@@ -156,20 +159,54 @@ void main() {
 
   testWidgets('A full quiz grants one discovery sticker and no task stars', (tester) async {
     await c.activatePro(code);
+    tester.view.physicalSize = const Size(780, 1688);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(() { tester.view.resetPhysicalSize(); tester.view.resetDevicePixelRatio(); });
     await tester.pumpWidget(MaterialApp(theme: fluffTheme(),
       home: LearningGamePage(controller: c, game: 'count', factory: FixedFactory())));
     await tester.pumpAndSettle();
     for (var i = 0; i < 5; i++) {
       await tester.ensureVisible(find.text('2'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('2'));
       await tester.pumpAndSettle();
       final next = find.byKey(const ValueKey('next-question'));
       await tester.ensureVisible(next);
+      await tester.pumpAndSettle();
       await tester.tap(next);
       await tester.pumpAndSettle();
     }
     expect(find.text('Entdeckt!'), findsOneWidget);
     expect(c.gameCount('count'), 1);
+    expect(c.balance(), 0);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Memory permits retries and saves one sticker after every pair', (tester) async {
+    await c.activatePro(code);
+    tester.view.physicalSize = const Size(780, 1688);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(() { tester.view.resetPhysicalSize(); tester.view.resetDevicePixelRatio(); });
+    await tester.pumpWidget(MaterialApp(theme: fluffTheme(), home:
+      LearningGamePage(controller: c, game: 'memory', factory: FixedFactory())));
+    await tester.pumpAndSettle();
+    Future<void> card(int i) async {
+      final target = find.byKey(ValueKey('memory-card-$i'));
+      await tester.ensureVisible(target);
+      await tester.pumpAndSettle();
+      await tester.tap(target);
+      await tester.pump();
+    }
+    await card(0);
+    await card(1);
+    expect(find.text('Schau dir die Bilder an. Du darfst es neu versuchen.'), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 1000));
+    expect(find.byType(ArtIcon), findsNothing);
+    for (final i in [0, 2, 1, 3]) { await card(i); }
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
+    expect(find.text('Entdeckt!'), findsOneWidget);
+    expect(c.gameCount('memory'), 1);
     expect(c.balance(), 0);
     expect(tester.takeException(), isNull);
   });
