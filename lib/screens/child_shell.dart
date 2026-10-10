@@ -3,6 +3,9 @@ import '../data/controller.dart';
 import '../widgets/common.dart';
 import '../services/audio.dart';
 import 'child_pages.dart';
+import '../data/companion.dart';
+import '../widgets/child_narration.dart';
+import 'fluff_day.dart';
 
 class ChildShell extends StatefulWidget {
   const ChildShell({super.key, required this.controller});
@@ -14,14 +17,6 @@ class ChildShell extends StatefulWidget {
 class _ChildShellState extends State<ChildShell> {
   int get index => widget.controller.tab;
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      FluffAudio.instance.say('welcome');
-    });
-  }
-
-  @override
   Widget build(BuildContext context) => Scaffold(
     body: WorldBackground(
       scene: index == 0 || index == 2,
@@ -31,13 +26,17 @@ class _ChildShellState extends State<ChildShell> {
           animation: widget.controller,
           builder: (context, _) {
             final c = widget.controller;
-            return [
+            final page = [
               HomePage(controller: c, onStart: () => c.selectTab(1)),
               TasksPage(controller: c),
               StarsPage(controller: c),
               FeelingsPage(controller: c),
               MorePage(controller: c),
             ][index];
+            return ChildNarration(controller: c,
+              identity: '${c.child.id}|$index|${c.today}',
+              intro: childScreenNarration(c, index),
+              onFluff: () => showFluffDay(context, c), child: page);
           },
         ),
       ),
@@ -46,7 +45,6 @@ class _ChildShellState extends State<ChildShell> {
       index: index,
       onSelect: (i) {
         FluffAudio.instance.stop();
-        if (i == 2) FluffAudio.instance.say('stars');
         widget.controller.selectTab(i);
       },
     ),

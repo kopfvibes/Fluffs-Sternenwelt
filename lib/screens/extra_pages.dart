@@ -6,6 +6,9 @@ import '../data/models.dart';
 import '../services/audio.dart';
 import '../widgets/common.dart';
 import 'task_flow.dart';
+import 'reward_explanation.dart';
+import '../data/companion.dart';
+import '../widgets/child_narration.dart';
 
 class MissionsPage extends StatelessWidget {
   const MissionsPage({super.key, required this.controller});
@@ -112,7 +115,9 @@ class MissionsPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(text, style: const TextStyle(fontSize: 14, height: 1.2)),
+                Text(controller.child.age <= 4 && key == 'reading'
+                  ? 'Schau mit deinen Erwachsenen an drei Tagen ein Buch an.' : text,
+                  style: const TextStyle(fontSize: 14, height: 1.2)),
                 const SizedBox(height: 9),
                 Row(
                   children: [
@@ -176,7 +181,16 @@ class MissionsPage extends StatelessWidget {
     isScrollControlled: true,
     showDragHandle: true,
     backgroundColor: cream,
-    builder: (sheet) => SafeArea(
+    builder: (sheet) => AutoRead(controller: controller,
+      lines: [controller.missionLabel(key),
+        key == 'reading' ? 'Such dir an drei verschiedenen Tagen ein Buch aus. '
+          'Lass dir vorlesen oder lies selbst. Beides zählt.'
+        : key == 'helper' ? 'Hilf bei drei kleinen Aufgaben. Zum Beispiel beim '
+          'Aufräumen oder Tischdecken. Du darfst dir Hilfe holen.'
+        : 'Wenn etwas schwierig ist, frag einen Erwachsenen nach Hilfe. '
+          'Tippe bei deiner Aufgabe auf Ich habe Hilfe bekommen.',
+        'Für diese Mission gibt es', ...spokenNumber(controller.missionStars(key)),
+        'Bonussterne. Du darfst dir Zeit nehmen.'], child: SafeArea(
       child: AnimatedBuilder(
         animation: controller,
         builder: (context, _) => SingleChildScrollView(
@@ -245,7 +259,7 @@ class MissionsPage extends StatelessWidget {
           ),
         ),
       ),
-    ),
+    )),
   );
 }
 
@@ -362,44 +376,7 @@ class WishlistPage extends StatelessWidget {
       await _pending(context, existing.first);
       return;
     }
-    final remaining = reward.cost - controller.balance();
-    await showDialog<void>(
-      context: context,
-      builder: (dialog) => AlertDialog(
-        title: Text(reward.title),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ArtIcon(reward.icon, size: 85),
-            const SizedBox(height: 12),
-            Text(
-              remaining > 0
-                  ? 'Dafür fehlen noch $remaining Sterne. Sammle in deinem Tempo weiter.'
-                  : 'Du hast genug Sterne. Soll dieser Wunsch deinen Erwachsenen zur Freigabe angezeigt werden?',
-            ),
-            const SizedBox(height: 9),
-            Text(
-              '${controller.balance()} Sterne in deinem Glas',
-              style: const TextStyle(fontWeight: FontWeight.w900),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialog),
-            child: Text(remaining > 0 ? 'Okay' : 'Abbrechen'),
-          ),
-          if (remaining <= 0)
-            TextButton(
-              onPressed: () => act(dialog, () async {
-                await controller.requestReward(reward);
-                if (dialog.mounted) Navigator.pop(dialog);
-              }),
-              child: const Text('Wunsch anfragen'),
-            ),
-        ],
-      ),
-    );
+    await explainReward(context, controller, reward);
   }
 }
 
@@ -428,7 +405,7 @@ class EveningPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
                       child: InkWell(
-                        onTap: () => openTask(context, controller, t),
+                            onTap: () => openTask(context, controller, t),
                         borderRadius: BorderRadius.circular(16),
                         child: Row(
                           children: [
@@ -529,6 +506,7 @@ class _DayPlanPageState extends State<DayPlanPage> {
   Widget build(BuildContext context) {
     final c = widget.controller;
     final week = monday(selected);
+    final small = c.child.age <= 4 && !widget.allowEdit;
     final rows =
         <
           ({
@@ -577,7 +555,9 @@ class _DayPlanPageState extends State<DayPlanPage> {
                 )
               : null,
         ),
-        Padding(
+        if (small) const Padding(padding: EdgeInsets.all(12),
+          child: Text('Heute', style: TextStyle(fontSize: 21, fontWeight: FontWeight.w900)))
+        else Padding(
           padding: const EdgeInsets.fromLTRB(13, 0, 13, 15),
           child: Row(
             children: [
@@ -677,7 +657,9 @@ class _DayPlanPageState extends State<DayPlanPage> {
                     onTap: () => isToday
                         ? row.task != null
                               ? openTask(context, c, row.task!)
-                              : act(context, () => c.togglePlan(row.plan!))
+                              : widget.allowEdit
+                                ? act(context, () => c.togglePlan(row.plan!))
+                                : _explainPlan(context, row.plan!)
                         : ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
@@ -690,7 +672,7 @@ class _DayPlanPageState extends State<DayPlanPage> {
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Row(
                         children: [
-                          SizedBox(
+                          if (!small) SizedBox(
                             width: 48,
                             child: Text(
                               row.time,
@@ -706,18 +688,20 @@ class _DayPlanPageState extends State<DayPlanPage> {
                             color: const Color(0xffebcc7e),
                           ),
                           const SizedBox(width: 12),
-                          ArtIcon(row.icon, size: 39),
+                          ArtIcon(row.icon, size: small ? 56 : 39),
                           const SizedBox(width: 9),
                           Expanded(
                             child: Text(
                               row.title,
                               style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
                           const SizedBox(width: 7),
+                          HearButton(controller: c, lines: [row.title,
+                            row.done ? 'Das hast du schon geschafft.' : 'Das gehört zu deinem Tag.']),
                           DoneCircle(row.done, size: 25),
                         ],
                       ),
@@ -734,6 +718,31 @@ class _DayPlanPageState extends State<DayPlanPage> {
       ],
     );
   }
+  Future<void> _explainPlan(BuildContext context, PlanItem plan) async {
+    final c = widget.controller;
+    final childId = c.child.id;
+    await showModalBottomSheet<void>(context: context, backgroundColor: cream,
+      showDragHandle: true, builder: (sheet) => AutoRead(controller: c,
+        lines: [plan.title, 'Das gehört zu deinem Tag. Wenn du fertig bist, '
+          'kannst du hier ein Häkchen setzen.'],
+        child: SafeArea(child: Padding(padding: const EdgeInsets.all(22),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            ArtIcon(plan.icon, size: 78), const SizedBox(height: 12),
+            Text(plan.title, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w900)),
+            const SizedBox(height: 12),
+            const Text('Das gehört zu deinem Tag. Du darfst dir Hilfe holen.', textAlign: TextAlign.center),
+            HearButton(controller: c, lines: [plan.title, 'Du darfst dir Hilfe holen.']),
+            GlossyButton(c.planDone(plan, selected) ? 'Häkchen entfernen' : 'Geschafft',
+              icon: Icons.check_rounded, color: green,
+              onPressed: () => act(sheet, () async {
+                if (c.child.id != childId) { Navigator.pop(sheet); return; }
+                await c.togglePlan(plan);
+                if (sheet.mounted) Navigator.pop(sheet);
+              })),
+            TextButton(onPressed: () => Navigator.pop(sheet), child: const Text('Später weiter')),
+          ])))));
+  }
+
 }
 
 class BreathingPage extends StatefulWidget {

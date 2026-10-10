@@ -8,6 +8,7 @@ import 'data/repository.dart';
 import 'screens/child_shell.dart';
 import 'screens/onboarding.dart';
 import 'services/audio.dart';
+import 'services/child_routes.dart';
 import 'widgets/common.dart';
 
 Future<void> main() async {
@@ -65,6 +66,7 @@ class _FluffsAppState extends State<FluffsApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) => MaterialApp(
     title: 'Fluffs Sternenwelt',
     debugShowCheckedModeBanner: false,
+    navigatorObservers: [childRouteObserver],
     theme: fluffTheme(),
     locale: const Locale('de', 'DE'),
     supportedLocales: const [Locale('de', 'DE')],

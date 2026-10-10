@@ -8,6 +8,9 @@ import 'task_flow.dart';
 import 'extra_pages.dart';
 import 'parents_screen.dart';
 import 'discovery_pages.dart';
+import '../data/companion.dart';
+import '../widgets/child_narration.dart';
+import 'fluff_day.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key, required this.controller, required this.onStart});
@@ -16,7 +19,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, b) {
-      final hero = (b.maxHeight - 207).clamp(290.0, 620.0);
+      final hero = (b.maxHeight - 276).clamp(230.0, 540.0);
       return ListView(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 14),
         children: [
@@ -44,7 +47,7 @@ class HomePage extends StatelessWidget {
                       pose: 'welcome',
                       size: hero * .81,
                       animate: controller.data.motion,
-                      onTap: () => FluffAudio.instance.say('welcome'),
+                      onTap: () => showFluffDay(context, controller),
                     ),
                   ),
                 ),
@@ -77,6 +80,10 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 9),
+          GlossyButton('Mein Tag mit Fluff',
+            key: const ValueKey('fluff-day'), icon: Icons.waving_hand_rounded,
+            color: gold, onPressed: () => showFluffDay(context, controller)),
           const SizedBox(height: 9),
           GlossyButton(
             'Los geht’s!',
@@ -128,6 +135,7 @@ class TasksPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 7),
                 child: TaskRow(
+                  controller: controller,
                   task: task,
                   done: controller.done(task),
                   onTap: () => openTask(context, controller, task),
@@ -147,7 +155,9 @@ class TaskRow extends StatelessWidget {
     required this.done,
     required this.onTap,
     this.compact = false,
+    this.controller,
   });
+  final AppController? controller;
   final TaskItem task;
   final bool done, compact;
   final VoidCallback? onTap;
@@ -160,19 +170,21 @@ class TaskRow extends StatelessWidget {
     onTap: onTap,
     child: Row(
       children: [
-        ArtIcon(task.icon, size: compact ? 38 : 45),
+        ArtIcon(task.icon, size: compact ? 38 : 56),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
             task.title,
             style: TextStyle(
-              fontSize: compact ? 15 : 16,
+              fontSize: compact ? 15 : 19,
               fontWeight: FontWeight.w900,
               height: 1.08,
             ),
           ),
         ),
         const SizedBox(width: 8),
+        if (controller != null) HearButton(controller: controller!,
+          lines: [task.title, ...task.steps], label: '${task.title} anhören'),
         DoneCircle(done, size: 29),
       ],
     ),
@@ -287,19 +299,21 @@ class StarsPage extends StatelessWidget {
                         animate: controller.data.motion,
                       ),
                     ),
-                    const Expanded(
+                    Expanded(
                       flex: 6,
                       child: GlossyPanel(
                         radius: 26,
                         padding: EdgeInsets.all(12),
-                        child: Text(
-                          'Wow!\nDu sammelst fleißig\nSterne! Weiter so!',
-                          style: TextStyle(
+                        child: Column(children: [Text(
+                          'Du hast ${controller.balance()} ${starWord(controller.balance())} '
+                            'in deinem Glas.',
+                          style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w800,
                             height: 1.12,
                           ),
-                        ),
+                        ), HearButton(controller: controller,
+                          lines: balanceNarration(controller.balance()))]),
                       ),
                     ),
                   ],
@@ -516,7 +530,6 @@ Future<void> showFeeling(
 ) async {
   await act(context, () => controller.setFeeling(value));
   if (!context.mounted) return;
-  FluffAudio.instance.say(value);
   const messages = {
     'glücklich': 'Wie schön! Magst du erzählen, was dir gerade Freude macht?',
     'traurig':
@@ -534,7 +547,9 @@ Future<void> showFeeling(
     backgroundColor: cream,
     isScrollControlled: true,
     showDragHandle: true,
-    builder: (sheet) => SafeArea(
+    builder: (sheet) => AutoRead(controller: controller,
+      lines: ['Du fühlst dich $value.', messages[value]!, 'Jedes Gefühl darf da sein.'],
+      child: SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(22, 0, 22, 20),
         child: Column(
@@ -558,6 +573,8 @@ Future<void> showFeeling(
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 18),
+            HearButton(controller: controller, lines: ['Du fühlst dich $value.',
+              messages[value]!, 'Jedes Gefühl darf da sein.']),
             GlossyButton('Okay', onPressed: () => Navigator.pop(sheet)),
             if (value == 'wütend' || value == 'unsicher')
               TextButton(
@@ -575,7 +592,7 @@ Future<void> showFeeling(
           ],
         ),
       ),
-    ),
+    )),
   );
 }
 
@@ -699,6 +716,8 @@ Future<void> openChildPage(
   int index = 4,
   bool night = false,
 }) async {
+  await FluffAudio.instance.stop();
+  if (!context.mounted) return;
   await Navigator.of(context).push(
     MaterialPageRoute<void>(
       builder: (context) => AnimatedBuilder(
@@ -710,11 +729,16 @@ Future<void> openChildPage(
               scene: night || selected is MissionsPage,
               night: night,
               bedtime: selected is EveningPage,
-              child: SafeArea(bottom: false, child: selected),
+              child: SafeArea(bottom: false, child: ChildNarration(
+                controller: controller,
+                identity: '${controller.child.id}|${selected.runtimeType}|${controller.today}',
+                intro: childPageIntro(controller, selected),
+                onFluff: () => showFluffDay(context, controller), child: selected)),
             ),
             bottomNavigationBar: ChildNavigationBar(
               index: index,
               onSelect: (i) {
+                FluffAudio.instance.stop();
                 controller.selectTab(i);
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
@@ -724,4 +748,26 @@ Future<void> openChildPage(
       ),
     ),
   );
+  await FluffAudio.instance.stop();
 }
+
+List<String> childPageIntro(AppController c, Widget page) => switch (page) {
+  WishlistPage() => ['Das ist deine Wunschkiste.',
+    'Such dir ein Bild aus. Ich sage dir, wie viele Sterne dein Wunsch kostet.',
+    'Wir fragen deine Erwachsenen. Ein Wunsch wird erst nach ihrer Zustimmung erfüllt.'],
+  EveningPage() => ['Jetzt wird es Abend.', 'Wir machen uns langsam bereit zum Schlafen.',
+    if (c.eveningTasks.isNotEmpty) ...['Das gehört heute zu deinem Abend:',
+      ...c.eveningTasks.map((t) => t.title)],
+    'Tippe auf ein Bild. Ich helfe dir Schritt für Schritt.'],
+  DayPlanPage() => ['Das ist dein Tagesplan.',
+    'Die Bilder zeigen, was heute geplant ist. Tippe auf ein Bild, dann erkläre ich es.'],
+  MissionsPage() => ['Hier sind deine kleinen Missionen.',
+    'Helfen. Bücher anschauen. Und Hilfe holen. Vorlesen zählt auch.',
+    'Du darfst dir Zeit nehmen. Tippe auf ein Bild.'],
+  BreathingPage() => ['Wir atmen zusammen. Mach es dir gemütlich.',
+    'Tippe auf Starten. Du kannst jederzeit eine Pause machen.'],
+  DiscoveryPage() => ['Hier kannst du mit mir lernen und malen.',
+    c.proActive ? 'Tippe auf ein Bild. Ich erkläre das Spiel.'
+      : 'Die Lernspiele und das Malatelier gehören zu Fluff Pro. Frag deine Eltern.'],
+  _ => ['Tippe auf ein Bild. Ich zeige dir, wie es geht.'],
+};

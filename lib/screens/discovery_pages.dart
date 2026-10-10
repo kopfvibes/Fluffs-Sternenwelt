@@ -5,6 +5,7 @@ import '../services/audio.dart';
 import '../widgets/common.dart';
 import '../widgets/learning_boards.dart';
 import '../widgets/learning_symbol.dart';
+import '../widgets/child_narration.dart';
 import 'creative_pages.dart';
 import 'parents_screen.dart';
 
@@ -132,6 +133,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
   bool get needsExploration => ['count', 'shapes', 'patterns'].contains(widget.game);
   bool get canAnswer => !needsExploration || exploration!.ready;
   bool get canContinue => answered && practiced;
+  int get rounds => widget.controller.child.age <= 4 ? 3 : 5;
   String get instruction => widget.game == 'memory' ? lessonWord('memory.explore')
     : widget.game == 'count' ? lessonWord(exploration!.ready ? 'count.ready' : 'count.explore')
     : widget.game == 'shapes' ? lessonWord(exploration!.ready ? 'shape.ready'
@@ -321,7 +323,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
   }
   void next() {
     if (!available || !canContinue || saving) return;
-    if (round == 4) { finish(); return; }
+    if (round == rounds - 1) { finish(); return; }
     journey.complete();
     setState(() { round++; nextQuestion(); });
     lessonScroll.jumpTo(0);
@@ -438,7 +440,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
   ];
 
   List<Widget> questionBoard() => [
-    Text('Entdeckung ${round + 1} von 5', textAlign: TextAlign.center), gap(),
+    Text('Entdeckung ${round + 1} von $rounds', textAlign: TextAlign.center), gap(),
     Text(question!.prompt, textAlign: TextAlign.center,
       style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w900)), gap(),
     if (widget.game == 'count') CountingBoard(count: question!.symbols.length,
@@ -471,6 +473,19 @@ class _LearningGamePageState extends State<LearningGamePage> {
                 Flexible(child: Text(symbolNames[question!.answers[i]]!,
                   style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w800))),
               ]))))
+        : widget.game == 'count' && widget.controller.child.age <= 4
+          ? Padding(padding: const EdgeInsets.only(bottom: 12),
+              child: GlossyPanel(key: ValueKey('answer-$i'),
+                color: answered && i == selectedAnswer ? const Color(0xffd1f8de)
+                  : !canAnswer ? const Color(0xffd2d6d5) : const Color(0xffb6e4ff),
+                onTap: answered || !canAnswer ? null : () => chooseAnswer(i),
+                child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text(question!.answers[i], style: const TextStyle(fontSize: 25,
+                    fontWeight: FontWeight.w900)), const SizedBox(width: 18),
+                  for (var n = 0; n < int.parse(question!.answers[i]); n++)
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 2),
+                      child: ArtIcon('star', size: 30)),
+                ])))
         : button(question!.answers[i], answered || !canAnswer ? null : () => chooseAnswer(i),
             'answer-$i', color: answered && i == selectedAnswer ? green : blue),
     ],
@@ -481,14 +496,17 @@ class _LearningGamePageState extends State<LearningGamePage> {
       ...feelingPractice(),
     ],
     if (answered && question!.practice != null) ...practiceBoard(),
-    if (canContinue) button(round == 4 ? 'Sticker sammeln' : 'Weiter',
+    if (canContinue) button(round == rounds - 1 ? 'Sticker sammeln' : 'Weiter',
       saving ? null : next, 'next-question', color: green),
   ];
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(animation: widget.controller,
     builder: (context, _) => Scaffold(appBar: AppBar(title: Text(gameTitles[widget.game]!)),
-      body: WorldBackground(child: SafeArea(child: ListView(
+      body: WorldBackground(child: SafeArea(child: ChildNarration(
+        controller: widget.controller, identity: 'lesson-${widget.game}-$childId',
+        autoRead: false, intro: lastSpoken, onFluff: started && !finished ? help : readPrompt,
+        child: ListView(
         controller: lessonScroll, padding: const EdgeInsets.fromLTRB(18, 12, 18, 28), children: [
           if (!available) const Text('Dieses Spiel wird für dein Kinderprofil im Elternbereich mit Fluff Pro geöffnet.')
           else if (!started) ...[
@@ -526,5 +544,5 @@ class _LearningGamePageState extends State<LearningGamePage> {
           ],
           gap(), TextButton(onPressed: () => Navigator.pop(context),
             child: const Text('Ich mache eine Pause')),
-        ])))));
+        ]))))));
 }

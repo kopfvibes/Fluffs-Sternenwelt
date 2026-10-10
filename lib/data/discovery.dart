@@ -132,7 +132,7 @@ class GameFactory {
       case 'shapes':
         const names = ['Kreis', 'Dreieck', 'Quadrat', 'Stern'];
         const visuals = ['●', '▲', '■', '★'];
-        final i = random.nextInt(names.length);
+        final i = random.nextInt(age <= 3 ? 2 : names.length);
         return LearningQuestion('Welche Form ist das?', visuals[i], names, i,
           lessonWord('shape.${shapeIds[i]}.fact'), id: 'shape-$i', shape: shapeIds[i]);
       case 'patterns':

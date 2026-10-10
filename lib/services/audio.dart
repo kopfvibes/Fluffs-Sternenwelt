@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
+import '../data/companion.dart';
+import 'device_voice.dart';
 import 'pro_voice.dart';
 
 abstract class FluffVoicePlayback {
@@ -20,17 +23,23 @@ class _AssetVoicePlayback implements FluffVoicePlayback {
 
 class FluffAudio {
   FluffAudio._();
-  FluffAudio.forTesting(FluffVoicePlayback playback) : _playback = playback;
+  FluffAudio.forTesting(FluffVoicePlayback playback, {FluffTextPlayback? text})
+    : _playback = playback, _textPlayback = text;
   static final instance = FluffAudio._();
   FluffVoicePlayback? _playback;
+  FluffTextPlayback? _textPlayback;
   AudioPlayer? _effectPlayer;
   FluffVoicePlayback get _voice => _playback ??= _AssetVoicePlayback();
+  FluffTextPlayback get _text => _textPlayback ??= GermanDeviceVoice();
   AudioPlayer get _effect => _effectPlayer ??= AudioPlayer();
   Future<void> _voiceOperation = Future.value();
   Completer<void>? _clipFinished;
   bool _enabled = true;
   int _voiceRequest = 0;
+  int get requestId => _voiceRequest;
   bool get enabled => _enabled;
+  final speaking = ValueNotifier<bool>(false);
+  final voiceProblem = ValueNotifier<String?>(null);
   set enabled(bool value) {
     if (_enabled == value) return;
     _enabled = value;
@@ -48,7 +57,8 @@ class FluffAudio {
 
   Future<void> say(String key) {
     final file = _files[key];
-    return file == null ? Future.value() : _speak(['audio/fluff/$file.wav']);
+    return file == null ? Future.value()
+      : _speak([_SpokenPart.asset('audio/fluff/$file.wav')]);
   }
 
   Future<void> star() async {
@@ -66,16 +76,37 @@ class FluffAudio {
     final paths = texts.map((text) => proVoiceClips[proVoiceKey(text)]).toList();
     // Every published Pro text has a recorded clip. Never substitute a device voice.
     if (paths.isEmpty || paths.any((path) => path == null)) return Future.value();
-    return _speak(paths.cast<String>());
+    return _speak(paths.cast<String>().map(_SpokenPart.asset).toList());
+  }
+
+  /// Full child-page reading, including parent-written text. The fixed Pro
+  /// instructions use Fluff; custom text uses an installed local German voice.
+  /// Strict game recording playback above never silently changes voices.
+  Future<void> narrate(Iterable<String> texts, {bool preferFluff = true}) {
+    final parts = <_SpokenPart>[];
+    for (final raw in texts) {
+      final text = raw.replaceAll('\n', ' ').trim();
+      if (text.isEmpty) continue;
+      final number = int.tryParse(text);
+      final tokens = preferFluff && number != null
+        ? spokenNumber(number) : [text];
+      for (final token in tokens) {
+        final asset = preferFluff ? proVoiceClips[proVoiceKey(token)] : null;
+        parts.add(asset == null ? _SpokenPart.text(token)
+          : _SpokenPart.asset(asset));
+      }
+    }
+    return parts.isEmpty ? Future.value() : _speak(parts);
   }
 
   void _interrupt() {
     _voiceRequest++;
+    speaking.value = false;
     final pending = _clipFinished;
     if (pending != null && !pending.isCompleted) pending.complete();
   }
 
-  Future<void> _speak(List<String> assets) {
+  Future<void> _speak(List<_SpokenPart> parts) {
     if (!enabled) return Future.value();
     _interrupt();
     final request = _voiceRequest;
@@ -88,18 +119,35 @@ class FluffAudio {
       if (!enabled || request != _voiceRequest) return;
       try {
         await _voice.stop();
-        for (final asset in assets) {
+        voiceProblem.value = null;
+        var textUnavailable = false;
+        for (final part in parts) {
           if (!enabled || request != _voiceRequest) return;
+          if (part.asset == null && textUnavailable) continue;
           final finished = Completer<void>();
           _clipFinished = finished;
-          final subscription = _voice.completed.listen((_) {
+          final events = part.asset != null ? _voice.completed : _text.completed;
+          final subscription = events.listen((_) {
             if (!finished.isCompleted) finished.complete();
           }, onError: (Object error, StackTrace stack) {
             if (!finished.isCompleted) finished.complete();
           });
           try {
-            await _voice.play(asset);
-            await finished.future.timeout(const Duration(seconds: 40));
+            speaking.value = true;
+            if (part.asset != null) {
+              await _voice.play(part.asset!);
+            } else {
+              await _text.play(part.text!);
+            }
+            await finished.future.timeout(const Duration(seconds: 90));
+          } catch (error) {
+            if (request != _voiceRequest) return;
+            voiceProblem.value = part.asset == null
+              ? 'Eine deutsche Offline-Vorlesestimme wird benötigt. '
+                'Deine Erwachsenen können sie in den Handy-Einstellungen einrichten.'
+              : 'Die Aufnahme konnte nicht abgespielt werden. Bitte noch einmal versuchen.';
+            if (part.asset != null) rethrow;
+            textUnavailable = true;
           } finally {
             await subscription.cancel();
             if (identical(_clipFinished, finished)) _clipFinished = null;
@@ -107,6 +155,8 @@ class FluffAudio {
         }
       } catch (_) {
         await _stopVoice();
+      } finally {
+        if (request == _voiceRequest) speaking.value = false;
       }
     }();
     _voiceOperation = operation;
@@ -115,6 +165,7 @@ class FluffAudio {
 
   Future<void> _stopVoice() async {
     try { await _playback?.stop(); } catch (_) {}
+    try { await _textPlayback?.stop(); } catch (_) {}
   }
 
   Future<void> stop() {
@@ -130,4 +181,10 @@ class FluffAudio {
     _voiceOperation = operation;
     return operation;
   }
+}
+
+class _SpokenPart {
+  const _SpokenPart.asset(this.asset) : text = null;
+  const _SpokenPart.text(this.text) : asset = null;
+  final String? asset, text;
 }

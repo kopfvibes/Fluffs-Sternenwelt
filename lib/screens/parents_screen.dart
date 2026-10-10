@@ -1407,7 +1407,8 @@ class SettingsPage extends StatelessWidget {
                   ),
                   SwitchListTile(
                     title: const Text('Fluff-Stimme und Sternklang'),
-                    subtitle: const Text('Lokal gespeicherte Audiodateien'),
+                    subtitle: const Text('Pro: Fluffs Originalaufnahmen. Eigene Texte und '
+                      'Basis-Vorlesen: installierte deutsche Offline-Stimme des Handys.'),
                     value: controller.data.sound,
                     onChanged: (v) =>
                         act(context, () => controller.settings(sound: v)),
