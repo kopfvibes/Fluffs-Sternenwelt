@@ -12,4 +12,6 @@ Der dunkle Hintergrund der Sternfeier mit Lichtpunkten und animiertem Konfetti e
 
 Die lokalen WAV-Dateien, Sternklänge und Musik stammen aus den wiedergefundenen Fluff-Projektpaketen. Die App spielt Stimme und Sternklang an passenden Aktionen ab. Die Musikdatei bleibt verfügbar, läuft aber nicht ungefragt als Hintergrundmusik.
 
+Die 161 zusätzlichen Pro-Aufnahmen in assets/audio/pro/ wurden am 10. Oktober 2026 mit der privaten deutschen HeyGen-Stimme „Fluff“ der Besitzerin erzeugt (Voice-ID f3a225316b15429ba9c119d51353803a, ElevenLabs, Geschwindigkeit 0,95). Sie werden als lokale MP3-Dateien abgespielt. pro-voice-manifest.json dokumentiert die gesprochenen Texte, Dauer und SHA-256-Prüfsummen. Die App sendet keine Kindertexte oder Daten an HeyGen und enthält keine Zugangsdaten. Android-Text-zu-Sprache wird nicht verwendet.
+
 Die Rechte an gelieferten Figuren, Marken und Audiodateien werden durch dieses Quellpaket nicht neu lizenziert. Vor einer öffentlichen Produktveröffentlichung liegt die Auswahl der freigegebenen Marken- und Mediendateien beim Projekteigentümer.

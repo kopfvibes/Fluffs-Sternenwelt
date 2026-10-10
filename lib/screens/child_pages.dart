@@ -7,6 +7,7 @@ import '../widgets/common.dart';
 import 'task_flow.dart';
 import 'extra_pages.dart';
 import 'parents_screen.dart';
+import 'discovery_pages.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key, required this.controller, required this.onStart});
@@ -590,6 +591,12 @@ class MorePage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(19, 0, 19, 20),
           children: [
             for (final item in <(String, String, VoidCallback)>[
+              (
+                'Fluffs Entdeckerwelt',
+                'game',
+                () => openChildPage(context, controller,
+                  () => DiscoveryPage(controller: controller)),
+              ),
               (
                 'Fluffs Missionen',
                 'bag',
