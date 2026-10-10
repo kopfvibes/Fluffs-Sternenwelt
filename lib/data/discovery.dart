@@ -76,7 +76,7 @@ class LearningJourney {
   bool supported = false;
   final seen = <String>{};
   int get challengeAge => independent >= 4 && age >= 7 ? age
-    : independent >= 2 && age >= 5 ? age.clamp(5, 6) : age.clamp(2, 4);
+    : independent >= 2 && age >= 5 ? age.clamp(5, 6).toInt() : age.clamp(2, 4).toInt();
   void help() { supported = true; independent = 0; }
   void complete() {
     if (!supported) independent++;

@@ -403,6 +403,7 @@ void main() {
   }
   Future<void> lessonPreview(WidgetTester tester, GlobalKey key, String name) async {
     if (!const bool.fromEnvironment('RENDER_PREVIEWS')) return;
+    tester.state<ScrollableState>(find.byType(Scrollable).first).position.jumpTo(0);
     await tester.pumpAndSettle();
     await tester.runAsync(() async {
       final boundary=key.currentContext!.findRenderObject() as RenderRepaintBoundary;
@@ -425,7 +426,7 @@ void main() {
     expect(find.byKey(const ValueKey('next-question')),findsNothing);
     await tapLesson(tester,find.byKey(const ValueKey('count-star-1')));
     await tapLesson(tester,find.widgetWithText(GlossyButton,'3'));
-    expect(find.textContaining('Vergleiche deine Zahl'),findsOneWidget);
+    expect(find.textContaining('Vergleiche deine Zahl'),findsWidgets);
     expect(c.gameCount('count'),0);
     await tapLesson(tester,find.widgetWithText(GlossyButton,'2'));
     expect(find.byKey(const ValueKey('next-question')),findsOneWidget);
@@ -440,7 +441,7 @@ void main() {
       await tapLesson(tester,find.byKey(ValueKey('shape-point-$i')));
     }
     await tapLesson(tester,find.widgetWithText(GlossyButton,'Dreieck'));
-    expect(find.textContaining('vier Seiten sind gleich lang'),findsOneWidget);
+    expect(find.textContaining('vier Seiten sind gleich lang'),findsWidgets);
     await tapLesson(tester,find.widgetWithText(GlossyButton,'Quadrat'));
     expect(find.byKey(const ValueKey('next-question')),findsOneWidget);
     await lessonPreview(tester,preview,'Formen');

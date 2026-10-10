@@ -48,15 +48,15 @@ void main() {
   test('Help reduces the next challenge and independent practice raises it within age', () {
     for (final age in [3,5,8]) {
       final j = LearningJourney(age);
-      expect(j.challengeAge, lessThanOrEqual(4));
+      expect(j.challengeAge, lessThanOrEqualTo(4));
       j.complete(); j.complete();
-      expect(j.challengeAge, lessThanOrEqual(age));
+      expect(j.challengeAge, lessThanOrEqualTo(age));
       if (age >= 5) expect(j.challengeAge, inInclusiveRange(5,6));
       j.complete(); j.complete();
       expect(j.challengeAge, age);
       j.help(); j.complete();
       expect(j.independent, 0);
-      expect(j.challengeAge, lessThanOrEqual(4));
+      expect(j.challengeAge, lessThanOrEqualTo(4));
     }
   });
   test('A short learning journey avoids repeated feeling and action stories', () {

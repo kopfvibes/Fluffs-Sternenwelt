@@ -121,7 +121,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
   bool finished = false, saving = false, showGroups = false, phraseTried = false;
   int round = 0, breaths = 0;
   int? selectedAnswer, talkSentence;
-  String support = '', feedback = '';
+  String support = '', feedback = '', attemptFeedback = '';
   List<String> lastSpoken = [];
   LearningQuestion? question;
   ExplorationProgress? exploration;
@@ -179,7 +179,8 @@ class _LearningGamePageState extends State<LearningGamePage> {
     exploration = ExplorationProgress(question!.explorationSteps,
       ordered: widget.game == 'patterns');
     answered = false; practiced = false; showGroups = false; phraseTried = false;
-    selectedAnswer = null; talkSentence = null; support = ''; breaths = 0; feedback = '';
+    selectedAnswer = null; talkSentence = null; support = ''; breaths = 0;
+    feedback = ''; attemptFeedback = '';
   }
   void help() {
     if (!available || finished || saving) return;
@@ -220,12 +221,14 @@ class _LearningGamePageState extends State<LearningGamePage> {
       journey.help();
       final key = widget.game == 'count' ? 'count.retry' : widget.game == 'shapes'
         ? 'shape.retry' : widget.game == 'patterns' ? 'pattern.retry' : 'help.kindness';
-      setState(() => showGroups = true);
-      coach([lessonWord(key), if (['shapes','kindness'].contains(widget.game)) question!.explanation]);
+      final hints = [lessonWord(key),
+        if (['shapes','kindness'].contains(widget.game)) question!.explanation];
+      setState(() { showGroups = true; attemptFeedback = hints.join(' '); });
+      coach(hints);
       return;
     }
     setState(() {
-      answered = true; selectedAnswer = i;
+      answered = true; selectedAnswer = i; attemptFeedback = '';
       practiced = !question!.personalFeeling && question!.practice == null;
     });
     if (question!.personalFeeling) {
@@ -267,10 +270,12 @@ class _LearningGamePageState extends State<LearningGamePage> {
     if (!available || !phraseTried || practiced) return;
     if (i != 0) {
       journey.help();
-      coach([lessonWord('practice.retry'), question!.practice!.explanation, question!.practice!.phrase]);
+      final hints = [lessonWord('practice.retry'), question!.practice!.explanation];
+      setState(() => attemptFeedback = hints.join(' '));
+      coach([...hints, question!.practice!.phrase]);
       return;
     }
-    setState(() => practiced = true);
+    setState(() { practiced = true; attemptFeedback = ''; });
     coach([question!.practice!.explanation]);
   }
   void chooseCard(int i) {
@@ -399,6 +404,8 @@ class _LearningGamePageState extends State<LearningGamePage> {
       for (var i = 0; i < question!.practice!.answers.length; i++)
         button(question!.practice!.answers[i], practiced ? null : () => choosePractice(i),
           'practice-answer-$i', color: practiced && i == 0 ? green : blue),
+      if (attemptFeedback.isNotEmpty) GlossyPanel(child: Text(attemptFeedback,
+        textAlign: TextAlign.center)),
     ],
   ];
 
@@ -439,7 +446,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
     if (widget.game == 'shapes') ShapeBoard(shape: question!.shape,
       progress: exploration!, enabled: !answered, onTouch: touch),
     if (widget.game == 'patterns') PatternBoard(question: question!, progress: exploration!,
-      enabled: !answered, onTouch: touch, showGroups: showGroups),
+      enabled: !answered, onTouch: touch, showGroups: showGroups, completed: answered),
     if (!needsExploration) Center(child: LearningSymbol(question!.visual, size: 68)),
     gap(),
     if (needsExploration && !answered) ...[
@@ -467,6 +474,8 @@ class _LearningGamePageState extends State<LearningGamePage> {
         : button(question!.answers[i], answered || !canAnswer ? null : () => chooseAnswer(i),
             'answer-$i', color: answered && i == selectedAnswer ? green : blue),
     ],
+    if (!answered && attemptFeedback.isNotEmpty) GlossyPanel(child: Text(attemptFeedback,
+      textAlign: TextAlign.center)),
     if (answered && question!.personalFeeling) ...[
       Text('Dein Gefühlswort: ${question!.answers[selectedAnswer!]}', textAlign: TextAlign.center),
       ...feelingPractice(),

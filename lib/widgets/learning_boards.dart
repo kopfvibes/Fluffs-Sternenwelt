@@ -115,11 +115,12 @@ class _ShapePainter extends CustomPainter {
 
 class PatternBoard extends StatelessWidget {
   const PatternBoard({super.key, required this.question, required this.progress,
-    required this.onTouch, required this.enabled, required this.showGroups});
+    required this.onTouch, required this.enabled, required this.showGroups,
+    this.completed = false});
   final LearningQuestion question;
   final ExplorationProgress progress;
   final ValueChanged<int> onTouch;
-  final bool enabled, showGroups;
+  final bool enabled, showGroups, completed;
   @override
   Widget build(BuildContext context) {
     final symbols = question.symbols;
@@ -145,9 +146,12 @@ class PatternBoard extends StatelessWidget {
                   ]))))
             : Padding(padding: const EdgeInsets.all(5),
                 child: LearningSymbol(symbols[i], size: 38)),
-          if (start + unit >= symbols.length) const Padding(
-            padding: EdgeInsets.all(5), child: Text('?', style: TextStyle(
-              fontSize: 32, fontWeight: FontWeight.w900, color: blue))),
+          if (start + unit >= symbols.length) Container(padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(color: completed ? const Color(0xffd1f8de) : Colors.white,
+              borderRadius: BorderRadius.circular(10)),
+            child: completed ? LearningSymbol(question.answers[question.correct], size: 38)
+              : const Text('?', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900,
+                  color: blue))),
         ])));
     }
     return GlossyPanel(child: Wrap(alignment: WrapAlignment.center,
