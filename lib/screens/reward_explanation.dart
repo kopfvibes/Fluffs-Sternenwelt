@@ -129,13 +129,14 @@ class _RewardExplanationDialogState extends State<RewardExplanationDialog> {
                         await c.requestReward(reward);
                         if (context.mounted) Navigator.pop(context, true);
                       } catch (error) {
-                        if (!mounted) return;
+                        if (!mounted || !context.mounted) return;
                         setState(() => saving = false);
                         final message = error is StateError ? error.message.toString()
                           : 'Dein Wunsch konnte nicht gespeichert werden. Versuch es noch einmal.';
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-                        if (c.data.sound) FluffAudio.instance.narrate([message],
+                        if (c.data.sound) { FluffAudio.instance.narrate([message],
                           preferFluff: c.proActive);
+                        }
                       }
                     }),
                 ] else

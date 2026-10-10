@@ -17,15 +17,15 @@ List<String> earnedNarration(int earned, int balance) => [
 List<String> spokenNumber(int value) {
   if (value < 0) return ['minus', ...spokenNumber(-value)];
   if (value <= 100) return ['$value'];
-  if (value < 1000) return [
+  if (value < 1000) { return [
     '${value ~/ 100 == 1 ? 'ein' : _units[value ~/ 100]}hundert',
     if (value % 100 > 0) ...spokenNumber(value % 100),
-  ];
-  if (value < 1000000) return [
+  ]; }
+  if (value < 1000000) { return [
     if (value ~/ 1000 == 1) 'eintausend'
     else ...[...spokenNumber(value ~/ 1000), 'tausend'],
     if (value % 1000 > 0) ...spokenNumber(value % 1000),
-  ];
+  ]; }
   return ['$value']; // Rare larger parent-entered totals use local speech.
 }
 const _units = ['', 'ein', 'zwei', 'drei', 'vier', 'fünf', 'sechs',
@@ -116,7 +116,8 @@ List<String> lastRewardNarration(AppController c) {
   final cost = -entry.amount;
   final after = before - cost;
   return ['Deine Erwachsenen haben deinen Wunsch erfüllt:', entry.label,
-    'Vorher hattest du', ...spokenNumber(before), '${starWord(before)}.',
+    if (before == 1) 'Vorher hattest du einen Stern.'
+    else ...['Vorher hattest du', ...spokenNumber(before), 'Sterne.'],
     if (cost == 1) 'Dafür wurde ein Stern eingelöst.'
     else ...['Dafür wurden', ...spokenNumber(cost), 'Sterne eingelöst.'],
     if (after == 1) 'Danach war noch ein Stern im Glas.'

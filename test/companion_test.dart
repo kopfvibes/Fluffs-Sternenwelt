@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:fluffs_sternenwelt/data/companion.dart';
@@ -33,7 +34,16 @@ Future<void> shot(WidgetTester tester, GlobalKey key, String name) async {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  setUpAll(() => initializeDateFormatting('de_DE'));
+  setUpAll(() async {
+    await initializeDateFormatting('de_DE');
+    final font = FontLoader('Nunito');
+    for (final weight in [400, 600, 700, 800, 900]) {
+      font.addFont(rootBundle.load('assets/fonts/Nunito-$weight.ttf'));
+    }
+    await font.load();
+    await (FontLoader('MaterialIcons')
+      ..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'))).load();
+  });
   late TestWorld world;
   setUp(() async { world = TestWorld(); await world.init(); });
   tearDown(() => world.controller.dispose());
@@ -110,8 +120,8 @@ void main() {
     final reward = c.data.rewards.firstWhere((r) => r.title == 'Kinobesuch');
     reward.cost = 5; await c.saveReward(reward);
     final boundary = GlobalKey();
-    await tester.pumpWidget(MaterialApp(theme: fluffTheme(), home: RepaintBoundary(
-      key: boundary, child: Scaffold(body: WishlistPage(controller: c)))));
+    await tester.pumpWidget(RepaintBoundary(key: boundary, child: MaterialApp(
+      theme: fluffTheme(), home: Scaffold(body: WishlistPage(controller: c)))));
     await tapVisible(tester, find.text('Kinobesuch'));
     expect(find.byKey(const ValueKey('request-reward')), findsNothing);
     expect(find.text('Du hast 30 Sterne.'), findsOneWidget);
@@ -158,8 +168,8 @@ void main() {
   testWidgets('Fluff tells a story one step at a time without altering child records', (tester) async {
     final c = world.controller;
     final boundary = GlobalKey();
-    await tester.pumpWidget(MaterialApp(theme: fluffTheme(), home: RepaintBoundary(
-      key: boundary, child: Scaffold(body: Builder(builder: (context) => TextButton(
+    await tester.pumpWidget(RepaintBoundary(key: boundary, child: MaterialApp(
+      theme: fluffTheme(), home: Scaffold(body: Builder(builder: (context) => TextButton(
         onPressed: () => showFluffDay(context, c), child: const Text('Fluff öffnen')))))));
     await tapVisible(tester, find.text('Fluff öffnen'));
     await tapVisible(tester, find.byKey(const ValueKey('fluff-story')));
@@ -188,4 +198,19 @@ void main() {
     expect(c.balance(), 0);
     await tester.pumpWidget(const SizedBox.shrink());
   });
+  testWidgets('Breathing waits for a child instead of enforcing a countdown', (tester) async {
+    await tester.pumpWidget(MaterialApp(theme: fluffTheme(),
+      home: Scaffold(body: BreathingPage(controller: world.controller))));
+    await tapVisible(tester, find.byKey(const ValueKey('breath-next')));
+    expect(find.text('Rieche an einer Blume. Atme sanft ein.'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 45));
+    expect(find.text('Rieche an einer Blume. Atme sanft ein.'), findsOneWidget);
+    for (var i = 0; i < 6; i++) {
+      await tapVisible(tester, find.byKey(const ValueKey('breath-next')));
+    }
+    expect(find.text('Gut gemacht. Zeit für eine Pause.'), findsOneWidget);
+    expect(world.controller.balance(), 0);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
 }

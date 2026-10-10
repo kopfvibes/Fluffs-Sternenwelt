@@ -87,7 +87,10 @@ class DiscoveryPage extends StatelessWidget {
   }
 
   void _showProGate(BuildContext context, String message) {
-    showDialog<void>(context: context, builder: (dialog) => AlertDialog(
+    FluffAudio.instance.stop();
+    showDialog<void>(context: context, builder: (dialog) => AutoRead(
+        controller: controller, lines: ['Frag deine Eltern.', message,
+          'Tippe auf Okay, um weiterzuspielen.'], child: AlertDialog(
         title: const Text('Frag deine Eltern'),
         content: Text(message),
         actions: [TextButton(onPressed: () => Navigator.pop(dialog),
@@ -96,7 +99,7 @@ class DiscoveryPage extends StatelessWidget {
             Navigator.pop(dialog);
             openParents(context, controller);
           }, child: const Text('Mit meinen Eltern öffnen'))],
-      ));
+      )));
   }
 }
 

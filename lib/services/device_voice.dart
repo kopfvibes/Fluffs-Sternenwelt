@@ -18,7 +18,7 @@ class GermanDeviceVoice implements FluffTextPlayback {
 
   Future<void> _prepare() async {
     _tts.setCompletionHandler(() => _events.add(null));
-    _tts.setCancelHandler((_) => _events.add(null));
+    _tts.setCancelHandler(() => _events.add(null));
     _tts.setErrorHandler((_) => _events.add(null));
     final raw = await _tts.getVoices;
     final voices = (raw as List).whereType<Map>().where((voice) {

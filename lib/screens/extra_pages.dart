@@ -340,31 +340,39 @@ class WishlistPage extends StatelessWidget {
       ),
     ],
   );
-  Future<void> _pending(
-    BuildContext context,
-    WishRequest request,
-  ) => showDialog<void>(
-    context: context,
-    builder: (dialog) => AlertDialog(
-      title: Text(request.title),
-      content: const Text(
-        'Deine Erwachsenen entscheiden gemeinsam mit dir. Du kannst deinen Wunsch auch zurückziehen.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(dialog),
-          child: const Text('Okay'),
-        ),
-        TextButton(
-          onPressed: () => act(dialog, () async {
-            await controller.decideRequest(request.id, 'zurückgezogen');
-            if (dialog.mounted) Navigator.pop(dialog);
-          }),
-          child: const Text('Zurückziehen'),
-        ),
-      ],
-    ),
-  );
+  Future<void> _pending(BuildContext context, WishRequest request) async {
+    await FluffAudio.instance.stop();
+    if (!context.mounted) return;
+    final withdrawn = await showDialog<bool>(context: context,
+      builder: (dialog) => AutoRead(controller: controller, lines: [request.title,
+        'Deine Erwachsenen entscheiden gemeinsam mit dir. Du kannst deinen Wunsch '
+          'auch zurückziehen. Deine Sterne bleiben in deinem Glas.'],
+        child: AlertDialog(title: Text(request.title),
+          content: Column(mainAxisSize: MainAxisSize.min, children: [
+            const Text('Deine Erwachsenen entscheiden gemeinsam mit dir. '
+              'Du kannst deinen Wunsch auch zurückziehen.'),
+            HearButton(controller: controller, lines: [request.title,
+              'Deine Erwachsenen entscheiden gemeinsam mit dir. Du kannst deinen '
+                'Wunsch auch zurückziehen. Deine Sterne bleiben in deinem Glas.']),
+          ]), actions: [
+            TextButton(onPressed: () => Navigator.pop(dialog, false),
+              child: const Text('Okay')),
+            TextButton(onPressed: () {
+              if (controller.child.id != request.childId) {
+                Navigator.pop(dialog, false); return;
+              }
+              act(dialog, () async {
+                await controller.decideRequest(request.id, 'zurückgezogen');
+                if (dialog.mounted) Navigator.pop(dialog, true);
+              });
+            }, child: const Text('Zurückziehen')),
+          ])));
+    if (withdrawn == true && controller.child.id == request.childId &&
+        controller.data.sound) {
+      FluffAudio.instance.narrate(['Dein Wunsch ist zurückgezogen. Deine Sterne '
+        'bleiben in deinem Glas.'], preferFluff: controller.proActive);
+    }
+  }
   Future<void> _wish(BuildContext context, RewardItem reward) async {
     final existing = controller.data.requests.where(
       (x) =>
@@ -755,100 +763,58 @@ class BreathingPage extends StatefulWidget {
 class _BreathingPageState extends State<BreathingPage>
     with SingleTickerProviderStateMixin {
   late final AnimationController breath;
+  int step = -1;
+  bool get finished => step >= 6;
+  String get instruction => finished ? 'Gut gemacht. Zeit für eine Pause.'
+    : step < 0 ? 'Mach es dir gemütlich.'
+    : step.isEven ? 'Rieche an einer Blume. Atme sanft ein.'
+    : 'Puste eine Feder. Atme sanft aus.';
   @override
   void initState() {
     super.initState();
-    breath = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 24),
-    )..addListener(() => setState(() {}));
+    breath = AnimationController(vsync: this,
+      duration: const Duration(milliseconds: 2400));
   }
-
   @override
-  void dispose() {
-    breath.dispose();
-    super.dispose();
+  void dispose() { breath.dispose(); super.dispose(); }
+  void next() {
+    setState(() => step = finished ? 0 : step + 1);
+    if (!widget.controller.data.motion) return;
+    if (finished) { breath.animateTo(0); }
+    else if (step.isEven) { breath.forward(); }
+    else { breath.reverse(); }
   }
-
   @override
-  Widget build(BuildContext context) {
-    final seconds = breath.value * 24;
-    final phase = seconds % 8;
-    final finished = breath.isCompleted;
-    final scale = 1 + sin(phase / 8 * pi) * .15;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ScreenTitle(
-            'Ruhig atmen',
-            back: () => Navigator.maybePop(context),
-            subtitle: 'Fluff macht mit. Du bestimmst das Tempo.',
-          ),
-          const SizedBox(height: 40),
-          Transform.scale(
-            scale: widget.controller.data.motion ? scale : 1,
-            child: Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xffceebff),
-                border: Border.all(color: Colors.white, width: 4),
-                boxShadow: const [
-                  BoxShadow(color: Color(0x551aa2ee), blurRadius: 25),
-                ],
-              ),
-              child: FluffSprite(pose: 'blink', size: 235, animate: false),
-            ),
-          ),
-          const SizedBox(height: 40),
-          Text(
-            finished
-                ? 'Gut gemacht. Zeit für eine Pause.'
-                : !breath.isAnimating && breath.value == 0
-                ? 'Mach es dir gemütlich.'
-                : phase < 3
-                ? 'Langsam einatmen'
-                : phase < 4
-                ? 'Einen Moment warten'
-                : 'Langsam ausatmen',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
-          ),
-          const SizedBox(height: 9),
-          Text('${min((seconds / 8).floor() + 1, 3)} von 3 Atemrunden'),
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: GlossyButton(
-              finished
-                  ? 'Noch einmal'
-                  : breath.isAnimating
-                  ? 'Pause'
-                  : breath.value == 0
-                  ? 'Starten'
-                  : 'Fortsetzen',
-              onPressed: () {
-                if (finished) {
-                  breath.value = 0;
-                  breath.forward();
-                } else if (breath.isAnimating) {
-                  breath.stop();
-                  setState(() {});
-                } else {
-                  breath.forward();
-                }
-              },
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 26),
-            child: Text(
-              'Du kannst jederzeit aufhören. Wenn du Trost brauchst, hol dir einen Erwachsenen.',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => AutoRead(controller: widget.controller,
+    identity: 'breath-$step', lines: [instruction,
+      if (!finished) 'Tippe erst weiter, wenn du möchtest. Du bestimmst das Tempo.'],
+    child: SingleChildScrollView(child: Column(children: [
+      ScreenTitle('Ruhig atmen', back: () => Navigator.maybePop(context),
+        subtitle: 'Fluff macht mit. Du bestimmst das Tempo.'),
+      const SizedBox(height: 24),
+      AnimatedBuilder(animation: breath, builder: (_, child) => Transform.scale(
+        scale: widget.controller.data.motion ? 1 + breath.value * .12 : 1,
+        child: child), child: Container(width: 230, height: 230,
+          decoration: BoxDecoration(shape: BoxShape.circle,
+            color: const Color(0xffceebff), border: Border.all(color: Colors.white, width: 4)),
+          child: Stack(alignment: Alignment.center, children: [
+            FluffSprite(size: 205, animate: widget.controller.data.motion),
+            if (step >= 0 && !finished) Align(alignment: Alignment.bottomRight,
+              child: Icon(step.isEven ? Icons.local_florist_rounded : Icons.air_rounded,
+                color: blue, size: 58)),
+          ]))),
+      const SizedBox(height: 30),
+      Padding(padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Text(instruction, textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w900))),
+      HearButton(controller: widget.controller, lines: [instruction]),
+      Text('${step < 0 ? 0 : min(step ~/ 2 + 1, 3)} von 3 Atemrunden'),
+      Padding(padding: const EdgeInsets.all(24), child: GlossyButton(
+        finished ? 'Noch einmal' : step < 0 ? 'Starten' : 'Weiter',
+        key: const ValueKey('breath-next'), icon: Icons.arrow_forward_rounded,
+        onPressed: next)),
+      const Padding(padding: EdgeInsets.symmetric(horizontal: 26),
+        child: Text('Du kannst jederzeit aufhören. Wenn du Trost brauchst, '
+          'hol dir einen Erwachsenen.', textAlign: TextAlign.center)),
+    ])));
 }

@@ -16,6 +16,7 @@ Future<void> openTask(
   TaskItem? task = first;
   await FluffAudio.instance.stop();
   while (task != null && context.mounted) {
+    if (!context.mounted) return;
     final item = task;
     final earned = await showModalBottomSheet<bool>(
       context: context,
@@ -250,9 +251,10 @@ class _CelebrationPageState extends State<CelebrationPage>
     );
     if (widget.controller.data.motion) animation.repeat();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && widget.controller.data.sound) FluffAudio.instance.narrate(
+      if (mounted && widget.controller.data.sound) { FluffAudio.instance.narrate(
         earnedNarration(widget.task.stars, widget.controller.balance()),
         preferFluff: widget.controller.proActive);
+      }
     });
     FluffAudio.instance.star();
   }

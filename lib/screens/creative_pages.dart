@@ -6,6 +6,7 @@ import '../data/creative.dart';
 import '../services/audio.dart';
 import '../services/fluff_printing.dart';
 import '../widgets/common.dart';
+import '../widgets/child_narration.dart';
 import '../widgets/pro_access.dart';
 import 'parents_screen.dart';
 
@@ -44,7 +45,8 @@ class _CreativeStudioPageState extends State<CreativeStudioPage> {
       appBar: AppBar(title: const Text('Fluffs Malatelier')),
       body: WorldBackground(child: SafeArea(child: !controller.proActive
         ? ProAccessPanel(onOpenPro: () => openParents(context, controller))
-        : ListView(
+        : ChildNarration(controller: controller, intro: const [welcome],
+        autoRead: false, child: ListView(
         padding: const EdgeInsets.fromLTRB(18, 8, 18, 24), children: [
           Row(children: [FluffSprite(pose: 'proud', size: 112,
             animate: controller.data.motion),
@@ -62,12 +64,12 @@ class _CreativeStudioPageState extends State<CreativeStudioPage> {
             Padding(padding: const EdgeInsets.only(bottom: 10),
               child: GlossyPanel(onTap: () => _open(context, i), child: Row(children: [
                 ClipRRect(borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(coloringAsset(i), width: 48, height: 66,
+                  child: Image.asset(coloringAsset(i), width: 64, height: 88,
                     fit: BoxFit.cover)),
                 const SizedBox(width: 14),
                 Expanded(child: Text(coloringTitles[i - 1], style: const TextStyle(
                   fontSize: 17, fontWeight: FontWeight.w800))),
-                const Icon(Icons.brush_rounded, color: blue),
+                HearButton(controller: controller, lines: [coloringTitles[i - 1]]),
               ]))),
           const SizedBox(height: 12),
           Text('Mein Bilderalbum', style: Theme.of(context).textTheme.titleLarge),
@@ -88,7 +90,7 @@ class _CreativeStudioPageState extends State<CreativeStudioPage> {
                       overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
                   ])),
               ]),
-        ]))),
+        ])))),
     ));
   void _open(BuildContext context, int template, {SavedDrawing? saved}) {
     if (!controller.proActive) return;
@@ -232,13 +234,16 @@ class _DrawingPageState extends State<DrawingPage> {
   }
   Future<bool> confirmLeave() async {
     if (!dirty) return true;
-    return await showDialog<bool>(context: context, builder: (d) => AlertDialog(
+    return await showDialog<bool>(context: context, builder: (d) => AutoRead(
+      controller: widget.controller, lines: const [
+        'Dein Bild ist noch nicht gespeichert. Möchtest du weiter malen '
+          'oder dieses Bild verlassen?'], child: AlertDialog(
       title: const Text('Bild noch nicht gespeichert'),
       content: const Text('Möchtest du erst weiter malen oder dieses Bild verlassen?'),
       actions: [TextButton(onPressed: () => Navigator.pop(d, false),
         child: const Text('Weiter malen')), TextButton(
         onPressed: () => Navigator.pop(d, true), child: const Text('Verlassen'))],
-    )) ?? false;
+    ))) ?? false;
   }
   Future<void> print() async {
     if (!widget.controller.proActive) return;
@@ -289,18 +294,23 @@ class _DrawingPageState extends State<DrawingPage> {
         onPressed: print),
       if (drawingId != null) IconButton(tooltip: 'Bild aus Album löschen',
         icon: const Icon(Icons.delete_outline_rounded), onPressed: () async {
-          final yes = await showDialog<bool>(context: context, builder: (d) => AlertDialog(
+          final yes = await showDialog<bool>(context: context, builder: (d) => AutoRead(
+            controller: widget.controller,
+            lines: const ['Möchtest du dieses Bild behalten oder löschen?'],
+            child: AlertDialog(
             title: const Text('Dieses Bild löschen?'),
             actions: [TextButton(onPressed: () => Navigator.pop(d, false),
               child: const Text('Behalten')), TextButton(onPressed: () => Navigator.pop(d, true),
-              child: const Text('Löschen'))]));
+              child: const Text('Löschen'))])));
           if (yes == true) {
             await widget.controller.deleteDrawing(drawingId!);
             if (context.mounted) { setState(() => dirty = false); Navigator.pop(context); }
           }
         }),
     ]), body: SafeArea(child: LayoutBuilder(builder: (context, box) =>
-      Column(children: [
+      ChildNarration(controller: widget.controller, autoRead: false,
+        intro: const ['Such dir eine Farbe aus. Male in deinem Tempo. Wenn du fertig bist, '
+          'kannst du dein Bild im Album speichern.'], child: Column(children: [
         Expanded(child: Center(child: Padding(padding: const EdgeInsets.all(12),
           child: RepaintBoundary(key: boundary, child: DrawingSurface(
             key: const ValueKey('drawing-canvas'), template: widget.template,
@@ -343,6 +353,6 @@ class _DrawingPageState extends State<DrawingPage> {
           child: GlossyButton(saving ? 'Wird gespeichert …' : 'Im Album speichern',
             key: const ValueKey('save-drawing'), color: green,
             onPressed: saving ? null : save)),
-      ]))),
+      ])))),
     ));
 }

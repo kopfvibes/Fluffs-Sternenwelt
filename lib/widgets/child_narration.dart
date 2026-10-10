@@ -165,21 +165,25 @@ class AutoRead extends StatefulWidget {
 class _AutoReadState extends State<AutoRead> {
   int? ownRequest;
   late String childId;
+  late bool pro;
   @override
   void initState() {
     super.initState();
     childId = widget.controller.child.id;
+    pro = widget.controller.proActive;
     widget.controller.addListener(_changed);
     WidgetsBinding.instance.addPostFrameCallback((_) => read());
   }
   void _changed() {
-    if (childId != widget.controller.child.id || !widget.controller.data.sound) {
+    if (childId != widget.controller.child.id || !widget.controller.data.sound ||
+        (pro && !widget.controller.proActive)) {
       if (ownRequest == FluffAudio.instance.requestId) FluffAudio.instance.stop();
     }
+    pro = widget.controller.proActive;
   }
   void read() {
     if (!mounted || childId != widget.controller.child.id ||
-        !widget.controller.data.sound || !(ModalRoute.of(context)?.isCurrent ?? true)) return;
+        !widget.controller.data.sound || !(ModalRoute.of(context)?.isCurrent ?? true)) { return; }
     FluffAudio.instance.narrate(widget.lines, preferFluff: widget.controller.proActive);
     ownRequest = FluffAudio.instance.requestId;
   }
