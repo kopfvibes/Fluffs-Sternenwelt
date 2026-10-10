@@ -1,9 +1,28 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fluffs_sternenwelt/data/discovery.dart';
 import 'package:fluffs_sternenwelt/widgets/learning_boards.dart';
 
 void main() {
+  testWidgets('A new pattern cycle gets its own group instead of extending the old unit', (tester) async {
+    final progress = ExplorationProgress(2);
+    const question = LearningQuestion('Was kommt als Nächstes?', '🔵 🟡 🔵 🟡 ?',
+      ['🔵','⭐','💙'],0,'',unit:['🔵','🟡']);
+    Widget board(bool completed) => MaterialApp(home: Scaffold(body: PatternBoard(
+      question:question,progress:progress,onTouch:(_){},enabled:true,
+      showGroups:true,completed:completed)));
+    await tester.pumpWidget(board(false));
+    final third=find.byKey(const ValueKey('pattern-group-2'));
+    expect(third,findsOneWidget);
+    expect(find.descendant(of:third,matching:find.text('?')),findsOneWidget);
+    expect(find.descendant(of:find.byKey(const ValueKey('pattern-group-1')),
+      matching:find.text('?')),findsNothing);
+    await tester.pumpWidget(board(true));
+    expect(third,findsOneWidget);
+    expect(find.text('?'),findsNothing);
+    expect(tester.takeException(),isNull);
+  });
   test('Counting each item once links the last number to the whole set', () {
     final p = ExplorationProgress(4);
     expect(p.touch(2), isTrue);

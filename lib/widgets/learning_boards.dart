@@ -32,7 +32,7 @@ class CountingBoard extends StatelessWidget {
               ])))),
     ]),
     const SizedBox(height: 12),
-    Text('${progress.visited.length} von $count Sternen angetippt',
+    Text('${progress.visited.length} von $count ${count == 1 ? 'Stern' : 'Sternen'} angetippt',
       textAlign: TextAlign.center),
   ]));
 }
@@ -123,11 +123,13 @@ class PatternBoard extends StatelessWidget {
   final bool enabled, showGroups, completed;
   @override
   Widget build(BuildContext context) {
-    final symbols = question.symbols;
+    final symbols = [...question.symbols,
+      completed ? question.answers[question.correct] : '?'];
     final unit = question.unit.length;
     final groups = <Widget>[];
     for (var start = 0; start < symbols.length; start += unit) {
-      groups.add(Container(padding: const EdgeInsets.all(8),
+      groups.add(Container(key: ValueKey('pattern-group-${start ~/ unit}'),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(14),
           color: start == 0 || showGroups ? const Color(0xfffff1c4) : Colors.white,
           border: Border.all(color: start == 0 || showGroups ? gold : Colors.transparent,
@@ -144,14 +146,14 @@ class PatternBoard extends StatelessWidget {
                     Icon(progress.visited.contains(i) ? Icons.check_rounded
                       : Icons.touch_app_rounded, size: 20, color: blue),
                   ]))))
-            : Padding(padding: const EdgeInsets.all(5),
-                child: LearningSymbol(symbols[i], size: 38)),
-          if (start + unit >= symbols.length) Container(padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(color: completed ? const Color(0xffd1f8de) : Colors.white,
-              borderRadius: BorderRadius.circular(10)),
-            child: completed ? LearningSymbol(question.answers[question.correct], size: 38)
-              : const Text('?', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900,
-                  color: blue))),
+            : Container(padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(color: completed && i == symbols.length - 1
+                  ? const Color(0xffd1f8de) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10)),
+                child: symbols[i] == '?'
+                  ? const Text('?', style: TextStyle(fontSize: 32,
+                      fontWeight: FontWeight.w900, color: blue))
+                  : LearningSymbol(symbols[i], size: 38)),
         ])));
     }
     return GlossyPanel(child: Wrap(alignment: WrapAlignment.center,

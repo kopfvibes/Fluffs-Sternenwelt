@@ -464,7 +464,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
           child: Semantics(button: true, label: symbolNames[question!.answers[i]],
             child: GlossyPanel(key: ValueKey('answer-$i'),
               color: answered && i == selectedAnswer ? const Color(0xffd1f8de)
-                : const Color(0xffb6e4ff),
+                : !canAnswer ? const Color(0xffd2d6d5) : const Color(0xffb6e4ff),
               onTap: answered || !canAnswer ? null : () => chooseAnswer(i),
               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 LearningSymbol(question!.answers[i], size: 36), const SizedBox(width: 12),
