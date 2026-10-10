@@ -313,11 +313,13 @@ class _DrawingPageState extends State<DrawingPage> {
               Semantics(label: 'Malfarbe auswählen', selected: selected == color,
                 child: InkWell(onTap: () {
                   setState(() => selected = color);
-                  if (canSpeak) FluffAudio.instance.read(const {
+                  if (canSpeak) {
+                    FluffAudio.instance.read(const {
                     0xffef5d8a: 'Rosa', 0xffffb732: 'Gelb', 0xff40bf68: 'Grün',
                     0xff278df4: 'Blau', 0xff9a65d6: 'Lila', 0xffed574d: 'Rot',
                     0xff795548: 'Braun', 0xff202020: 'Schwarz', 0xffffffff: 'Weiß',
-                  }[color.toARGB32()]!);
+                    }[color.toARGB32()]!);
+                  }
                 },
                   child: Container(width: 34, height: 34, decoration: BoxDecoration(
                     color: color, shape: BoxShape.circle,
