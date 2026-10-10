@@ -10,7 +10,7 @@ Deutschsprachige Android-App fuer Familien. Fluff begleitet Kinder durch Alltags
 - Entdecker-Sticker und Spielabschluesse werden pro Kinderprofil gespeichert und veraendern die Sterne fuer Alltagsaufgaben nicht.
 - Malatelier: freies Malen, zwoelf Mal- und Mitmachvorlagen, Farben, Pinselgroesse, Rueckgaengig, Wiederholen und ein Album mit bis zu zwoelf Bildern pro Kind.
 - Eigene Bilder als PDF ausgeben; Vorlagen einzeln oder als ganzes Buch drucken oder als PDF speichern.
-- Pro-Familiencodes mit Ed25519-Signaturpruefung. Aktivierung, Drucken und Teilen liegen hinter der Eltern-PIN. Freies Malen und die erste Druckvorlage sind kostenlos.
+- Pro-Familiencodes mit Ed25519-Signaturpruefung. Das gesamte Malatelier, Bildvorschauen, das Bilderalbum und alle Druckvorlagen erfordern Pro, auch im Elternbereich. Aktivierung, Drucken und Teilen liegen zusaetzlich hinter der Eltern-PIN.
 
 ## Starten
 

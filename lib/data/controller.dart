@@ -489,8 +489,8 @@ class AppController extends ChangeNotifier {
       data.drawings.where((d) => d.childId == child.id).toList().reversed.toList();
   Future<void> saveDrawing(int template, List<DrawStroke> strokes,
       {String? drawingId, required String childId}) => _change((d) {
-    if (!d.children.any((c) => c.id == childId) ||
-        template < 0 || template > 12 || (template > 0 && !proActive)) {
+    if (!proActive || !d.children.any((c) => c.id == childId) ||
+        template < 0 || template > 12) {
       throw StateError('Dieses Malbild ist aktuell nicht verfügbar.');
     }
     if (strokes.length > 400 || strokes.any((s) => s.points.length > 3000)) {

@@ -5,6 +5,7 @@ import '../data/controller.dart';
 import '../data/creative.dart';
 import '../services/fluff_printing.dart';
 import '../widgets/common.dart';
+import '../widgets/pro_access.dart';
 import 'parents_screen.dart';
 
 class CreativeStudioPage extends StatelessWidget {
@@ -14,7 +15,9 @@ class CreativeStudioPage extends StatelessWidget {
   Widget build(BuildContext context) => AnimatedBuilder(animation: controller,
     builder: (context, _) => Scaffold(
       appBar: AppBar(title: const Text('Fluffs Malatelier')),
-      body: WorldBackground(child: SafeArea(child: ListView(
+      body: WorldBackground(child: SafeArea(child: !controller.proActive
+        ? ProAccessPanel(onOpenPro: () => openParents(context, controller))
+        : ListView(
         padding: const EdgeInsets.fromLTRB(18, 8, 18, 24), children: [
           Row(children: [FluffSprite(pose: 'proud', size: 112,
             animate: controller.data.motion),
@@ -27,20 +30,14 @@ class CreativeStudioPage extends StatelessWidget {
           const SizedBox(height: 10),
           for (var i = 1; i <= coloringTitles.length; i++)
             Padding(padding: const EdgeInsets.only(bottom: 10),
-              child: GlossyPanel(onTap: () {
-                if (controller.proActive) { _open(context, i); } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Deine Eltern können diese Bilder mit Fluff Pro öffnen.')));
-                }
-              }, child: Row(children: [
+              child: GlossyPanel(onTap: () => _open(context, i), child: Row(children: [
                 ClipRRect(borderRadius: BorderRadius.circular(8),
                   child: Image.asset(coloringAsset(i), width: 48, height: 66,
                     fit: BoxFit.cover)),
                 const SizedBox(width: 14),
                 Expanded(child: Text(coloringTitles[i - 1], style: const TextStyle(
                   fontSize: 17, fontWeight: FontWeight.w800))),
-                Icon(controller.proActive ? Icons.brush_rounded : Icons.lock_outline_rounded,
-                  color: blue),
+                const Icon(Icons.brush_rounded, color: blue),
               ]))),
           const SizedBox(height: 12),
           Text('Mein Bilderalbum', style: Theme.of(context).textTheme.titleLarge),
@@ -149,17 +146,18 @@ class _DrawingPageState extends State<DrawingPage> {
   DrawPoint point(Offset p, Size s) => DrawPoint(
     (p.dx / s.width).clamp(0, 1).toDouble(), (p.dy / s.height).clamp(0, 1).toDouble());
   void start(Offset p, Size s) {
-    if (saving || strokes.length >= 400) return;
+    if (!widget.controller.proActive || saving || strokes.length >= 400) return;
     setState(() { redo.clear(); dirty = true;
       strokes.add(DrawStroke(color: selected.toARGB32(), width: width,
         points: [point(p, s)])); });
   }
   void move(Offset p, Size s) {
-    if (saving || strokes.isEmpty || strokes.last.points.length >= 3000) return;
+    if (!widget.controller.proActive || saving || strokes.isEmpty ||
+        strokes.last.points.length >= 3000) return;
     setState(() { strokes.last.points.add(point(p, s)); dirty = true; });
   }
   Future<void> save() async {
-    if (saving) return;
+    if (!widget.controller.proActive || saving) return;
     setState(() => saving = true);
     try {
       await widget.controller.saveDrawing(widget.template, strokes,
@@ -190,9 +188,11 @@ class _DrawingPageState extends State<DrawingPage> {
     )) ?? false;
   }
   Future<void> print() async {
+    if (!widget.controller.proActive) return;
     final accepted = await showDialog<bool>(context: context,
       builder: (_) => ParentPinDialog(controller: widget.controller));
-    if (accepted != true || !mounted) return;
+    if (accepted != true || !mounted || !widget.controller.proActive ||
+        boundary.currentContext == null) return;
     await act(context, () async {
       final render = boundary.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final image = await render.toImage(pixelRatio: 2.5);
@@ -206,7 +206,16 @@ class _DrawingPageState extends State<DrawingPage> {
     });
   }
   @override
-  Widget build(BuildContext context) => PopScope(canPop: !dirty,
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: widget.controller, builder: (context, _) {
+      if (!widget.controller.proActive) {
+        return Scaffold(appBar: AppBar(title: const Text('Meine Farben')),
+          body: WorldBackground(child: SafeArea(child: ProAccessPanel(
+            onOpenPro: () => openParents(context, widget.controller)))));
+      }
+      return drawing(context);
+    });
+  Widget drawing(BuildContext context) => PopScope(canPop: !dirty,
     onPopInvokedWithResult: (didPop, result) async {
       if (didPop) return;
       if (await confirmLeave() && mounted) {

@@ -173,7 +173,8 @@ class ParentHub extends StatelessWidget {
                 _tile(context, 'Fluff Pro', 'game',
                   () => ProPage(controller: controller)),
                 _tile(context, 'Malbuch drucken', 'book',
-                  () => PrintBookPage(controller: controller)),
+                  () => controller.proActive ? PrintBookPage(controller: controller)
+                    : ProPage(controller: controller), locked: !controller.proActive),
                 _tile(
                   context,
                   'Kinderprofile\nverwalten',
@@ -225,8 +226,9 @@ class ParentHub extends StatelessWidget {
     BuildContext context,
     String label,
     String icon,
-    Widget Function() page,
-  ) => GlossyPanel(
+    Widget Function() page, {
+    bool locked = false,
+  }) => GlossyPanel(
     radius: 25,
     padding: const EdgeInsets.all(11),
     onTap: () => pushParent(context, controller, page),
@@ -247,6 +249,8 @@ class ParentHub extends StatelessWidget {
                 ? const Icon(Icons.bar_chart_rounded, color: blue, size: 69)
                 : icon == 'settings'
                 ? const Icon(Icons.settings_rounded, color: blue, size: 65)
+                : locked
+                ? const Icon(Icons.lock_outline_rounded, color: blue, size: 56)
                 : ArtIcon(icon, size: 64),
           ),
         ),

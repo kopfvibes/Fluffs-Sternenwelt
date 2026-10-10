@@ -3,6 +3,8 @@ import '../data/controller.dart';
 import '../data/creative.dart';
 import '../services/fluff_printing.dart';
 import '../widgets/common.dart';
+import '../widgets/pro_access.dart';
+import 'parents_screen.dart';
 
 class ProPage extends StatefulWidget {
   const ProPage({super.key, required this.controller});
@@ -84,10 +86,11 @@ class _PrintBookPageState extends State<PrintBookPage> {
   int page = 1;
   bool working = false;
   Future<void> output({bool all = false, bool share = false}) async {
-    if (working || (page > 1 || all) && !widget.controller.proActive) return;
+    if (working || !widget.controller.proActive) return;
     setState(() => working = true);
     await act(context, () async {
       final bytes = await FluffPrinting.book(all ? List.generate(12, (i) => i + 1) : [page]);
+      if (!widget.controller.proActive) return;
       widget.controller.externalFilePicker = true;
       try {
         await FluffPrinting.output(bytes, filename: all ? 'Fluffs-Mal-und-Mitmachbuch.pdf'
@@ -97,9 +100,13 @@ class _PrintBookPageState extends State<PrintBookPage> {
     if (mounted) setState(() => working = false);
   }
   @override
-  Widget build(BuildContext context) => Column(children: [
+  Widget build(BuildContext context) => AnimatedBuilder(animation: widget.controller,
+    builder: (context, _) => Column(children: [
     ScreenTitle('Malbuch zum Drucken'),
-    Expanded(child: ListView(padding: const EdgeInsets.fromLTRB(18, 0, 18, 22),
+    Expanded(child: !widget.controller.proActive
+      ? ProAccessPanel(forParents: true, onOpenPro: () => pushParent(context,
+          widget.controller, () => ProPage(controller: widget.controller)))
+      : ListView(padding: const EdgeInsets.fromLTRB(18, 0, 18, 22),
       children: [
         Text(coloringTitles[page - 1], textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge),
@@ -113,20 +120,16 @@ class _PrintBookPageState extends State<PrintBookPage> {
           IconButton(tooltip: 'Nächste Seite', onPressed: page == 12 ? null :
             () => setState(() => page++), icon: const Icon(Icons.chevron_right_rounded)),
         ]),
-        if (!widget.controller.proActive && page > 1)
-          const Padding(padding: EdgeInsets.all(12), child: Text(
-            'Mit Fluff Pro kannst du das ganze Malbuch drucken. Die erste Seite ist kostenlos.',
-            textAlign: TextAlign.center)),
         GlossyButton('Diese Seite drucken', onPressed:
-          working || page > 1 && !widget.controller.proActive ? null : () => output()),
+          working ? null : () => output()),
         const SizedBox(height: 11),
         GlossyButton('Diese Seite als PDF speichern', color: green, onPressed:
-          working || page > 1 && !widget.controller.proActive ? null : () => output(share: true)),
+          working ? null : () => output(share: true)),
         const SizedBox(height: 11),
         GlossyButton('Ganzes Malbuch als PDF', onPressed:
-          working || !widget.controller.proActive ? null : () => output(all: true, share: true)),
+          working ? null : () => output(all: true, share: true)),
         if (working) const Padding(padding: EdgeInsets.all(16),
           child: Center(child: CircularProgressIndicator())),
       ])),
-  ]);
+  ]));
 }

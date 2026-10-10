@@ -11,7 +11,8 @@ class DiscoveryPage extends StatelessWidget {
   const DiscoveryPage({super.key, required this.controller});
   final AppController controller;
   @override
-  Widget build(BuildContext context) => Column(children: [
+  Widget build(BuildContext context) => AnimatedBuilder(animation: controller,
+    builder: (context, _) => Column(children: [
     ScreenTitle('Fluffs Entdeckerwelt'),
     Expanded(child: ListView(padding: const EdgeInsets.fromLTRB(18, 0, 18, 24),
       children: [
@@ -23,8 +24,8 @@ class DiscoveryPage extends StatelessWidget {
         const SizedBox(height: 10),
         if (!controller.proActive) ...[
           const GlossyPanel(child: Text(
-            'Die Lernspiele gehören zu Fluff Pro. Deine Eltern können sie öffnen. '
-            'Freies Malen steht dir schon zur Verfügung.')),
+            'Die Lernspiele und das Malatelier gehören zu Fluff Pro. '
+            'Deine Eltern können sie öffnen.')),
           const SizedBox(height: 12),
         ],
         for (final id in gameIds)
@@ -43,9 +44,8 @@ class DiscoveryPage extends StatelessWidget {
                   : Icons.chevron_right_rounded, color: blue),
               ]))),
         GlossyButton('Fluffs Malatelier', key: const ValueKey('open-studio'),
-          color: green, onPressed: () => Navigator.push(context,
-            MaterialPageRoute<void>(builder: (_) =>
-              CreativeStudioPage(controller: controller)))),
+          color: green, icon: controller.proActive ? Icons.brush_rounded
+            : Icons.lock_outline_rounded, onPressed: () => _openStudio(context)),
         const SizedBox(height: 14),
         Text('Meine Entdecker-Sticker', style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 9),
@@ -62,14 +62,32 @@ class DiscoveryPage extends StatelessWidget {
         const SizedBox(height: 12),
         const Text('Jedes Abenteuer darfst du wiederholen. Es gibt keinen Zeitdruck.'),
       ])),
-  ]);
+  ]));
+
+  void _openStudio(BuildContext context) {
+    if (!controller.proActive) {
+      _showProGate(context, 'Das Malatelier gehört zu Fluff Pro. '
+        'Deine Eltern können es im Elternbereich öffnen.');
+      return;
+    }
+    Navigator.push(context, MaterialPageRoute<void>(builder: (_) =>
+      CreativeStudioPage(controller: controller)));
+  }
 
   void _open(BuildContext context, String id) {
     if (!controller.proActive) {
-      showDialog<void>(context: context, builder: (dialog) => AlertDialog(
+      _showProGate(context, 'Dieses Lernspiel gehört zu Fluff Pro. '
+        'Deine Eltern können den Spielbereich im Elternbereich öffnen.');
+      return;
+    }
+    Navigator.push(context, MaterialPageRoute<void>(builder: (_) =>
+      LearningGamePage(controller: controller, game: id)));
+  }
+
+  void _showProGate(BuildContext context, String message) {
+    showDialog<void>(context: context, builder: (dialog) => AlertDialog(
         title: const Text('Frag deine Eltern'),
-        content: const Text('Dieses Lernspiel gehört zu Fluff Pro. '
-          'Deine Eltern können den Spielbereich im Elternbereich öffnen.'),
+        content: Text(message),
         actions: [TextButton(onPressed: () => Navigator.pop(dialog),
           child: const Text('Okay')),
           TextButton(onPressed: () {
@@ -77,10 +95,6 @@ class DiscoveryPage extends StatelessWidget {
             openParents(context, controller);
           }, child: const Text('Mit meinen Eltern öffnen'))],
       ));
-      return;
-    }
-    Navigator.push(context, MaterialPageRoute<void>(builder: (_) =>
-      LearningGamePage(controller: controller, game: id)));
   }
 }
 
