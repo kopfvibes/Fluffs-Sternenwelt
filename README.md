@@ -5,8 +5,12 @@ Deutschsprachige Android-App fuer Familien. Fluff begleitet Kinder durch Alltags
 ## Neu in Version 5
 
 - Sechs Pro-Lernspiele: Paare finden, Sterne zaehlen, Formen entdecken, Muster weiterdenken, Gefuehle verstehen und Gemeinsam handeln.
-- Wechselnde Aufgaben und altersabhaengige Schwierigkeit fuer Zahlen, Muster und Paare. Kein Timer und keine Bestrafung bei falschen Antworten.
-- Fluffs gespeicherte deutsche Stimme liest alle Pro-Fragen, Antwortmoeglichkeiten und Rueckmeldungen vor. 161 lokale Aufnahmen begleiten auch das Malatelier, seine Vorlagen, Farben und das Speichern. Kein Internet und keine Geraetestimme erforderlich; vorhandene Fluff-Aufnahmen bleiben eingebunden.
+- Lernbegleitung ab Version 5.1: Fluff erklaert das Lernziel, macht Hilfen vor und fasst die Uebung zusammen. Sterne werden einzeln angetippt und gezaehlt; Formen an Ecken und Spitzen untersucht; wiederkehrende Mustergruppen erkundet.
+- Memory bleibt im Tempo des Kindes: falsche Paare bleiben bis zum bewussten Zudecken sichtbar. Fluff kann ein Paar vormachen, ohne es als gefunden zu werten.
+- Gefuehle sind keine Richtig-falsch-Fragen. Alle Gefuehlswoerter und Ungewissheit sind erlaubt. Danach werden ruhiges Atmen, ein Hilfesatz oder eine selbstbestimmte Pause geuebt. Diese fiktiven Antworten werden nicht als echte Gefuehlseintraege gespeichert.
+- Zehn Alltagssituationen enthalten Satzuebungen und eine Anschlussfrage fuer Grenzen, Hilfe und respektvolle Reaktionen. Kein Mikrofon und keine Aufnahme des Kindes.
+- Wechselnde Aufgaben und altersabhaengige Schwierigkeit; bei Zahlen und Mustern passt sich die naechste Aufgabe an selbststaendige Versuche und benoetigte Hilfen an. Kein Timer und keine Bestrafung bei Fehlern.
+- Fluffs gespeicherte deutsche Stimme liest alle Pro-Fragen, Antwortmoeglichkeiten und Rueckmeldungen vor. 302 lokale Aufnahmen begleiten auch das Malatelier, seine Vorlagen, Farben und das Speichern. Kein Internet und keine Geraetestimme erforderlich; vorhandene Fluff-Aufnahmen bleiben eingebunden.
 - Entdecker-Sticker und Spielabschluesse werden pro Kinderprofil gespeichert und veraendern die Sterne fuer Alltagsaufgaben nicht.
 - Malatelier: freies Malen, zwoelf Mal- und Mitmachvorlagen, Farben, Pinselgroesse, Rueckgaengig, Wiederholen und ein Album mit bis zu zwoelf Bildern pro Kind.
 - Eigene Bilder als PDF ausgeben; Vorlagen einzeln oder als ganzes Buch drucken oder als PDF speichern.
@@ -46,3 +50,5 @@ flutter build appbundle --release
 CI erzeugt APK und AAB ohne privaten Schluessel. Die Ausgaben werden danach mit dem privaten Release-Schluessel des Besitzers signiert. Signiermaterial und Verkaeufercodes bleiben ausserhalb des oeffentlichen Repositorys.
 
 Tests decken die bestehenden Ablaeufe sowie Pro-Sperre, Signaturpruefung, Migration, Kinderwechsel, Zeichnen, Sicherungen und PDF-Erstellung ab. Zusaetzliche Audio-Tests pruefen die vollstaendige Aufnahmeabdeckung, die Reihenfolge der Antworten sowie Abbruch beim Ausschalten und bei neuen Aktionen. previews/v5/ enthaelt echte Flutter-Ansichten. Automatisierte Pruefungen ersetzen keine abschliessende Erprobung von Audio, Druckdialog und Installation auf einem echten Telefon.
+
+Die Lernablaufe orientieren sich an angeleitetem Spiel mit Modell, Hinweis und kindlicher Entscheidung (NAEYC: https://www.naeyc.org/node/3812) sowie an der Zuordnung eines Zahlworts zu jedem Objekt und der Bedeutung der letzten Zahl fuer die Menge (EEF: https://educationendowmentfoundation.org.uk/early-years/evidence-store/early-mathematics/teaching-association-between-number-and-quantity). Die App selbst ist nicht wissenschaftlich evaluiert.

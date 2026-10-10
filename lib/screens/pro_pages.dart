@@ -47,7 +47,8 @@ class _ProPageState extends State<ProPage> {
           'Mehr Raum zum Entdecken', textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 16),
-        const GlossyPanel(child: Text('• Sechs Lernspiele mit wechselnden Aufgaben\n'
+        const GlossyPanel(child: Text('• Sechs Lernspiele mit Übungen und Fluffs Hilfe\n'
+          '• Fluffs echte Stimme – auch ohne Internet\n'
           '• Malatelier mit zwölf Ausmal- und Mitmachseiten\n'
           '• Eigene Bilder speichern und als PDF ausgeben\n'
           '• Entdecker-Sticker für jedes Kinderprofil\n\n'

@@ -38,12 +38,16 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   test('All production questions, choices and feedback have Fluff recordings', () {
     final factory = GameFactory(random: Random(492));
-    final spoken = <String>{};
+    final spoken = <String>{...lessonWords.values};
     for (final age in [2, 4, 5, 6, 8, 12]) {
       for (final game in gameIds.where((game) => game != 'memory')) {
         for (var n = 0; n < 350; n++) {
           final question = factory.question(game, age);
           spoken.addAll([...question.narration, question.explanation]);
+          if (question.practice != null) {
+            spoken.addAll([...question.practice!.narration, question.practice!.phrase,
+              question.practice!.explanation]);
+          }
         }
       }
     }

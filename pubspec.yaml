@@ -1,7 +1,7 @@
 name: fluffs_sternenwelt
 description: Fluffs Sternenwelt – kleine Aufgaben, große Schritte.
 publish_to: none
-version: 5.0.2+52
+version: 5.1.0+53
 environment:
   sdk: '>=3.9.0 <4.0.0'
 dependencies:

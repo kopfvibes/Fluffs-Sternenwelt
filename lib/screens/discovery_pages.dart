@@ -1,9 +1,10 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import '../data/controller.dart';
 import '../data/discovery.dart';
 import '../services/audio.dart';
 import '../widgets/common.dart';
+import '../widgets/learning_boards.dart';
+import '../widgets/learning_symbol.dart';
 import 'creative_pages.dart';
 import 'parents_screen.dart';
 
@@ -109,261 +110,412 @@ class LearningGamePage extends StatefulWidget {
 }
 
 class _LearningGamePageState extends State<LearningGamePage> {
+  final lessonScroll = ScrollController();
   late final GameFactory factory;
   late final String childId;
-  late final int age;
   late final List<int> cards;
-  final open = <int>{}, matched = <int>{};
+  late final LearningJourney journey;
+  final open = <int>{}, matched = <int>{}, model = <int>{};
   int? first;
-  Timer? timer;
+  bool mismatch = false, started = false, answered = false, practiced = false;
+  bool finished = false, saving = false, showGroups = false, phraseTried = false;
+  int round = 0, breaths = 0;
+  int? selectedAnswer, talkSentence;
+  String support = '', feedback = '';
+  List<String> lastSpoken = [];
   LearningQuestion? question;
-  int round = 0;
-  bool answered = false, finished = false, saving = false;
-  String feedback = '';
+  ExplorationProgress? exploration;
+
+  bool get available => mounted && widget.controller.proActive &&
+    widget.controller.child.id == childId;
+  bool get canSpeak => available && widget.controller.data.sound;
+  bool get needsExploration => ['count', 'shapes', 'patterns'].contains(widget.game);
+  bool get canAnswer => !needsExploration || exploration!.ready;
+  bool get canContinue => answered && practiced;
+  String get instruction => widget.game == 'memory' ? lessonWord('memory.explore')
+    : widget.game == 'count' ? lessonWord(exploration!.ready ? 'count.ready' : 'count.explore')
+    : widget.game == 'shapes' ? lessonWord(exploration!.ready ? 'shape.ready'
+        : 'shape.${question!.shape}.explore')
+    : widget.game == 'patterns' ? lessonWord(exploration!.ready ? 'pattern.ready' : 'pattern.explore')
+    : widget.game == 'feelings' ? lessonWord('feelings.prompt') : question!.prompt;
+
   @override
   void initState() {
     super.initState();
     childId = widget.controller.child.id;
     widget.controller.addListener(stopIfUnavailable);
-    age = widget.controller.child.age;
+    journey = LearningJourney(widget.controller.child.age);
     factory = widget.factory ?? GameFactory();
-    cards = factory.memoryCards(age);
+    cards = factory.memoryCards(widget.controller.child.age);
     if (widget.game != 'memory') nextQuestion();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) readPrompt();
-    });
+    lastSpoken = [lessonWord('intro.${widget.game}')];
+    WidgetsBinding.instance.addPostFrameCallback((_) { if (canSpeak) readPrompt(); });
   }
-  void readPrompt() {
-    if (!canSpeak) return;
-    FluffAudio.instance.readAll(widget.game == 'memory'
-      ? ['Finde zwei gleiche Bilder.'] : question!.narration);
-  }
-  bool get canSpeak => mounted && widget.controller.data.sound &&
-    widget.controller.proActive && widget.controller.child.id == childId;
   void stopIfUnavailable() { if (!canSpeak) FluffAudio.instance.stop(); }
-  void nextQuestion() {
-    final q = factory.question(widget.game, age);
-    final order = List.generate(q.answers.length, (i) => i)..shuffle(factory.random);
-    question = LearningQuestion(q.prompt, q.visual,
-      order.map((i) => q.answers[i]).toList(), order.indexOf(q.correct), q.explanation);
-    answered = false;
-    feedback = '';
-  }
   @override
   void dispose() {
     widget.controller.removeListener(stopIfUnavailable);
-    timer?.cancel(); FluffAudio.instance.stop(); super.dispose();
+    FluffAudio.instance.stop();
+    lessonScroll.dispose();
+    super.dispose();
   }
-
-  void chooseCard(int i) {
-    if (timer?.isActive == true || open.contains(i) || matched.contains(i) || finished) {
+  void readPrompt() { if (canSpeak) FluffAudio.instance.readAll(lastSpoken); }
+  void coach(List<String> texts, {String? display}) {
+    if (!available) return;
+    setState(() { feedback = display ?? texts.join(' '); lastSpoken = texts; });
+    readPrompt();
+  }
+  void start() {
+    if (!available) return;
+    setState(() => started = true);
+    lessonScroll.jumpTo(0);
+    coach(widget.game == 'memory' ? [instruction]
+      : needsExploration ? [question!.prompt, instruction] : [instruction,
+          if (widget.game == 'feelings') question!.prompt,
+          'Du kannst wählen:', ...question!.answers], display: instruction);
+  }
+  void nextQuestion() {
+    question = journey.next(factory, widget.game);
+    exploration = ExplorationProgress(question!.explorationSteps,
+      ordered: widget.game == 'patterns');
+    answered = false; practiced = false; showGroups = false; phraseTried = false;
+    selectedAnswer = null; talkSentence = null; support = ''; breaths = 0; feedback = '';
+  }
+  void help() {
+    if (!available || finished || saving) return;
+    journey.help();
+    if (widget.game == 'memory') {
+      showMemoryModel();
+    } else {
+      setState(() => showGroups = true);
+      coach([lessonWord('help.${widget.game}')]);
+    }
+  }
+  void touch(int index, {bool assisted = false}) {
+    if (!available || !started || answered || finished || saving) return;
+    if (assisted) journey.help();
+    if (!exploration!.touch(index)) return;
+    setState(() {});
+    final texts = [widget.game == 'patterns' ? symbolNames[question!.unit[index]]!
+      : widget.game == 'shapes' && question!.shape == 'circle'
+        ? lessonWord('shape.circle.fact') : '${exploration!.visited.length}'];
+    if (exploration!.ready) {
+      if (widget.game == 'shapes' && question!.shape != 'circle') texts.add(question!.explanation);
+      if (widget.game == 'patterns') texts.add(lessonWord('pattern.unit'));
+      texts.addAll([instruction, 'Du kannst wählen:',
+        ...question!.answers.map((a) => symbolNames[a] ?? a)]);
+    }
+    // Keep the last number visible while Fluff says it.
+    coach(texts, display: exploration!.ready ? instruction : texts.first);
+  }
+  void countAgain() {
+    if (!available || answered) return;
+    journey.help();
+    setState(() => exploration = ExplorationProgress(question!.explorationSteps));
+    coach([lessonWord('count.explore')]);
+  }
+  void chooseAnswer(int i) {
+    if (!available || !started || !canAnswer || answered || saving || finished) return;
+    if (!question!.accepts(i)) {
+      journey.help();
+      final key = widget.game == 'count' ? 'count.retry' : widget.game == 'shapes'
+        ? 'shape.retry' : widget.game == 'patterns' ? 'pattern.retry' : 'help.kindness';
+      setState(() => showGroups = true);
+      coach([lessonWord(key), if (['shapes','kindness'].contains(widget.game)) question!.explanation]);
       return;
     }
-    setState(() { open.add(i); feedback = ''; });
-    if (first == null) { first = i; return; }
+    setState(() {
+      answered = true; selectedAnswer = i;
+      practiced = !question!.personalFeeling && question!.practice == null;
+    });
+    if (question!.personalFeeling) {
+      coach([lessonWord('feeling.${question!.answers[i]}'), lessonWord('feelings.support')]);
+    } else if (question!.practice != null) {
+      coach([question!.explanation, lessonWord('practice.intro'), question!.practice!.phrase]);
+    } else {
+      coach([if (widget.game == 'count') question!.answers[i], question!.explanation]);
+    }
+  }
+  void chooseSupport(String value) {
+    if (!available || !answered || !question!.personalFeeling || saving) return;
+    setState(() { support = value; practiced = false; breaths = 0; talkSentence = null; });
+    coach([lessonWord('$value.intro'), if (value == 'breathe') lessonWord('breathe.in')]);
+  }
+  void breathe() {
+    if (!available || support != 'breathe' || practiced) return;
+    setState(() { breaths++; if (breaths == 6) practiced = true; });
+    coach([lessonWord(breaths == 6 ? 'breathe.done'
+      : breaths.isEven ? 'breathe.in' : 'breathe.out')]);
+  }
+  void selectSentence(int i) {
+    if (!available || support != 'talk' || practiced) return;
+    setState(() => talkSentence = i);
+    coach([lessonWord('talk.sentence.$i')]);
+  }
+  void completeSupport() {
+    if (!available || practiced || (support == 'talk' && talkSentence == null) ||
+        !['talk', 'pause'].contains(support)) { return; }
+    setState(() => practiced = true);
+    coach([lessonWord('$support.done')]);
+  }
+  void tryPhrase() {
+    if (!available || question!.practice == null || phraseTried || !answered) return;
+    setState(() => phraseTried = true);
+    coach(question!.practice!.narration, display: question!.practice!.prompt);
+  }
+  void choosePractice(int i) {
+    if (!available || !phraseTried || practiced) return;
+    if (i != 0) {
+      journey.help();
+      coach([lessonWord('practice.retry'), question!.practice!.explanation, question!.practice!.phrase]);
+      return;
+    }
+    setState(() => practiced = true);
+    coach([question!.practice!.explanation]);
+  }
+  void chooseCard(int i) {
+    if (!available || !started || finished || saving || mismatch || model.isNotEmpty ||
+        open.contains(i) || matched.contains(i)) { return; }
+    setState(() => open.add(i));
+    if (first == null) {
+      first = i;
+      coach([lessonWord('memory.name.${cards[i]}'), lessonWord('memory.first')]);
+      return;
+    }
     final previous = first!;
     first = null;
     if (cards[previous] == cards[i]) {
-      setState(() { matched.addAll([previous, i]); feedback = 'Ein Paar gefunden!'; });
-      if (matched.length == cards.length) {
-        timer = Timer(const Duration(milliseconds: 350), finish);
-      }
+      setState(() { matched.addAll([previous, i]); open.clear(); });
+      coach([lessonWord('memory.name.${cards[i]}'), lessonWord(matched.length == cards.length
+        ? 'memory.done' : 'memory.match')]);
     } else {
-      setState(() => feedback = 'Schau dir die Bilder an. Du darfst es neu versuchen.');
-      timer = Timer(const Duration(milliseconds: 900), () {
-        if (mounted) setState(() => open.removeAll([previous, i]));
-      });
+      journey.help();
+      setState(() => mismatch = true);
+      coach([lessonWord('memory.name.${cards[i]}'), lessonWord('memory.retry')]);
     }
-    if (canSpeak && matched.length != cards.length) FluffAudio.instance.read(feedback);
   }
-
-  void chooseAnswer(int i) {
-    if (answered || finished) return;
+  void resetCards() {
+    if (!available) return;
+    setState(() { open.clear(); model.clear(); first = null; mismatch = false; });
+    coach([lessonWord('memory.explore')]);
+  }
+  void showMemoryModel({bool all = false}) {
+    if (!available || matched.length == cards.length) return;
+    journey.help();
     setState(() {
-      if (i == question!.correct) {
-        answered = true;
-        feedback = question!.explanation;
+      open.clear(); first = null; mismatch = false; model.clear();
+      if (all) {
+        model.addAll(List.generate(cards.length, (i) => i).where((i) => !matched.contains(i)));
       } else {
-        feedback = 'Schau noch einmal hin. Du darfst dir Zeit nehmen.';
+        final i = List.generate(cards.length, (i) => i).firstWhere((i) => !matched.contains(i));
+        model.addAll([i, List.generate(cards.length, (j) => j)
+          .firstWhere((j) => j != i && cards[j] == cards[i])]);
       }
     });
-    if (canSpeak) FluffAudio.instance.read(feedback);
+    coach([lessonWord(all ? 'memory.all' : 'memory.model')]);
   }
-
+  void next() {
+    if (!available || !canContinue || saving) return;
+    if (round == 4) { finish(); return; }
+    journey.complete();
+    setState(() { round++; nextQuestion(); });
+    lessonScroll.jumpTo(0);
+    coach(needsExploration ? [question!.prompt, instruction]
+      : [instruction, if (widget.game == 'feelings') question!.prompt,
+          'Du kannst wählen:', ...question!.answers], display: instruction);
+  }
   Future<void> finish() async {
-    if (finished || saving || !mounted) return;
+    if (!available || finished || saving ||
+        (widget.game == 'memory' ? matched.length != cards.length : !canContinue || round != 4)) { return; }
     setState(() => saving = true);
     try {
       await widget.controller.completeGame(widget.game, childId: childId);
       if (mounted) {
         setState(() { finished = true; saving = false; });
-        if (canSpeak) {
-          FluffAudio.instance.star();
-          FluffAudio.instance.read(widget.game == 'memory'
-            ? 'Du hast alle Paare gefunden. Dein Entdecker-Sticker ist in deinem Album.'
-            : 'Du hast etwas Neues entdeckt. Dein Entdecker-Sticker ist in deinem Album.');
-        }
+        lessonScroll.jumpTo(0);
+        coach([lessonWord('recap.${widget.game}'), lessonWord('finish.sticker')]);
+        if (canSpeak) FluffAudio.instance.star();
       }
     } catch (_) {
       if (mounted) {
-        setState(() {
-          saving = false;
-          feedback = 'Dein Fortschritt konnte nicht gespeichert werden. '
-            'Du kannst es noch einmal versuchen.';
-        });
-        if (canSpeak) FluffAudio.instance.read(feedback);
+        setState(() => saving = false);
+        coach(['Dein Fortschritt konnte nicht gespeichert werden. Du kannst es noch einmal versuchen.']);
       }
     }
   }
 
-  @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-    animation: widget.controller,
-    builder: (context, _) => Scaffold(
-      appBar: AppBar(title: Text(gameTitles[widget.game]!)),
-      body: WorldBackground(child: SafeArea(child: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
-        children: [
-          if (!widget.controller.proActive) ...[
-            const Text('Dieses Spiel wird im Elternbereich mit Fluff Pro geöffnet.'),
-          ] else if (finished) ...[
-            FluffSprite(pose: 'proud', size: 200,
-              animate: widget.controller.data.motion),
-            const Text('Entdeckt!', textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900)),
-            const SizedBox(height: 12),
-            Text('Du hast ${gameTitles[widget.game]} ausprobiert. '
-              'Dein Entdecker-Sticker ist in deinem Album.', textAlign: TextAlign.center),
-            const SizedBox(height: 20),
-            GlossyButton('Noch einmal spielen', onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (_) =>
-                LearningGamePage(controller: widget.controller, game: widget.game)));
-            }),
-            const SizedBox(height: 12),
-            GlossyButton('Zur Entdeckerwelt', color: green,
-              onPressed: () => Navigator.pop(context)),
-          ] else ...[
-            FluffSprite(pose: 'explorer', size: 126,
-              animate: widget.controller.data.motion),
-            const Text('In deinem Tempo. Du darfst jederzeit eine Pause machen.',
-              textAlign: TextAlign.center),
-            const SizedBox(height: 18),
-            TextButton.icon(onPressed: widget.controller.data.sound ? readPrompt : null,
-              icon: const Icon(Icons.volume_up_rounded), label: const Text('Vorlesen')),
-            if (widget.game == 'memory') ...[
-              const Text('Finde zwei gleiche Bilder.', textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
-              const SizedBox(height: 14),
-              GridView.count(crossAxisCount: 2, shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                mainAxisSpacing: 12, crossAxisSpacing: 12, childAspectRatio: 1.3,
-                children: [for (var i = 0; i < cards.length; i++)
-                  Semantics(label: matched.contains(i) ? 'Gefundenes Paar' : 'Karte ${i + 1}',
-                    child: InkWell(key: ValueKey('memory-card-$i'),
-                      borderRadius: BorderRadius.circular(22), onTap: () => chooseCard(i),
-                      child: Container(decoration: BoxDecoration(
-                        color: matched.contains(i) ? const Color(0xffd1f8de)
-                          : open.contains(i) ? Colors.white : const Color(0xffb6e4ff),
-                        borderRadius: BorderRadius.circular(22),
-                        border: Border.all(color: blue, width: 2)),
-                        child: Center(child: open.contains(i) || matched.contains(i)
-                          ? ArtIcon(['teddy', 'book', 'moon', 'game', 'tooth', 'bag'][cards[i]],
-                            size: 64)
-                          : const Icon(Icons.star_rounded, color: blue, size: 62))))),
-                ]),
-              if (matched.length == cards.length && !saving)
-                GlossyButton('Sticker speichern', onPressed: finish),
-            ] else ...[
-              Text('Entdeckung ${round + 1} von 5', textAlign: TextAlign.center),
-              const SizedBox(height: 12),
-              Text(question!.prompt, textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w900)),
-              const SizedBox(height: 16),
-              GlossyPanel(child: Wrap(alignment: WrapAlignment.center,
-                spacing: 10, runSpacing: 10, children: [
-                  for (final symbol in question!.visual.trim().split(RegExp(r'\s+')))
-                    LearningSymbol(symbol, size: widget.game == 'shapes' ? 82
-                      : widget.game == 'feelings' ? 100 : 42),
-                ])),
-              const SizedBox(height: 18),
-              for (var i = 0; i < question!.answers.length; i++)
-                Padding(padding: const EdgeInsets.only(bottom: 11),
-                  child: widget.game == 'patterns'
-                    ? Semantics(button: true, label: symbolNames[question!.answers[i]],
-                        child: GlossyPanel(key: ValueKey('answer-$i'),
-                          color: answered && i == question!.correct ? green :
-                            const Color(0xffb6e4ff),
-                          onTap: answered ? null : () => chooseAnswer(i),
-                          child: Center(child: LearningSymbol(question!.answers[i], size: 42))))
-                    : GlossyButton(question!.answers[i], key: ValueKey('answer-$i'),
-                        color: answered && i == question!.correct ? green : blue,
-                        onPressed: answered ? null : () => chooseAnswer(i))),
-              if (answered) GlossyButton(round == 4 ? 'Sticker sammeln' : 'Weiter',
-                key: const ValueKey('next-question'), color: green,
-                onPressed: saving ? null : () {
-                  if (round == 4) { finish(); } else {
-                    setState(() { round++; nextQuestion(); });
-                    readPrompt();
-                  }
-                }),
-            ],
-            if (feedback.isNotEmpty) Padding(padding: const EdgeInsets.only(top: 18),
-              child: GlossyPanel(child: Text(feedback, textAlign: TextAlign.center))),
-            if (saving) const Center(child: Padding(padding: EdgeInsets.all(18),
-              child: CircularProgressIndicator())),
-            const SizedBox(height: 16),
-            TextButton(onPressed: () => Navigator.pop(context),
-              child: const Text('Ich mache eine Pause')),
-          ],
-        ])))),
-  );
-}
+  Widget gap() => const SizedBox(height: 12);
+  Widget button(String label, VoidCallback? action, String key, {Color color = blue}) =>
+    Padding(padding: const EdgeInsets.only(bottom: 12), child: GlossyButton(label,
+      key: ValueKey(key), color: color, onPressed: action));
+  Widget coachPanel() => GlossyPanel(child: Row(crossAxisAlignment: CrossAxisAlignment.start,
+    children: [FluffSprite(pose: finished || canContinue ? 'proud' : 'explorer', size: 88,
+      animate: widget.controller.data.motion), const SizedBox(width: 8),
+      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Text('Fluff hilft dir', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+        Text(feedback.isEmpty ? instruction : feedback, style: const TextStyle(fontSize: 17)),
+      ])),
+    ]));
 
-class LearningSymbol extends StatelessWidget {
-  const LearningSymbol(this.symbol, {super.key, required this.size});
-  final String symbol;
-  final double size;
+  List<Widget> memoryBoard() => [
+    Text('${matched.length ~/ 2} von ${cards.length ~/ 2} Paaren gefunden',
+      textAlign: TextAlign.center), gap(),
+    GridView.count(crossAxisCount: 2, shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(), mainAxisSpacing: 12,
+      crossAxisSpacing: 12, childAspectRatio: 1.4,
+      children: [for (var i = 0; i < cards.length; i++)
+        Semantics(button: true, label: 'Karte ${i + 1}'
+          '${matched.contains(i) ? ', gefunden' : model.contains(i) || open.contains(i)
+            ? ', ${lessonWord('memory.name.${cards[i]}')}' : ', verdeckt'}',
+          child: InkWell(key: ValueKey('memory-card-$i'), borderRadius: BorderRadius.circular(22),
+            onTap: () => chooseCard(i),
+            child: Container(decoration: BoxDecoration(
+              color: matched.contains(i) ? const Color(0xffd1f8de)
+                : open.contains(i) || model.contains(i) ? Colors.white : const Color(0xffb6e4ff),
+              borderRadius: BorderRadius.circular(22), border: Border.all(color: blue, width: 2)),
+              child: Center(child: open.contains(i) || model.contains(i) || matched.contains(i)
+                ? ArtIcon(['teddy','book','moon','game','tooth','bag'][cards[i]], size: 56)
+                : const Icon(Icons.star_rounded, color: blue, size: 52))))),
+      ]), gap(),
+    if (mismatch || model.isNotEmpty) button(model.isNotEmpty ? 'Jetzt selbst suchen'
+      : 'Zudecken und neu suchen', resetCards, 'memory-reset', color: green),
+    if (!mismatch && model.isEmpty && matched.length != cards.length)
+      button('Bilder kennenlernen', () => showMemoryModel(all: true), 'memory-explore'),
+    if (matched.length == cards.length)
+      button('Sticker sammeln', saving ? null : finish, 'memory-finish', color: green),
+  ];
+
+  List<Widget> practiceBoard() => [
+    gap(), const Text('Jetzt probierst du es aus', textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 21, fontWeight: FontWeight.w900)), gap(),
+    GlossyPanel(child: Text('„${question!.practice!.phrase}“', textAlign: TextAlign.center,
+      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800))), gap(),
+    if (!phraseTried) ...[
+      Text(lessonWord('practice.spoken'), textAlign: TextAlign.center), gap(),
+      button('Ich habe den Satz ausprobiert', tryPhrase, 'try-phrase', color: green),
+    ] else ...[
+      Text(question!.practice!.prompt, textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)), gap(),
+      for (var i = 0; i < question!.practice!.answers.length; i++)
+        button(question!.practice!.answers[i], practiced ? null : () => choosePractice(i),
+          'practice-answer-$i', color: practiced && i == 0 ? green : blue),
+    ],
+  ];
+
+  List<Widget> feelingPractice() => [
+    gap(), Text(lessonWord('feelings.support'), textAlign: TextAlign.center,
+      style: const TextStyle(fontSize: 21, fontWeight: FontWeight.w900)), gap(),
+    for (final option in ['breathe', 'talk', 'pause'])
+      button(lessonWord('support.$option'), () => chooseSupport(option), 'support-$option',
+        color: support == option ? green : blue),
+    if (support.isNotEmpty) ...[
+      GlossyPanel(child: Text(lessonWord('$support.intro'), textAlign: TextAlign.center)), gap(),
+      if (support == 'breathe') ...[
+        Center(child: Icon(Icons.air_rounded, color: blue, size: breaths.isEven ? 72 : 96)),
+        Text('${breaths ~/ 2} von 3 Atemzügen', textAlign: TextAlign.center), gap(),
+        button(breaths.isEven ? 'Ich atme ein' : 'Ich atme aus',
+          practiced ? null : breathe, 'breathe-step', color: green),
+      ],
+      if (support == 'talk') ...[
+        for (var i = 0; i < 3; i++) button(lessonWord('talk.sentence.$i'),
+          practiced ? null : () => selectSentence(i), 'talk-sentence-$i',
+          color: talkSentence == i ? green : blue),
+        if (talkSentence != null) button('Ich habe den Satz ausprobiert',
+          practiced ? null : completeSupport, 'support-done', color: green),
+      ],
+      if (support == 'pause') ...[
+        FluffSprite(pose: 'sleeping', size: 100, animate: false),
+        button('Ich bin bereit', practiced ? null : completeSupport, 'support-done', color: green),
+      ],
+    ],
+  ];
+
+  List<Widget> questionBoard() => [
+    Text('Entdeckung ${round + 1} von 5', textAlign: TextAlign.center), gap(),
+    Text(question!.prompt, textAlign: TextAlign.center,
+      style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w900)), gap(),
+    if (widget.game == 'count') CountingBoard(count: question!.symbols.length,
+      progress: exploration!, enabled: !answered, onTouch: touch),
+    if (widget.game == 'shapes') ShapeBoard(shape: question!.shape,
+      progress: exploration!, enabled: !answered, onTouch: touch),
+    if (widget.game == 'patterns') PatternBoard(question: question!, progress: exploration!,
+      enabled: !answered, onTouch: touch, showGroups: showGroups),
+    if (!needsExploration) Center(child: LearningSymbol(question!.visual, size: 68)),
+    gap(),
+    if (needsExploration && !answered) ...[
+      Text(instruction, textAlign: TextAlign.center), gap(),
+      if (!exploration!.ready) button(widget.game == 'count' ? 'Mit Fluff weiterzählen'
+        : widget.game == 'shapes' ? 'Fluff zeigt den nächsten Punkt' : 'Mit Fluff die Gruppe ansehen',
+        () => touch(exploration!.next, assisted: true), 'explore-next'),
+      if (widget.game == 'count') TextButton(onPressed: countAgain,
+        child: const Text('Noch einmal zählen')),
+    ],
+    if (!answered || needsExploration) ...[
+      if (!canAnswer) const Text('Erst gemeinsam erkunden, dann auswählen.', textAlign: TextAlign.center),
+      for (var i = 0; i < question!.answers.length; i++)
+        widget.game == 'patterns' ? Padding(padding: const EdgeInsets.only(bottom: 12),
+          child: Semantics(button: true, label: symbolNames[question!.answers[i]],
+            child: GlossyPanel(key: ValueKey('answer-$i'),
+              color: answered && i == selectedAnswer ? const Color(0xffd1f8de)
+                : const Color(0xffb6e4ff),
+              onTap: answered || !canAnswer ? null : () => chooseAnswer(i),
+              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                LearningSymbol(question!.answers[i], size: 36), const SizedBox(width: 12),
+                Flexible(child: Text(symbolNames[question!.answers[i]]!,
+                  style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w800))),
+              ]))))
+        : button(question!.answers[i], answered || !canAnswer ? null : () => chooseAnswer(i),
+            'answer-$i', color: answered && i == selectedAnswer ? green : blue),
+    ],
+    if (answered && question!.personalFeeling) ...[
+      Text('Dein Gefühlswort: ${question!.answers[selectedAnswer!]}', textAlign: TextAlign.center),
+      ...feelingPractice(),
+    ],
+    if (answered && question!.practice != null) ...practiceBoard(),
+    if (canContinue) button(round == 4 ? 'Sticker sammeln' : 'Weiter',
+      saving ? null : next, 'next-question', color: green),
+  ];
+
   @override
-  Widget build(BuildContext context) {
-    const circles = {'🔵': blue, '🟡': gold, '🟣': Color(0xff9a65d6), '🟢': green};
-    const artwork = {'💙': 'heart', '🧸': 'teddy', '📘': 'book', '🌙': 'moon',
-      '🧥': 'shirt', '🧩': 'help', '🤝': 'family'};
-    const faces = {'😢': 'sad', '😠': 'angry', '🥱': 'tired', '😊': 'proud',
-      '😟': 'unsure', '😄': 'proud'};
-    final circle = circles[symbol];
-    if (circle != null) {
-      return Container(width: size, height: size,
-        decoration: BoxDecoration(color: circle, shape: BoxShape.circle));
-    }
-    final art = artwork[symbol];
-    if (art != null) return ArtIcon(art, size: size);
-    final face = faces[symbol];
-    if (face != null) return FluffSprite(pose: face, size: size, animate: false);
-    final icon = switch (symbol) {
-      '⭐' || '★' => Icons.star_rounded,
-      '●' => Icons.circle,
-      '▲' => Icons.change_history_rounded,
-      '■' => Icons.square,
-      '🌸' => Icons.local_florist_rounded,
-      '🍀' => Icons.park_rounded,
-      '☀️' => Icons.wb_sunny_rounded,
-      '🌈' => Icons.looks_rounded,
-      '💧' => Icons.water_drop_rounded,
-      '✋' => Icons.back_hand_rounded,
-      '🚦' => Icons.traffic_rounded,
-      '🌬️' => Icons.air_rounded,
-      _ => null,
-    };
-    if (icon == null) {
-      return Text(symbol,
-        style: TextStyle(fontSize: size, color: blue, fontWeight: FontWeight.w900));
-    }
-    final color = switch (symbol) {
-      '⭐' || '☀️' => gold,
-      '🌸' => const Color(0xffef5d8a),
-      '🍀' => green,
-      _ => blue,
-    };
-    return Icon(icon, size: size, color: color);
-  }
+  Widget build(BuildContext context) => AnimatedBuilder(animation: widget.controller,
+    builder: (context, _) => Scaffold(appBar: AppBar(title: Text(gameTitles[widget.game]!)),
+      body: WorldBackground(child: SafeArea(child: ListView(
+        controller: lessonScroll, padding: const EdgeInsets.fromLTRB(18, 12, 18, 28), children: [
+          if (!available) const Text('Dieses Spiel wird für dein Kinderprofil im Elternbereich mit Fluff Pro geöffnet.')
+          else if (!started) ...[
+            FluffSprite(pose: 'explorer', size: 170, animate: widget.controller.data.motion),
+            Text('Lerne mit Fluff', textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall), gap(),
+            GlossyPanel(child: Text(lessonWord('intro.${widget.game}'),
+              textAlign: TextAlign.center, style: const TextStyle(fontSize: 21))), gap(),
+            const Text('Du darfst Hilfe holen, wiederholen und Pausen machen.',
+              textAlign: TextAlign.center), gap(),
+            button('Mit Fluff üben', start, 'start-learning', color: green),
+            TextButton.icon(onPressed: canSpeak ? readPrompt : null,
+              icon: const Icon(Icons.volume_up_rounded), label: const Text('Fluff anhören')),
+          ] else if (finished) ...[
+            FluffSprite(pose: 'proud', size: 170, animate: widget.controller.data.motion),
+            const Text('Entdeckt!', textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900)), gap(),
+            GlossyPanel(child: Text(lessonWord('recap.${widget.game}'),
+              textAlign: TextAlign.center, style: const TextStyle(fontSize: 21))), gap(),
+            Text(lessonWord('finish.sticker'), textAlign: TextAlign.center), gap(),
+            button('Noch einmal üben', () => Navigator.pushReplacement(context,
+              MaterialPageRoute<void>(builder: (_) => LearningGamePage(
+                controller: widget.controller, game: widget.game))), 'play-again'),
+            button('Zur Entdeckerwelt', () => Navigator.pop(context), 'leave-game', color: green),
+          ] else ...[
+            coachPanel(),
+            Wrap(alignment: WrapAlignment.center, spacing: 8, children: [
+              TextButton.icon(key: const ValueKey('lesson-help'), onPressed: saving ? null : help,
+                icon: const Icon(Icons.emoji_objects_rounded), label: const Text('Fluff hilft mir')),
+              TextButton.icon(onPressed: canSpeak ? readPrompt : null,
+                icon: const Icon(Icons.volume_up_rounded), label: const Text('Nochmal hören')),
+            ]), gap(),
+            if (widget.game == 'memory') ...memoryBoard() else ...questionBoard(),
+            if (saving) const Center(child: CircularProgressIndicator()),
+          ],
+          gap(), TextButton(onPressed: () => Navigator.pop(context),
+            child: const Text('Ich mache eine Pause')),
+        ])))));
 }

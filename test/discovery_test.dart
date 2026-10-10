@@ -30,6 +30,20 @@ class FixedFactory extends GameFactory {
     const LearningQuestion('Zähle die Sterne', '⭐ ⭐', ['2', '3', '1'], 0, 'Zwei Sterne.');
 }
 
+class LessonFactory extends FixedFactory {
+  @override
+  LearningQuestion question(String game, int age) => switch (game) {
+    'shapes' => LearningQuestion('Welche Form ist das?', '■',
+      const ['Kreis','Dreieck','Quadrat','Stern'], 2, lessonWord('shape.square.fact'),
+      shape: 'square'),
+    'patterns' => LearningQuestion('Was kommt als Nächstes?', '🔵 🟡 🔵 🟡 🔵 ?',
+      const ['🟡','⭐','💙'], 0, lessonWord('pattern.0.1.fact'), unit: const ['🔵','🟡']),
+    'feelings' => feelingQuestions.first,
+    'kindness' => kindnessQuestions[3],
+    _ => super.question(game,age),
+  };
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late AppController c;
@@ -266,10 +280,19 @@ void main() {
     await tester.pumpWidget(MaterialApp(theme: fluffTheme(),
       home: LearningGamePage(controller: c, game: 'count', factory: FixedFactory())));
     await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('start-learning')));
+    await tester.pumpAndSettle();
     for (var i = 0; i < 5; i++) {
-      await tester.ensureVisible(find.text('2'));
+      for (var star = 0; star < 2; star++) {
+        final target = find.byKey(ValueKey('count-star-$star'));
+        await tester.ensureVisible(target);
+        await tester.tap(target);
+        await tester.pumpAndSettle();
+      }
+      final answer = find.widgetWithText(GlossyButton, '2');
+      await tester.ensureVisible(answer);
       await tester.pumpAndSettle();
-      await tester.tap(find.text('2'));
+      await tester.tap(answer);
       await tester.pumpAndSettle();
       final next = find.byKey(const ValueKey('next-question'));
       await tester.ensureVisible(next);
@@ -291,6 +314,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(theme: fluffTheme(), home:
       LearningGamePage(controller: c, game: 'memory', factory: FixedFactory())));
     await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('start-learning')));
+    await tester.pumpAndSettle();
     Future<void> card(int i) async {
       final target = find.byKey(ValueKey('memory-card-$i'));
       await tester.ensureVisible(target);
@@ -300,11 +325,21 @@ void main() {
     }
     await card(0);
     await card(1);
-    expect(find.text('Schau dir die Bilder an. Du darfst es neu versuchen.'), findsOneWidget);
-    await tester.pump(const Duration(milliseconds: 1000));
+    expect(find.textContaining('Diese Bilder sind verschieden.'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 10));
+    expect(c.gameCount('memory'), 0);
+    expect(find.byType(ArtIcon), findsNWidgets(2));
+    final reset = find.byKey(const ValueKey('memory-reset'));
+    await tester.ensureVisible(reset);
+    await tester.tap(reset);
+    await tester.pumpAndSettle();
     expect(find.byType(ArtIcon), findsNothing);
     for (final i in [0, 2, 1, 3]) { await card(i); }
-    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(seconds: 5));
+    expect(c.gameCount('memory'), 0);
+    final finish = find.byKey(const ValueKey('memory-finish'));
+    await tester.ensureVisible(finish);
+    await tester.tap(finish);
     await tester.pumpAndSettle();
     expect(find.text('Entdeckt!'), findsOneWidget);
     expect(c.gameCount('memory'), 1);
@@ -338,6 +373,182 @@ void main() {
     expect(bytes.length, greaterThan(100000));
   });
 
+  Future<void> tapLesson(WidgetTester tester, Finder target) async {
+    final scroll = tester.state<ScrollableState>(find.byType(Scrollable).first);
+    scroll.position.jumpTo(0);
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(target, 180,
+      scrollable: find.byType(Scrollable).first, maxScrolls: 50);
+    await tester.ensureVisible(target);
+    await tester.pumpAndSettle();
+    await tester.tap(target);
+    await tester.pumpAndSettle();
+  }
+  Future<GlobalKey> openLesson(WidgetTester tester, String game,
+    {double scale = 1, double width = 390}) async {
+    await c.activatePro(code);
+    tester.view.physicalSize = Size(width*2,1688);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(() { tester.view.resetPhysicalSize(); tester.view.resetDevicePixelRatio(); });
+    final preview=GlobalKey();
+    await tester.pumpWidget(MaterialApp(theme: fluffTheme(),
+      builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(
+        textScaler: TextScaler.linear(scale)), child: child!),
+      home: RepaintBoundary(key: preview, child: LearningGamePage(key: UniqueKey(),
+        controller: c, game: game, factory: LessonFactory()))));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('answer-0')), findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('start-learning')));
+    return preview;
+  }
+  Future<void> lessonPreview(WidgetTester tester, GlobalKey key, String name) async {
+    if (!const bool.fromEnvironment('RENDER_PREVIEWS')) return;
+    await tester.pumpAndSettle();
+    await tester.runAsync(() async {
+      final boundary=key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      final image=await boundary.toImage(pixelRatio:2);
+      final data=await image.toByteData(format:ui.ImageByteFormat.png);
+      final dir=Directory('previews/v5')..createSync(recursive:true);
+      File('${dir.path}/Lernen-$name.png').writeAsBytesSync(data!.buffer.asUint8List());
+      image.dispose();
+    });
+  }
+
+  testWidgets('Counting requires touching every star and duplicate taps do not count', (tester) async {
+    final preview=await openLesson(tester,'count');
+    await tapLesson(tester,find.widgetWithText(GlossyButton,'2'));
+    expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('count-star-0')));
+    await tapLesson(tester,find.byKey(const ValueKey('count-star-0')));
+    expect(find.text('1 von 2 Sternen angetippt'),findsOneWidget);
+    await tapLesson(tester,find.widgetWithText(GlossyButton,'2'));
+    expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('count-star-1')));
+    await tapLesson(tester,find.widgetWithText(GlossyButton,'3'));
+    expect(find.textContaining('Vergleiche deine Zahl'),findsOneWidget);
+    expect(c.gameCount('count'),0);
+    await tapLesson(tester,find.widgetWithText(GlossyButton,'2'));
+    expect(find.byKey(const ValueKey('next-question')),findsOneWidget);
+    await lessonPreview(tester,preview,'Sterne');
+    expect(tester.takeException(),isNull);
+  });
+  testWidgets('Shape features must be explored before naming the square', (tester) async {
+    final preview=await openLesson(tester,'shapes');
+    await tapLesson(tester,find.widgetWithText(GlossyButton,'Quadrat'));
+    expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    for (var i=0;i<4;i++) {
+      await tapLesson(tester,find.byKey(ValueKey('shape-point-$i')));
+    }
+    await tapLesson(tester,find.widgetWithText(GlossyButton,'Dreieck'));
+    expect(find.textContaining('vier Seiten sind gleich lang'),findsOneWidget);
+    await tapLesson(tester,find.widgetWithText(GlossyButton,'Quadrat'));
+    expect(find.byKey(const ValueKey('next-question')),findsOneWidget);
+    await lessonPreview(tester,preview,'Formen');
+    expect(tester.takeException(),isNull);
+  });
+  testWidgets('Pattern inspection rejects jumping ahead and help models the unit', (tester) async {
+    final preview=await openLesson(tester,'patterns');
+    await tapLesson(tester,find.byKey(const ValueKey('pattern-item-1')));
+    expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('lesson-help')));
+    await tapLesson(tester,find.byKey(const ValueKey('explore-next')));
+    await tapLesson(tester,find.byKey(const ValueKey('explore-next')));
+    final answer=find.ancestor(of:find.text('gelber Kreis'),matching:find.byType(GlossyPanel));
+    await tapLesson(tester,answer);
+    expect(find.byKey(const ValueKey('next-question')),findsOneWidget);
+    expect(c.gameCount('patterns'),0);
+    await lessonPreview(tester,preview,'Muster');
+    expect(tester.takeException(),isNull);
+  });
+  testWidgets('Memory help shows a pair but never finds it on the child behalf', (tester) async {
+    final preview=await openLesson(tester,'memory');
+    await tapLesson(tester,find.byKey(const ValueKey('lesson-help')));
+    expect(find.byType(ArtIcon),findsNWidgets(2));
+    expect(c.gameCount('memory'),0);
+    await tester.pump(const Duration(seconds:20));
+    expect(find.byType(ArtIcon),findsNWidgets(2));
+    await lessonPreview(tester,preview,'Memory-Hilfe');
+    await tapLesson(tester,find.byKey(const ValueKey('memory-reset')));
+    expect(find.byType(ArtIcon),findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('memory-card-0')));
+    await tapLesson(tester,find.byKey(const ValueKey('memory-card-2')));
+    expect(find.text('1 von 2 Paaren gefunden'),findsOneWidget);
+    expect(c.gameCount('memory'),0);
+    expect(tester.takeException(),isNull);
+  });
+  testWidgets('An unexpected personal feeling is valid and guided breathing needs six steps', (tester) async {
+    final before=c.data.feelings.length;
+    final preview=await openLesson(tester,'feelings');
+    await tapLesson(tester,find.widgetWithText(GlossyButton,'Glücklich'));
+    expect(find.textContaining('Glücklich. Du darfst deine Freude zeigen.'),findsOneWidget);
+    expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('support-breathe')));
+    for (var i=0;i<5;i++) {
+      await tapLesson(tester,find.byKey(const ValueKey('breathe-step')));
+      expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    }
+    await tapLesson(tester,find.byKey(const ValueKey('breathe-step')));
+    expect(find.byKey(const ValueKey('next-question')),findsOneWidget);
+    expect(c.data.feelings.length,before);
+    expect(c.gameCount('feelings'),0);
+    await lessonPreview(tester,preview,'Gefuehle-Atmen');
+    expect(tester.takeException(),isNull);
+  });
+  testWidgets('Uncertainty and help seeking practice are valid without a microphone', (tester) async {
+    await openLesson(tester,'feelings');
+    await tapLesson(tester,find.widgetWithText(GlossyButton,'Weiß ich noch nicht'));
+    await tapLesson(tester,find.byKey(const ValueKey('support-talk')));
+    expect(find.byKey(const ValueKey('support-done')),findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('talk-sentence-2')));
+    expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('support-done')));
+    expect(find.byKey(const ValueKey('next-question')),findsOneWidget);
+    await tapLesson(tester,find.byKey(const ValueKey('support-pause')));
+    expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    await tester.pump(const Duration(seconds:20));
+    expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('support-done')));
+    expect(find.byKey(const ValueKey('next-question')),findsOneWidget);
+    expect(tester.takeException(),isNull);
+  });
+  testWidgets('Kindness requires a phrase and a safe follow up response before advancing', (tester) async {
+    final preview=await openLesson(tester,'kindness');
+    await tapLesson(tester,find.widgetWithText(GlossyButton,'Nein sagen. Mein Körper gehört mir.'));
+    expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('try-phrase')));
+    await tapLesson(tester,find.byKey(const ValueKey('practice-answer-1')));
+    expect(find.byKey(const ValueKey('next-question')),findsNothing);
+    await tapLesson(tester,find.byKey(const ValueKey('practice-answer-0')));
+    expect(find.byKey(const ValueKey('next-question')),findsOneWidget);
+    expect(c.gameCount('kindness'),0);
+    await lessonPreview(tester,preview,'Alltag');
+    expect(tester.takeException(),isNull);
+  });
+  testWidgets('Learning route hides its activities when Pro or child identity changes', (tester) async {
+    await openLesson(tester,'count');
+    final data=jsonDecode(c.exportBackup());
+    data['backup']['proLicense']='';
+    await c.restoreBackup(jsonEncode(data));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('count-star-0')),findsNothing);
+    await c.activatePro(code);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('count-star-0')),findsOneWidget);
+    await c.addChild('Ben',4,1);
+    await c.selectChild(c.data.children.last.id);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('count-star-0')),findsNothing);
+    expect(c.gameCount('count'),0);
+    expect(tester.takeException(),isNull);
+  });
+  testWidgets('All six guided lessons fit small screens with large text', (tester) async {
+    for (final game in gameIds) {
+      await openLesson(tester,game,scale:1.5,width:320);
+      await tapLesson(tester,find.byKey(const ValueKey('lesson-help')));
+      expect(tester.takeException(),isNull,reason:game);
+    }
+  });
+
   testWidgets('Render real v5 discovery and drawing previews', (tester) async {
     if (!const bool.fromEnvironment('RENDER_PREVIEWS')) return;
     tester.view.physicalSize = const Size(780, 1688);
@@ -363,6 +574,10 @@ void main() {
       await tester.pumpWidget(MaterialApp(theme: fluffTheme(), home:
         RepaintBoundary(key: key, child: item.$2)));
       await tester.pumpAndSettle();
+      if (item.$2 is LearningGamePage) {
+        await tester.tap(find.byKey(const ValueKey('start-learning')));
+        await tester.pumpAndSettle();
+      }
       final context = tester.element(find.byType(RepaintBoundary).first);
       await tester.runAsync(() async {
         final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
