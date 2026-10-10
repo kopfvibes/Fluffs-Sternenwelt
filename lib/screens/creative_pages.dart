@@ -153,7 +153,9 @@ class _DrawingPageState extends State<DrawingPage> {
   }
   void move(Offset p, Size s) {
     if (!widget.controller.proActive || saving || strokes.isEmpty ||
-        strokes.last.points.length >= 3000) return;
+        strokes.last.points.length >= 3000) {
+      return;
+    }
     setState(() { strokes.last.points.add(point(p, s)); dirty = true; });
   }
   Future<void> save() async {
@@ -192,7 +194,9 @@ class _DrawingPageState extends State<DrawingPage> {
     final accepted = await showDialog<bool>(context: context,
       builder: (_) => ParentPinDialog(controller: widget.controller));
     if (accepted != true || !mounted || !widget.controller.proActive ||
-        boundary.currentContext == null) return;
+        boundary.currentContext == null) {
+      return;
+    }
     await act(context, () async {
       final render = boundary.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final image = await render.toImage(pixelRatio: 2.5);
