@@ -178,7 +178,8 @@ void main() {
       home: Scaffold(body: DiscoveryPage(controller: c))));
     await tester.pumpAndSettle();
     final studio = find.byKey(const ValueKey('open-studio'));
-    await tester.ensureVisible(studio);
+    await tester.scrollUntilVisible(studio, 160,
+      scrollable: find.byType(Scrollable).first);
     await tester.pumpAndSettle();
     await tester.tap(studio);
     await tester.pumpAndSettle();
@@ -196,7 +197,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(ProPage), findsOneWidget);
     expect(find.byType(PrintBookPage), findsNothing);
-    await tester.scrollUntilVisible(find.byKey(const ValueKey('pro-code')), 160);
+    await tester.scrollUntilVisible(find.byKey(const ValueKey('pro-code')), 160,
+      scrollable: find.descendant(of: find.byType(ProPage),
+        matching: find.byType(Scrollable)).first);
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('pro-code')), findsOneWidget);
     expect(tester.takeException(), isNull);
@@ -337,12 +340,14 @@ void main() {
 
   testWidgets('Render real v5 discovery and drawing previews', (tester) async {
     if (!const bool.fromEnvironment('RENDER_PREVIEWS')) return;
-    await c.activatePro(code);
     tester.view.physicalSize = const Size(780, 1688);
     tester.view.devicePixelRatio = 2;
     addTearDown(() { tester.view.resetPhysicalSize(); tester.view.resetDevicePixelRatio(); });
     final dir = Directory('previews/v5')..createSync(recursive: true);
     for (final item in <(String, Widget)>[
+      ('Malatelier-ohne-Pro', CreativeStudioPage(controller: c)),
+      ('Malbuch-ohne-Pro', Scaffold(body: PrintBookPage(controller: c))),
+      ('Elternbereich-ohne-Pro', ParentRoot(controller: c)),
       ('Entdeckerwelt', Scaffold(body: DiscoveryPage(controller: c))),
       ('Malatelier', CreativeStudioPage(controller: c)),
       ('Paare-finden', LearningGamePage(controller: c, game: 'memory')),
@@ -353,6 +358,7 @@ void main() {
       ('Gemeinsam-handeln', LearningGamePage(controller: c, game: 'kindness')),
       ('Ausmalen', DrawingPage(controller: c, template: 1)),
     ]) {
+      if (item.$1 == 'Entdeckerwelt') await c.activatePro(code);
       final key = GlobalKey();
       await tester.pumpWidget(MaterialApp(theme: fluffTheme(), home:
         RepaintBoundary(key: key, child: item.$2)));
