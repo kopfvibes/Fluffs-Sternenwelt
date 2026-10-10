@@ -31,6 +31,8 @@ class LearningQuestion {
   final String prompt, visual, explanation;
   final List<String> answers;
   final int correct;
+  List<String> get narration => [prompt, 'Du kannst wählen:',
+    ...answers.map((answer) => symbolNames[answer] ?? answer)];
 }
 
 class GameFactory {
@@ -52,7 +54,8 @@ class GameFactory {
         return LearningQuestion('Wie viele Sterne siehst du?',
           List.filled(n, '⭐').join(' '),
           options.map((i) => '$i').toList(), options.indexOf(n),
-          'Das sind $n Sterne. Du darfst jeden Stern einzeln zählen.');
+          n == 1 ? 'Das ist 1 Stern. Du darfst jeden Stern einzeln zählen.'
+            : 'Das sind $n Sterne. Du darfst jeden Stern einzeln zählen.');
       case 'shapes':
         const names = ['Kreis', 'Dreieck', 'Quadrat', 'Stern'];
         const visuals = ['●', '▲', '■', '★'];

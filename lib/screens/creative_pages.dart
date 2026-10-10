@@ -3,14 +3,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../data/controller.dart';
 import '../data/creative.dart';
+import '../services/audio.dart';
 import '../services/fluff_printing.dart';
 import '../widgets/common.dart';
 import '../widgets/pro_access.dart';
 import 'parents_screen.dart';
 
-class CreativeStudioPage extends StatelessWidget {
+class CreativeStudioPage extends StatefulWidget {
   const CreativeStudioPage({super.key, required this.controller});
   final AppController controller;
+  @override
+  State<CreativeStudioPage> createState() => _CreativeStudioPageState();
+}
+
+class _CreativeStudioPageState extends State<CreativeStudioPage> {
+  AppController get controller => widget.controller;
+  late final String childId;
+  static const welcome = 'Willkommen in meinem Malatelier! Hier kannst du malen, '
+    'ein Ausmalbild aussuchen und deine Bilder im Album anschauen.';
+  bool get canSpeak => mounted && controller.proActive && controller.data.sound &&
+    controller.child.id == childId;
+  @override
+  void initState() {
+    super.initState();
+    childId = controller.child.id;
+    controller.addListener(stopIfUnavailable);
+    WidgetsBinding.instance.addPostFrameCallback((_) { if (mounted) speak(); });
+  }
+  void speak() { if (canSpeak) FluffAudio.instance.read(welcome); }
+  void stopIfUnavailable() { if (!canSpeak) FluffAudio.instance.stop(); }
+  @override
+  void dispose() {
+    controller.removeListener(stopIfUnavailable);
+    FluffAudio.instance.stop();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) => AnimatedBuilder(animation: controller,
     builder: (context, _) => Scaffold(
@@ -23,6 +50,9 @@ class CreativeStudioPage extends StatelessWidget {
             animate: controller.data.motion),
             const Expanded(child: Text('Deine Farben.\nDeine Ideen.',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900)))]),
+          TextButton.icon(onPressed: controller.data.sound ? speak : null,
+            icon: const Icon(Icons.volume_up_rounded),
+            label: const Text('Fluff erklärt dir das Malatelier')),
           GlossyButton('Freies Malen', key: const ValueKey('free-drawing'),
             color: green, onPressed: () => _open(context, 0)),
           const SizedBox(height: 18),
@@ -49,9 +79,7 @@ class CreativeStudioPage extends StatelessWidget {
               crossAxisCount: 2, childAspectRatio: .72,
               mainAxisSpacing: 12, crossAxisSpacing: 12,
               children: [for (final drawing in controller.childDrawings)
-                InkWell(onTap: () => Navigator.push(context, MaterialPageRoute<void>(
-                  builder: (_) => DrawingPage(controller: controller, saved: drawing,
-                    template: drawing.template))),
+                InkWell(onTap: () => _open(context, drawing.template, saved: drawing),
                   child: Column(children: [Expanded(child: DrawingSurface(
                     template: drawing.template, strokes: drawing.strokes)),
                     const SizedBox(height: 5),
@@ -62,9 +90,12 @@ class CreativeStudioPage extends StatelessWidget {
               ]),
         ]))),
     ));
-  void _open(BuildContext context, int template) => Navigator.push(context,
-    MaterialPageRoute<void>(builder: (_) => DrawingPage(controller: controller,
-      template: template)));
+  void _open(BuildContext context, int template, {SavedDrawing? saved}) {
+    if (!controller.proActive) return;
+    FluffAudio.instance.stop();
+    Navigator.push(context, MaterialPageRoute<void>(builder: (_) =>
+      DrawingPage(controller: controller, template: template, saved: saved)));
+  }
 }
 
 class DrawingSurface extends StatelessWidget {
@@ -140,8 +171,27 @@ class _DrawingPageState extends State<DrawingPage> {
   void initState() {
     super.initState();
     childId = widget.saved?.childId ?? widget.controller.child.id;
+    widget.controller.addListener(stopIfUnavailable);
     drawingId = widget.saved?.id;
     strokes = widget.saved?.strokes.map((s) => DrawStroke.fromJson(s.toJson())).toList() ?? [];
+    WidgetsBinding.instance.addPostFrameCallback((_) { if (mounted) explainDrawing(); });
+  }
+  bool get canSpeak => mounted && widget.controller.proActive &&
+    widget.controller.data.sound && widget.controller.child.id == childId;
+  void stopIfUnavailable() { if (!canSpeak) FluffAudio.instance.stop(); }
+  void explainDrawing() {
+    if (!canSpeak) return;
+    FluffAudio.instance.readAll([
+      widget.template == 0 ? 'Freies Malen.' : coloringTitles[widget.template - 1],
+      'Such dir eine Farbe aus. Male in deinem Tempo. Wenn du fertig bist, '
+        'kannst du dein Bild im Album speichern.',
+    ]);
+  }
+  @override
+  void dispose() {
+    widget.controller.removeListener(stopIfUnavailable);
+    FluffAudio.instance.stop();
+    super.dispose();
   }
   DrawPoint point(Offset p, Size s) => DrawPoint(
     (p.dx / s.width).clamp(0, 1).toDouble(), (p.dy / s.height).clamp(0, 1).toDouble());
@@ -170,6 +220,7 @@ class _DrawingPageState extends State<DrawingPage> {
         setState(() => dirty = false);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Dein Bild ist im Album gespeichert.')));
+        if (canSpeak) FluffAudio.instance.read('Dein Bild ist im Album gespeichert.');
       }
     } catch (e) {
       if (mounted) {
@@ -191,6 +242,7 @@ class _DrawingPageState extends State<DrawingPage> {
   }
   Future<void> print() async {
     if (!widget.controller.proActive) return;
+    FluffAudio.instance.stop();
     final accepted = await showDialog<bool>(context: context,
       builder: (_) => ParentPinDialog(controller: widget.controller));
     if (accepted != true || !mounted || !widget.controller.proActive ||
@@ -230,6 +282,9 @@ class _DrawingPageState extends State<DrawingPage> {
       }
     },
     child: Scaffold(appBar: AppBar(title: const Text('Meine Farben'), actions: [
+      IconButton(tooltip: 'Fluff erklärt dir das Malen',
+        icon: const Icon(Icons.volume_up_rounded),
+        onPressed: widget.controller.data.sound ? explainDrawing : null),
       IconButton(tooltip: 'Mit Eltern als PDF teilen', icon: const Icon(Icons.print_rounded),
         onPressed: print),
       if (drawingId != null) IconButton(tooltip: 'Bild aus Album löschen',
@@ -256,7 +311,14 @@ class _DrawingPageState extends State<DrawingPage> {
               Color(0xff40bf68), Color(0xff278df4), Color(0xff9a65d6), Color(0xffed574d),
               Color(0xff795548), Color(0xff202020), Colors.white])
               Semantics(label: 'Malfarbe auswählen', selected: selected == color,
-                child: InkWell(onTap: () => setState(() => selected = color),
+                child: InkWell(onTap: () {
+                  setState(() => selected = color);
+                  if (canSpeak) FluffAudio.instance.read(const {
+                    0xffef5d8a: 'Rosa', 0xffffb732: 'Gelb', 0xff40bf68: 'Grün',
+                    0xff278df4: 'Blau', 0xff9a65d6: 'Lila', 0xffed574d: 'Rot',
+                    0xff795548: 'Braun', 0xff202020: 'Schwarz', 0xffffffff: 'Weiß',
+                  }[color.toARGB32()]!);
+                },
                   child: Container(width: 34, height: 34, decoration: BoxDecoration(
                     color: color, shape: BoxShape.circle,
                     border: Border.all(width: selected == color ? 3 : 1,

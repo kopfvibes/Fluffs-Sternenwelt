@@ -124,6 +124,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
   void initState() {
     super.initState();
     childId = widget.controller.child.id;
+    widget.controller.addListener(stopIfUnavailable);
     age = widget.controller.child.age;
     factory = widget.factory ?? GameFactory();
     cards = factory.memoryCards(age);
@@ -133,11 +134,13 @@ class _LearningGamePageState extends State<LearningGamePage> {
     });
   }
   void readPrompt() {
-    if (!widget.controller.data.sound || !widget.controller.proActive) return;
-    FluffAudio.instance.read(widget.game == 'memory' ? 'Finde zwei gleiche Bilder.'
-      : '${question!.prompt} Du kannst wählen: '
-        '${question!.answers.map((a) => symbolNames[a] ?? a).join('. ')}.');
+    if (!canSpeak) return;
+    FluffAudio.instance.readAll(widget.game == 'memory'
+      ? ['Finde zwei gleiche Bilder.'] : question!.narration);
   }
+  bool get canSpeak => mounted && widget.controller.data.sound &&
+    widget.controller.proActive && widget.controller.child.id == childId;
+  void stopIfUnavailable() { if (!canSpeak) FluffAudio.instance.stop(); }
   void nextQuestion() {
     final q = factory.question(widget.game, age);
     final order = List.generate(q.answers.length, (i) => i)..shuffle(factory.random);
@@ -147,7 +150,10 @@ class _LearningGamePageState extends State<LearningGamePage> {
     feedback = '';
   }
   @override
-  void dispose() { timer?.cancel(); FluffAudio.instance.stop(); super.dispose(); }
+  void dispose() {
+    widget.controller.removeListener(stopIfUnavailable);
+    timer?.cancel(); FluffAudio.instance.stop(); super.dispose();
+  }
 
   void chooseCard(int i) {
     if (timer?.isActive == true || open.contains(i) || matched.contains(i) || finished) {
@@ -168,6 +174,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
         if (mounted) setState(() => open.removeAll([previous, i]));
       });
     }
+    if (canSpeak && matched.length != cards.length) FluffAudio.instance.read(feedback);
   }
 
   void chooseAnswer(int i) {
@@ -180,7 +187,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
         feedback = 'Schau noch einmal hin. Du darfst dir Zeit nehmen.';
       }
     });
-    if (widget.controller.data.sound) FluffAudio.instance.read(feedback);
+    if (canSpeak) FluffAudio.instance.read(feedback);
   }
 
   Future<void> finish() async {
@@ -190,7 +197,12 @@ class _LearningGamePageState extends State<LearningGamePage> {
       await widget.controller.completeGame(widget.game, childId: childId);
       if (mounted) {
         setState(() { finished = true; saving = false; });
-        if (widget.controller.data.sound) FluffAudio.instance.star();
+        if (canSpeak) {
+          FluffAudio.instance.star();
+          FluffAudio.instance.read(widget.game == 'memory'
+            ? 'Du hast alle Paare gefunden. Dein Entdecker-Sticker ist in deinem Album.'
+            : 'Du hast etwas Neues entdeckt. Dein Entdecker-Sticker ist in deinem Album.');
+        }
       }
     } catch (_) {
       if (mounted) {
@@ -199,6 +211,7 @@ class _LearningGamePageState extends State<LearningGamePage> {
           feedback = 'Dein Fortschritt konnte nicht gespeichert werden. '
             'Du kannst es noch einmal versuchen.';
         });
+        if (canSpeak) FluffAudio.instance.read(feedback);
       }
     }
   }

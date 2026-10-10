@@ -6,7 +6,7 @@ Deutschsprachige Android-App fuer Familien. Fluff begleitet Kinder durch Alltags
 
 - Sechs Pro-Lernspiele: Paare finden, Sterne zaehlen, Formen entdecken, Muster weiterdenken, Gefuehle verstehen und Gemeinsam handeln.
 - Wechselnde Aufgaben und altersabhaengige Schwierigkeit fuer Zahlen, Muster und Paare. Kein Timer und keine Bestrafung bei falschen Antworten.
-- Deutsche Vorlesefunktion fuer Fragen und Antwortmoeglichkeiten mit der auf dem Geraet verfuegbaren deutschen Text-zu-Sprache-Stimme. Bisherige Fluff-Aufnahmen bleiben eingebunden.
+- Fluffs gespeicherte deutsche Stimme liest alle Pro-Fragen, Antwortmoeglichkeiten und Rueckmeldungen vor. 161 lokale Aufnahmen begleiten auch das Malatelier, seine Vorlagen, Farben und das Speichern. Kein Internet und keine Geraetestimme erforderlich; vorhandene Fluff-Aufnahmen bleiben eingebunden.
 - Entdecker-Sticker und Spielabschluesse werden pro Kinderprofil gespeichert und veraendern die Sterne fuer Alltagsaufgaben nicht.
 - Malatelier: freies Malen, zwoelf Mal- und Mitmachvorlagen, Farben, Pinselgroesse, Rueckgaengig, Wiederholen und ein Album mit bis zu zwoelf Bildern pro Kind.
 - Eigene Bilder als PDF ausgeben; Vorlagen einzeln oder als ganzes Buch drucken oder als PDF speichern.
@@ -45,4 +45,4 @@ flutter build appbundle --release
 
 CI erzeugt APK und AAB ohne privaten Schluessel. Die Ausgaben werden danach mit dem privaten Release-Schluessel des Besitzers signiert. Signiermaterial und Verkaeufercodes bleiben ausserhalb des oeffentlichen Repositorys.
 
-Tests decken die bestehenden Ablaeufe sowie Pro-Sperre, Signaturpruefung, Migration, Kinderwechsel, Zeichnen, Sicherungen und PDF-Erstellung ab. previews/v5/ enthaelt echte Flutter-Ansichten. Automatisierte Pruefungen ersetzen keine abschliessende Erprobung von Audio, Druckdialog und Installation auf einem echten Telefon.
+Tests decken die bestehenden Ablaeufe sowie Pro-Sperre, Signaturpruefung, Migration, Kinderwechsel, Zeichnen, Sicherungen und PDF-Erstellung ab. Zusaetzliche Audio-Tests pruefen die vollstaendige Aufnahmeabdeckung, die Reihenfolge der Antworten sowie Abbruch beim Ausschalten und bei neuen Aktionen. previews/v5/ enthaelt echte Flutter-Ansichten. Automatisierte Pruefungen ersetzen keine abschliessende Erprobung von Audio, Druckdialog und Installation auf einem echten Telefon.
