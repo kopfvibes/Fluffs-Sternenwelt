@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import '../data/companion.dart';
@@ -8,7 +9,8 @@ import '../widgets/common.dart';
 import 'task_flow.dart';
 
 Future<void> showFluffDay(BuildContext context, AppController controller) async {
-  await FluffAudio.instance.stop();
+  // Stop playback immediately, but never block opening a child screen on audio I/O.
+  unawaited(FluffAudio.instance.stop());
   if (!context.mounted) return;
   await showDialog<void>(context: context,
     builder: (_) => FluffDayDialog(controller: controller));

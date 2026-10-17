@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import '../data/companion.dart';
@@ -10,7 +11,8 @@ import '../widgets/common.dart';
 Future<void> explainReward(BuildContext context, AppController controller,
   RewardItem reward) async {
   final childId = controller.child.id;
-  await FluffAudio.instance.stop();
+  // Stop playback immediately, but never block opening a child screen on audio I/O.
+  unawaited(FluffAudio.instance.stop());
   if (!context.mounted) return;
   final requested = await showDialog<bool>(context: context,
     builder: (_) => RewardExplanationDialog(controller: controller, reward: reward));

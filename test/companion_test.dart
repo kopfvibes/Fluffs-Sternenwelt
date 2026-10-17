@@ -15,6 +15,15 @@ import 'package:fluffs_sternenwelt/widgets/common.dart';
 import 'fixtures.dart';
 
 Future<void> tapVisible(WidgetTester tester, Finder finder) async {
+  // Dialog buttons and lower wish cards can be lazily built off screen.
+  await tester.pumpAndSettle();
+  if (finder.evaluate().isEmpty && find.byType(Scrollable).evaluate().isNotEmpty) {
+    await tester.scrollUntilVisible(
+      finder, 160,
+      scrollable: find.byType(Scrollable).last,
+      maxScrolls: 40,
+    );
+  }
   await tester.ensureVisible(finder.first);
   await tester.pumpAndSettle();
   await tester.tap(finder.first);

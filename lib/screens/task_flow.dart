@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,8 @@ Future<void> openTask(
   TaskItem first,
 ) async {
   TaskItem? task = first;
-  await FluffAudio.instance.stop();
+  // Stop playback immediately, but never block opening a child screen on audio I/O.
+  unawaited(FluffAudio.instance.stop());
   while (task != null && context.mounted) {
     if (!context.mounted) return;
     final item = task;
