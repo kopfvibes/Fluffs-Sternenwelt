@@ -15,6 +15,10 @@ dependencies:
   cryptography: ^2.9.0
   pdf: ^3.11.3
   printing: ^5.14.2
+  # Prevent older image/archive combinations from breaking PNG/PDF compilation.
+  # image >=4.11.1 correctly requires archive >=4.4.0 (decodeLazy).
+  image: ^4.11.1
+  archive: ^4.4.0
   intl: ^0.20.2
   audioplayers: ^6.1.0
   flutter_tts: ^4.2.5
