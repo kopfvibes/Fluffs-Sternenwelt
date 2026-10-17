@@ -6,6 +6,9 @@ import '../data/models.dart';
 import '../services/audio.dart';
 import '../widgets/common.dart';
 import 'task_flow.dart';
+import 'reward_explanation.dart';
+import '../data/companion.dart';
+import '../widgets/child_narration.dart';
 
 class MissionsPage extends StatelessWidget {
   const MissionsPage({super.key, required this.controller});
@@ -112,7 +115,9 @@ class MissionsPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(text, style: const TextStyle(fontSize: 14, height: 1.2)),
+                Text(controller.child.age <= 4 && key == 'reading'
+                  ? 'Schau mit deinen Erwachsenen an drei Tagen ein Buch an.' : text,
+                  style: const TextStyle(fontSize: 14, height: 1.2)),
                 const SizedBox(height: 9),
                 Row(
                   children: [
@@ -176,7 +181,16 @@ class MissionsPage extends StatelessWidget {
     isScrollControlled: true,
     showDragHandle: true,
     backgroundColor: cream,
-    builder: (sheet) => SafeArea(
+    builder: (sheet) => AutoRead(controller: controller,
+      lines: [controller.missionLabel(key),
+        key == 'reading' ? 'Such dir an drei verschiedenen Tagen ein Buch aus. '
+          'Lass dir vorlesen oder lies selbst. Beides zählt.'
+        : key == 'helper' ? 'Hilf bei drei kleinen Aufgaben. Zum Beispiel beim '
+          'Aufräumen oder Tischdecken. Du darfst dir Hilfe holen.'
+        : 'Wenn etwas schwierig ist, frag einen Erwachsenen nach Hilfe. '
+          'Tippe bei deiner Aufgabe auf Ich habe Hilfe bekommen.',
+        'Für diese Mission gibt es', ...spokenNumber(controller.missionStars(key)),
+        'Bonussterne. Du darfst dir Zeit nehmen.'], child: SafeArea(
       child: AnimatedBuilder(
         animation: controller,
         builder: (context, _) => SingleChildScrollView(
@@ -245,7 +259,7 @@ class MissionsPage extends StatelessWidget {
           ),
         ),
       ),
-    ),
+    )),
   );
 }
 
@@ -326,31 +340,39 @@ class WishlistPage extends StatelessWidget {
       ),
     ],
   );
-  Future<void> _pending(
-    BuildContext context,
-    WishRequest request,
-  ) => showDialog<void>(
-    context: context,
-    builder: (dialog) => AlertDialog(
-      title: Text(request.title),
-      content: const Text(
-        'Deine Erwachsenen entscheiden gemeinsam mit dir. Du kannst deinen Wunsch auch zurückziehen.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(dialog),
-          child: const Text('Okay'),
-        ),
-        TextButton(
-          onPressed: () => act(dialog, () async {
-            await controller.decideRequest(request.id, 'zurückgezogen');
-            if (dialog.mounted) Navigator.pop(dialog);
-          }),
-          child: const Text('Zurückziehen'),
-        ),
-      ],
-    ),
-  );
+  Future<void> _pending(BuildContext context, WishRequest request) async {
+    await FluffAudio.instance.stop();
+    if (!context.mounted) return;
+    final withdrawn = await showDialog<bool>(context: context,
+      builder: (dialog) => AutoRead(controller: controller, lines: [request.title,
+        'Deine Erwachsenen entscheiden gemeinsam mit dir. Du kannst deinen Wunsch '
+          'auch zurückziehen. Deine Sterne bleiben in deinem Glas.'],
+        child: AlertDialog(title: Text(request.title),
+          content: Column(mainAxisSize: MainAxisSize.min, children: [
+            const Text('Deine Erwachsenen entscheiden gemeinsam mit dir. '
+              'Du kannst deinen Wunsch auch zurückziehen.'),
+            HearButton(controller: controller, lines: [request.title,
+              'Deine Erwachsenen entscheiden gemeinsam mit dir. Du kannst deinen '
+                'Wunsch auch zurückziehen. Deine Sterne bleiben in deinem Glas.']),
+          ]), actions: [
+            TextButton(onPressed: () => Navigator.pop(dialog, false),
+              child: const Text('Okay')),
+            TextButton(onPressed: () {
+              if (controller.child.id != request.childId) {
+                Navigator.pop(dialog, false); return;
+              }
+              act(dialog, () async {
+                await controller.decideRequest(request.id, 'zurückgezogen');
+                if (dialog.mounted) Navigator.pop(dialog, true);
+              });
+            }, child: const Text('Zurückziehen')),
+          ])));
+    if (withdrawn == true && controller.child.id == request.childId &&
+        controller.data.sound) {
+      FluffAudio.instance.narrate(['Dein Wunsch ist zurückgezogen. Deine Sterne '
+        'bleiben in deinem Glas.'], preferFluff: controller.proActive);
+    }
+  }
   Future<void> _wish(BuildContext context, RewardItem reward) async {
     final existing = controller.data.requests.where(
       (x) =>
@@ -362,44 +384,7 @@ class WishlistPage extends StatelessWidget {
       await _pending(context, existing.first);
       return;
     }
-    final remaining = reward.cost - controller.balance();
-    await showDialog<void>(
-      context: context,
-      builder: (dialog) => AlertDialog(
-        title: Text(reward.title),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ArtIcon(reward.icon, size: 85),
-            const SizedBox(height: 12),
-            Text(
-              remaining > 0
-                  ? 'Dafür fehlen noch $remaining Sterne. Sammle in deinem Tempo weiter.'
-                  : 'Du hast genug Sterne. Soll dieser Wunsch deinen Erwachsenen zur Freigabe angezeigt werden?',
-            ),
-            const SizedBox(height: 9),
-            Text(
-              '${controller.balance()} Sterne in deinem Glas',
-              style: const TextStyle(fontWeight: FontWeight.w900),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialog),
-            child: Text(remaining > 0 ? 'Okay' : 'Abbrechen'),
-          ),
-          if (remaining <= 0)
-            TextButton(
-              onPressed: () => act(dialog, () async {
-                await controller.requestReward(reward);
-                if (dialog.mounted) Navigator.pop(dialog);
-              }),
-              child: const Text('Wunsch anfragen'),
-            ),
-        ],
-      ),
-    );
+    await explainReward(context, controller, reward);
   }
 }
 
@@ -428,7 +413,7 @@ class EveningPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
                       child: InkWell(
-                        onTap: () => openTask(context, controller, t),
+                            onTap: () => openTask(context, controller, t),
                         borderRadius: BorderRadius.circular(16),
                         child: Row(
                           children: [
@@ -529,6 +514,7 @@ class _DayPlanPageState extends State<DayPlanPage> {
   Widget build(BuildContext context) {
     final c = widget.controller;
     final week = monday(selected);
+    final small = c.child.age <= 4 && !widget.allowEdit;
     final rows =
         <
           ({
@@ -577,7 +563,9 @@ class _DayPlanPageState extends State<DayPlanPage> {
                 )
               : null,
         ),
-        Padding(
+        if (small) const Padding(padding: EdgeInsets.all(12),
+          child: Text('Heute', style: TextStyle(fontSize: 21, fontWeight: FontWeight.w900)))
+        else Padding(
           padding: const EdgeInsets.fromLTRB(13, 0, 13, 15),
           child: Row(
             children: [
@@ -677,7 +665,9 @@ class _DayPlanPageState extends State<DayPlanPage> {
                     onTap: () => isToday
                         ? row.task != null
                               ? openTask(context, c, row.task!)
-                              : act(context, () => c.togglePlan(row.plan!))
+                              : widget.allowEdit
+                                ? act(context, () => c.togglePlan(row.plan!))
+                                : _explainPlan(context, row.plan!)
                         : ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
@@ -690,7 +680,7 @@ class _DayPlanPageState extends State<DayPlanPage> {
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Row(
                         children: [
-                          SizedBox(
+                          if (!small) SizedBox(
                             width: 48,
                             child: Text(
                               row.time,
@@ -706,18 +696,20 @@ class _DayPlanPageState extends State<DayPlanPage> {
                             color: const Color(0xffebcc7e),
                           ),
                           const SizedBox(width: 12),
-                          ArtIcon(row.icon, size: 39),
+                          ArtIcon(row.icon, size: small ? 56 : 39),
                           const SizedBox(width: 9),
                           Expanded(
                             child: Text(
                               row.title,
                               style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
                           const SizedBox(width: 7),
+                          HearButton(controller: c, lines: [row.title,
+                            row.done ? 'Das hast du schon geschafft.' : 'Das gehört zu deinem Tag.']),
                           DoneCircle(row.done, size: 25),
                         ],
                       ),
@@ -734,6 +726,31 @@ class _DayPlanPageState extends State<DayPlanPage> {
       ],
     );
   }
+  Future<void> _explainPlan(BuildContext context, PlanItem plan) async {
+    final c = widget.controller;
+    final childId = c.child.id;
+    await showModalBottomSheet<void>(context: context, backgroundColor: cream,
+      showDragHandle: true, builder: (sheet) => AutoRead(controller: c,
+        lines: [plan.title, 'Das gehört zu deinem Tag. Wenn du fertig bist, '
+          'kannst du hier ein Häkchen setzen.'],
+        child: SafeArea(child: Padding(padding: const EdgeInsets.all(22),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            ArtIcon(plan.icon, size: 78), const SizedBox(height: 12),
+            Text(plan.title, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w900)),
+            const SizedBox(height: 12),
+            const Text('Das gehört zu deinem Tag. Du darfst dir Hilfe holen.', textAlign: TextAlign.center),
+            HearButton(controller: c, lines: [plan.title, 'Du darfst dir Hilfe holen.']),
+            GlossyButton(c.planDone(plan, selected) ? 'Häkchen entfernen' : 'Geschafft',
+              icon: Icons.check_rounded, color: green,
+              onPressed: () => act(sheet, () async {
+                if (c.child.id != childId) { Navigator.pop(sheet); return; }
+                await c.togglePlan(plan);
+                if (sheet.mounted) Navigator.pop(sheet);
+              })),
+            TextButton(onPressed: () => Navigator.pop(sheet), child: const Text('Später weiter')),
+          ])))));
+  }
+
 }
 
 class BreathingPage extends StatefulWidget {
@@ -746,100 +763,58 @@ class BreathingPage extends StatefulWidget {
 class _BreathingPageState extends State<BreathingPage>
     with SingleTickerProviderStateMixin {
   late final AnimationController breath;
+  int step = -1;
+  bool get finished => step >= 6;
+  String get instruction => finished ? 'Gut gemacht. Zeit für eine Pause.'
+    : step < 0 ? 'Mach es dir gemütlich.'
+    : step.isEven ? 'Rieche an einer Blume. Atme sanft ein.'
+    : 'Puste eine Feder. Atme sanft aus.';
   @override
   void initState() {
     super.initState();
-    breath = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 24),
-    )..addListener(() => setState(() {}));
+    breath = AnimationController(vsync: this,
+      duration: const Duration(milliseconds: 2400));
   }
-
   @override
-  void dispose() {
-    breath.dispose();
-    super.dispose();
+  void dispose() { breath.dispose(); super.dispose(); }
+  void next() {
+    setState(() => step = finished ? 0 : step + 1);
+    if (!widget.controller.data.motion) return;
+    if (finished) { breath.animateTo(0); }
+    else if (step.isEven) { breath.forward(); }
+    else { breath.reverse(); }
   }
-
   @override
-  Widget build(BuildContext context) {
-    final seconds = breath.value * 24;
-    final phase = seconds % 8;
-    final finished = breath.isCompleted;
-    final scale = 1 + sin(phase / 8 * pi) * .15;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ScreenTitle(
-            'Ruhig atmen',
-            back: () => Navigator.maybePop(context),
-            subtitle: 'Fluff macht mit. Du bestimmst das Tempo.',
-          ),
-          const SizedBox(height: 40),
-          Transform.scale(
-            scale: widget.controller.data.motion ? scale : 1,
-            child: Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xffceebff),
-                border: Border.all(color: Colors.white, width: 4),
-                boxShadow: const [
-                  BoxShadow(color: Color(0x551aa2ee), blurRadius: 25),
-                ],
-              ),
-              child: FluffSprite(pose: 'blink', size: 235, animate: false),
-            ),
-          ),
-          const SizedBox(height: 40),
-          Text(
-            finished
-                ? 'Gut gemacht. Zeit für eine Pause.'
-                : !breath.isAnimating && breath.value == 0
-                ? 'Mach es dir gemütlich.'
-                : phase < 3
-                ? 'Langsam einatmen'
-                : phase < 4
-                ? 'Einen Moment warten'
-                : 'Langsam ausatmen',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
-          ),
-          const SizedBox(height: 9),
-          Text('${min((seconds / 8).floor() + 1, 3)} von 3 Atemrunden'),
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: GlossyButton(
-              finished
-                  ? 'Noch einmal'
-                  : breath.isAnimating
-                  ? 'Pause'
-                  : breath.value == 0
-                  ? 'Starten'
-                  : 'Fortsetzen',
-              onPressed: () {
-                if (finished) {
-                  breath.value = 0;
-                  breath.forward();
-                } else if (breath.isAnimating) {
-                  breath.stop();
-                  setState(() {});
-                } else {
-                  breath.forward();
-                }
-              },
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 26),
-            child: Text(
-              'Du kannst jederzeit aufhören. Wenn du Trost brauchst, hol dir einen Erwachsenen.',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => AutoRead(controller: widget.controller,
+    identity: 'breath-$step', lines: [instruction,
+      if (!finished) 'Tippe erst weiter, wenn du möchtest. Du bestimmst das Tempo.'],
+    child: SingleChildScrollView(child: Column(children: [
+      ScreenTitle('Ruhig atmen', back: () => Navigator.maybePop(context),
+        subtitle: 'Fluff macht mit. Du bestimmst das Tempo.'),
+      const SizedBox(height: 24),
+      AnimatedBuilder(animation: breath, builder: (_, child) => Transform.scale(
+        scale: widget.controller.data.motion ? 1 + breath.value * .12 : 1,
+        child: child), child: Container(width: 230, height: 230,
+          decoration: BoxDecoration(shape: BoxShape.circle,
+            color: const Color(0xffceebff), border: Border.all(color: Colors.white, width: 4)),
+          child: Stack(alignment: Alignment.center, children: [
+            FluffSprite(size: 205, animate: widget.controller.data.motion),
+            if (step >= 0 && !finished) Align(alignment: Alignment.bottomRight,
+              child: Icon(step.isEven ? Icons.local_florist_rounded : Icons.air_rounded,
+                color: blue, size: 58)),
+          ]))),
+      const SizedBox(height: 30),
+      Padding(padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Text(instruction, textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w900))),
+      HearButton(controller: widget.controller, lines: [instruction]),
+      Text('${step < 0 ? 0 : min(step ~/ 2 + 1, 3)} von 3 Atemrunden'),
+      Padding(padding: const EdgeInsets.all(24), child: GlossyButton(
+        finished ? 'Noch einmal' : step < 0 ? 'Starten' : 'Weiter',
+        key: const ValueKey('breath-next'), icon: Icons.arrow_forward_rounded,
+        onPressed: next)),
+      const Padding(padding: EdgeInsets.symmetric(horizontal: 26),
+        child: Text('Du kannst jederzeit aufhören. Wenn du Trost brauchst, '
+          'hol dir einen Erwachsenen.', textAlign: TextAlign.center)),
+    ])));
 }

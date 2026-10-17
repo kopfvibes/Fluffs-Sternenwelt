@@ -1,60 +1,54 @@
-# Fluffs Sternenwelt
+# Fluffs Sternenwelt 5
 
-Eine vollständige deutschsprachige Flutter-App für Android. Fluff begleitet Kinder bei Alltagsaufgaben, Gefühlen und kleinen Missionen. Die zwölf Ansichten orientieren sich an der gelieferten Vorlage: glänzende blaue und goldene Elemente, cremefarbene Karten, Fluffs bunte Welt und dieselbe Navigation.
+Deutschsprachige Android-App fuer Familien. Fluff begleitet Kinder durch Alltagsaufgaben, Gefuehle und kleine Entdeckungen. Figuren, Animationen und alle bisherigen Aufgaben aus Version 4 bleiben erhalten.
+
+## Neu in Version 5
+
+- Sechs Pro-Lernspiele: Paare finden, Sterne zaehlen, Formen entdecken, Muster weiterdenken, Gefuehle verstehen und Gemeinsam handeln.
+- Lernbegleitung ab Version 5.1: Fluff erklaert das Lernziel, macht Hilfen vor und fasst die Uebung zusammen. Sterne werden einzeln angetippt und gezaehlt; Formen an Ecken und Spitzen untersucht; wiederkehrende Mustergruppen erkundet.
+- Memory bleibt im Tempo des Kindes: falsche Paare bleiben bis zum bewussten Zudecken sichtbar. Fluff kann ein Paar vormachen, ohne es als gefunden zu werten.
+- Gefuehle sind keine Richtig-falsch-Fragen. Alle Gefuehlswoerter und Ungewissheit sind erlaubt. Danach werden ruhiges Atmen, ein Hilfesatz oder eine selbstbestimmte Pause geuebt. Diese fiktiven Antworten werden nicht als echte Gefuehlseintraege gespeichert.
+- Zehn Alltagssituationen enthalten Satzuebungen und eine Anschlussfrage fuer Grenzen, Hilfe und respektvolle Reaktionen. Kein Mikrofon und keine Aufnahme des Kindes.
+- Wechselnde Aufgaben und altersabhaengige Schwierigkeit; bei Zahlen und Mustern passt sich die naechste Aufgabe an selbststaendige Versuche und benoetigte Hilfen an. Kein Timer und keine Bestrafung bei Fehlern.
+- Fluffs gespeicherte deutsche Stimme liest alle Pro-Fragen, Antwortmoeglichkeiten und Rueckmeldungen vor. 302 lokale Aufnahmen begleiten auch das Malatelier, seine Vorlagen, Farben und das Speichern. Kein Internet und keine Geraetestimme erforderlich; vorhandene Fluff-Aufnahmen bleiben eingebunden.
+- Entdecker-Sticker und Spielabschluesse werden pro Kinderprofil gespeichert und veraendern die Sterne fuer Alltagsaufgaben nicht.
+- Malatelier: freies Malen, zwoelf Mal- und Mitmachvorlagen, Farben, Pinselgroesse, Rueckgaengig, Wiederholen und ein Album mit bis zu zwoelf Bildern pro Kind.
+- Eigene Bilder als PDF ausgeben; Vorlagen einzeln oder als ganzes Buch drucken oder als PDF speichern.
+- Pro-Familiencodes mit Ed25519-Signaturpruefung. Das gesamte Malatelier, Bildvorschauen, das Bilderalbum und alle Druckvorlagen erfordern Pro, auch im Elternbereich. Aktivierung, Drucken und Teilen liegen zusaetzlich hinter der Eltern-PIN.
 
 ## Starten
 
-1. Die APK auf einem Android-Gerät mit ARM64-Prozessor und Android 7 oder neuer installieren. Das Gerät kann für diese einzelne Installation eine Freigabe für die Datei-App verlangen.
-2. Beim ersten Start das erste Kind und eine eigene vierstellige Eltern-PIN anlegen.
-3. Weitere Kinder, Aufgaben, Wünsche und den Tagesplan im Elternbereich verwalten.
+1. Die signierte APK auf einem ARM64-Android-Geraet ab Android 7 installieren.
+2. Ein Kinderprofil und eine eigene vierstellige Eltern-PIN anlegen.
+3. Die Entdeckerwelt unter Mehr oeffnen. Weitere Kinder, Aufgaben, Belohnungen und Tagesplaene liegen im Elternbereich.
+4. Den erworbenen Familiencode unter Elternbereich > Fluff Pro aktivieren. Er gilt fuer alle Kinderprofile. Es gibt keine vorgegebene PIN.
 
-Es gibt keine voreingestellte PIN und keine vorausgefüllten Kinderkonten. Die App benötigt kein Konto und keine Internetverbindung. Stimme und Grafiken liegen im Projekt.
+Version 4 wurde mit einer Entwicklungssignatur verteilt. Die neue dauerhafte Release-Signatur kann diese Installation nicht ueberschreiben. Vor einem Wechsel die Sicherung unter Einstellungen speichern, gegebenenfalls v4 deinstallieren, v5 installieren und die Sicherung wiederherstellen. Spaetere Updates muessen denselben privaten Release-Schluessel verwenden.
 
-## Enthalten
+## Daten und Lizenzen
 
-- Startseite mit Fluff, Rucksack, Logo und Begrüßung.
-- Tagesaufgaben mit Einzelschritten, Hilfeschalter, Fortschritt und Sternfeier.
-- Sternenglas mit tatsächlichem Guthaben und Verlauf.
-- Missionen: drei Hilfsaufgaben, Lesen an drei unterschiedlichen Tagen derselben Woche und um Hilfe bitten.
-- Sechs Gefühle mit passenden Fluff-Motiven und unterstützenden Antworten. Gefühle bringen keine Sterne.
-- Sechs Wünsche aus der Vorlage, anpassbar durch Eltern. Sterne werden erst nach Elternbestätigung abgezogen.
-- Abendroutine und Tagesplan mit Uhrzeiten und Wochenauswahl.
-- Elternbereich mit Kinderprofilen, Aufgaben, Belohnungen, Tagesplan, echten Statistiken und Einstellungen.
-- Lokale SQLite-Speicherung, JSON-Sicherung und Wiederherstellung.
+Alle Profile, Tagesplaene, Sterne, Gefuehle, Spiele und Zeichnungen bleiben lokal in SQLite. Die App benoetigt kein Benutzerkonto. Die Datenbankdatei aus v4 bleibt erhalten; Sicherungen mit Schema 2 werden weiter unterstuetzt. Fehlende neue Felder erhalten sichere Standardwerte. Eine Deinstallation loescht lokale Daten.
 
-Fluff atmet, winkt, blinzelt und reagiert auf Antippen. Beim Start bewegt sich sein Arm; andere Ansichten nutzen passende Fluff-Posen. Bei einer erledigten Aufgabe springt Fluff und Konfetti fällt. Bewegungen, Stimme und Vibration können einzeln ausgeschaltet werden. Dies ist eine Animation aus Grafiken und Flutter-Bewegungen, kein frei bewegliches 3D-Modell.
+Die Eltern-PIN ist gesalzen gehasht. Die Datenbank ist nicht vollstaendig verschluesselt. Nach fuenf falschen PIN-Versuchen folgt eine Wartezeit. Beim Wechsel zu einer anderen App wird der Elternbereich gesperrt, ausser waehrend eines ausdruecklich geoeffneten Druck- oder Dateidialogs.
 
-## Entwicklung
+Pro wird aus einem gueltig signierten Familiencode abgeleitet, niemals aus einem importierten Boolean. Private Lizenz- und Android-Schluessel werden nicht im Repository oder in der APK gespeichert. Familiencodes sind nicht geraetegebunden und koennen offline weder gesperrt noch auf eine einzelne Installation begrenzt werden.
 
-Benötigt werden Flutter 3.35.7, Dart 3.9.2, Java 17 und die Android-SDK-Werkzeuge. Android Studio kann die Android-Komponenten installieren.
+Die App enthaelt keine Zahlungsabwicklung und wurde nicht im Play Store veroeffentlicht. Beim direkten APK-Vertrieb kann ein Shop den Kauf abwickeln; danach bekommt die Familie ihren individuellen Code. Store-Veroeffentlichung und gegebenenfalls Store-Abrechnung sind ein eigener Schritt.
 
-```bash
+## Bauen und pruefen
+
+Flutter 3.35.7, Dart 3.9.2, Java 17 und das Android SDK werden verwendet.
+
+```sh
 flutter pub get
 flutter analyze
-flutter test --concurrency=1
+flutter test --concurrency=1 --dart-define=RENDER_PREVIEWS=true
 flutter build apk --release --target-platform android-arm64
+flutter build appbundle --release
 ```
 
-Die fertige APK liegt unter `build/app/outputs/flutter-apk/app-release.apk`. Der Gradle-Wrapper ist enthalten. `android/local.properties` entsteht lokal und gehört nicht in Git. Die GitHub-Aktion erstellt nach einem Push oder manuellem Start ebenfalls ein APK-Artefakt.
+CI erzeugt APK und AAB ohne privaten Schluessel. Die Ausgaben werden danach mit dem privaten Release-Schluessel des Besitzers signiert. Signiermaterial und Verkaeufercodes bleiben ausserhalb des oeffentlichen Repositorys.
 
-Die beigelegte APK ist für direkte Erprobung mit einer Entwicklungssignatur gebaut. Für einen Play-Store-Release eine eigene sichere Signatur konfigurieren. Schlüsseldateien und `key.properties` werden nicht veröffentlicht. Frühere Installationen mit anderem Paketnamen oder anderer Signatur werden nicht automatisch überschrieben.
+Tests decken die bestehenden Ablaeufe sowie Pro-Sperre, Signaturpruefung, Migration, Kinderwechsel, Zeichnen, Sicherungen und PDF-Erstellung ab. Zusaetzliche Audio-Tests pruefen die vollstaendige Aufnahmeabdeckung, die Reihenfolge der Antworten sowie Abbruch beim Ausschalten und bei neuen Aktionen. previews/v5/ enthaelt echte Flutter-Ansichten. Automatisierte Pruefungen ersetzen keine abschliessende Erprobung von Audio, Druckdialog und Installation auf einem echten Telefon.
 
-## Daten
-
-Jedes Kind hat ein eigenes Guthaben und eigene Tagesfortschritte. Jede Aufgabe zählt höchstens einmal pro Kind und Kalendertag. Bonusmissionen zählen höchstens einmal pro Tag beziehungsweise Lesewoche. Ein Rückgängig-Schritt nimmt nur den betreffenden Aufgabenstern und dadurch ungültig gewordene aktuelle Boni zurück; bereits ausgegebene Sterne können kein negatives Guthaben erzeugen.
-
-Der tägliche Aufgabenplan wird gespeichert. Spätere Änderungen an Vorlagen schreiben vergangene Statistiken nicht um. Tage ohne gespeicherten Plan werden nicht als unerledigt erfunden. Die Sterne in den Diagrammen sind verdienter Zuwachs; das Sternenglas zeigt das verfügbare Guthaben nach erfüllten Wünschen.
-
-Die Eltern-PIN wird mit zufälligem Salt gehasht. Sie schützt den Elternbereich innerhalb der App; die gesamte Datenbank ist nicht verschlüsselt. Nach fünf falschen Versuchen folgt eine kurze Wartezeit. Nach dem Wechsel zu einer anderen App wird der Elternbereich gesperrt; der ausdrücklich geöffnete Dateidialog für Sicherungen ist davon ausgenommen.
-
-Eine Deinstallation löscht lokale Daten. Vorher unter Einstellungen eine Sicherung speichern. Sicherungen enthalten personenbezogene Profildaten und den PIN-Hash. Die Wiederherstellung unterstützt das Sicherungsformat dieser Version (Schema 2); eine automatische Übernahme aus älteren unvollständigen Zusatzpaketen ist nicht enthalten.
-
-## Gestaltung und Prüfung
-
-Die Vorlagen sind die Grundlage für Farben, Aufteilung, Motive und Beschriftungen. Die Figuren und Hintergründe wurden für einzelne App-Ansichten aus der gelieferten Fluff-Referenz aufbereitet. Das Poster enthält kleine, zusammengefügte Ansichten; daraus entsteht keine garantiert pixelidentische Umsetzung auf jeder Displaygröße. Alle Bilder sind eingebunden, keine Platzhalter oder externen Bildlinks.
-
-Die Dateien in `previews/` entstehen durch `flutter test test/visual_preview_test.dart --dart-define=RENDER_PREVIEWS=true`. Sie zeigen echte Flutter-Ansichten mit ausschließlich für die Vorschau erzeugten Daten. Diese Daten gelangen nicht in die installierte App. Grafiken, Font-Lizenz und Audio sind im Quellpaket enthalten.
-
-`VALIDATION.md` beschreibt den Prüfstand. `previews/Fluff-Animation.mp4` zeigt den bewegten Begrüßungsarm in der echten Flutter-Ansicht. `ARTWORK.md` und `docs/artwork-prompts.json` dokumentieren die verwendeten Grafiken.
-
-![Die zwölf App-Ansichten mit Beispieldaten](previews/00-Ansichten.png)
+Die Lernablaufe orientieren sich an angeleitetem Spiel mit Modell, Hinweis und kindlicher Entscheidung (NAEYC: https://www.naeyc.org/node/3812) sowie an der Zuordnung eines Zahlworts zu jedem Objekt und der Bedeutung der letzten Zahl fuer die Menge (EEF: https://educationendowmentfoundation.org.uk/early-years/evidence-store/early-mathematics/teaching-association-between-number-and-quantity). Die App selbst ist nicht wissenschaftlich evaluiert.

@@ -1,7 +1,7 @@
 name: fluffs_sternenwelt
 description: Fluffs Sternenwelt – kleine Aufgaben, große Schritte.
 publish_to: none
-version: 4.0.0+40
+version: 5.2.0+54
 environment:
   sdk: '>=3.9.0 <4.0.0'
 dependencies:
@@ -12,8 +12,15 @@ dependencies:
   sqflite: ^2.4.2
   path: ^1.9.1
   crypto: ^3.0.6
+  cryptography: ^2.9.0
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  # PDF 3.11.x needs archive <4.1.0. Image 4.11+ requires the
+  # incompatible archive >=4.4 API; retain the last compatible image release.
+  image: 4.10.2
   intl: ^0.20.2
   audioplayers: ^6.1.0
+  flutter_tts: ^4.2.5
   file_picker: ^10.3.3
 dev_dependencies:
   flutter_test:
@@ -23,7 +30,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/art/
+    - assets/coloring/
     - assets/audio/fluff/
+    - assets/audio/pro/
     - assets/audio/sfx/
     - assets/audio/music/
   fonts:
