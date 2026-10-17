@@ -27,7 +27,8 @@ Future<void> openTask(
       backgroundColor: cream,
       builder: (sheet) => _TaskSheet(controller: controller, task: item),
     );
-    await FluffAudio.instance.stop();
+    // Stop ongoing sounds without delaying the earned-star celebration route.
+    unawaited(FluffAudio.instance.stop());
     if (earned != true || !context.mounted) return;
     final next = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
