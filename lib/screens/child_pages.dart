@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../data/controller.dart';
@@ -716,7 +717,9 @@ Future<void> openChildPage(
   int index = 4,
   bool night = false,
 }) async {
-  await FluffAudio.instance.stop();
+  // Make narration stop synchronous from the child's perspective without
+  // waiting for the platform player before navigation begins.
+  unawaited(FluffAudio.instance.stop());
   if (!context.mounted) return;
   await Navigator.of(context).push(
     MaterialPageRoute<void>(
