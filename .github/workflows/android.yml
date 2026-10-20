@@ -37,7 +37,7 @@ jobs:
         run: flutter test --concurrency=1 test/app_flow_test.dart
         timeout-minutes: 4
       - name: Pro-Stimme und Tonunterbrechungen prüfen
-        run: flutter test --concurrency=1 test/pro_voice_test.dart
+        run: flutter test --concurrency=1 test/pro_voice_test.dart test/device_voice_test.dart
         timeout-minutes: 4
       - name: Lernspiele, Datenschutz und Malatelier prüfen
         run: flutter test --concurrency=1 --dart-define=RENDER_PREVIEWS=true test/discovery_test.dart
