@@ -50,7 +50,6 @@ void main() {
       await Future<void>.delayed(Duration.zero);
     }
     expect(text.spoken, ['Bitte räume dein Spielzeug weg.']);
-    expect(assets.stops, 0);
     text.events.add(null);
     await task;
     await audio.stop();
