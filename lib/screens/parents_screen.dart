@@ -1407,22 +1407,20 @@ class SettingsPage extends StatelessWidget {
                   ),
                   SwitchListTile(
                     title: const Text('Fluff-Stimme und Sternklang'),
-                    subtitle: const Text('Pro: Fluffs Originalaufnahmen. Eigene Texte und '
-                      'Basis-Vorlesen: installierte deutsche Offline-Stimme des Handys.'),
+                    subtitle: const Text('Pro: Fluffs echte Stimme, wo eine Aufnahme vorhanden ist. '
+                      'Weitere Texte werden derzeit noch mit der Handy-Stimme vorgelesen.'),
                     value: controller.data.sound,
                     onChanged: (v) =>
                         act(context, () => controller.settings(sound: v)),
                   ),
                   ListTile(
                     leading: const Icon(Icons.record_voice_over_rounded, color: blue),
-                    title: const Text('Vorlesestimme testen'),
-                    subtitle: const Text('Testet die deutsche Handy-Stimme, auch ohne Fluff Pro.'),
+                    title: const Text('Fluffs Originalstimme anhören'),
+                    subtitle: const Text('Spielt eine echte Fluff-Aufnahme ab, keine Handy-Stimme.'),
                     enabled: controller.data.sound,
                     onTap: !controller.data.sound ? null : () async {
                       FluffAudio.instance.enabled = true;
-                      await FluffAudio.instance.narrate([
-                        'Hallo! Ich bin Fluff. Kannst du meine Stimme hören?'
-                      ], preferFluff: false);
+                      await FluffAudio.instance.read('Welche Form ist das?');
                       if (!context.mounted) return;
                       final problem = FluffAudio.instance.voiceProblem.value;
                       if (problem != null) {

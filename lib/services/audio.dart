@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import '../data/companion.dart';
 import 'device_voice.dart';
 import 'pro_voice.dart';
+import 'offline_fluff_narration.dart';
 
 abstract class FluffVoicePlayback {
   Stream<void> get completed;
@@ -91,7 +92,10 @@ class FluffAudio {
       final tokens = preferFluff && number != null
         ? spokenNumber(number) : [text];
       for (final token in tokens) {
-        final asset = preferFluff ? proVoiceClips[proVoiceKey(token)] : null;
+        final asset = preferFluff
+          ? offlineFluffNarrationClips[proVoiceKey(token)] ??
+              proVoiceClips[proVoiceKey(token)]
+          : null;
         parts.add(asset == null ? _SpokenPart.text(token)
           : _SpokenPart.asset(asset));
       }

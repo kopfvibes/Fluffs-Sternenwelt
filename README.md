@@ -16,6 +16,34 @@ Deutschsprachige Android-App fuer Familien. Fluff begleitet Kinder durch Alltags
 - Eigene Bilder als PDF ausgeben; Vorlagen einzeln oder als ganzes Buch drucken oder als PDF speichern.
 - Pro-Familiencodes mit Ed25519-Signaturpruefung. Das gesamte Malatelier, Bildvorschauen, das Bilderalbum und alle Druckvorlagen erfordern Pro, auch im Elternbereich. Aktivierung, Drucken und Teilen liegen zusaetzlich hinter der Eltern-PIN.
 
+## Einheitliche Fluff-Stimme
+
+Die bestehende HeyGen-Stimme "Fluff" (siehe `pro-voice-manifest.json`) ist auch die
+Quelle der 302 offline gespeicherten Lernspiel-Aufnahmen. Weitere feste
+Geschichten und App-Erklaerungen werden als **separate, lokal gebuendelte
+Audioclips** aus derselben Stimme erzeugt. Ein anderes Android-TTS-Pitch ist
+**nicht** dieselbe Stimme.
+
+Die Vorbereitung fuer diesen erweiterten Offline-Sprachsatz liegt unter
+`voice/fluff_narration_lines.json` und `scripts/build_fluff_voice_pack.py`.
+Der Generator ist standardmaessig ein **Dry Run**, loest also keine
+kostenpflichtige Spracherzeugung aus. Fuer eine echte Produktion benoetigt
+man einen privaten HeyGen-API-Key in `HEYGEN_API_KEY` und muss ausdruecklich
+`--generate` angeben. Beispiel:
+
+```bash
+python3 scripts/build_fluff_voice_pack.py
+HEYGEN_API_KEY=... python3 scripts/build_fluff_voice_pack.py --generate
+```
+
+Nach der Generierung die geaenderten `assets/audio/narration/`-Dateien und
+`lib/services/offline_fluff_narration.dart` committen und die CI ausfuehren.
+Der API-Key gehoert niemals in Flutter, Git oder die APK. Die App sendet
+**keine** privaten Kinderdaten an HeyGen. Eltern-eigene, neue Aufgaben und
+abweichende Sternestaende koennen nicht durch feste Aufnahmen vollstaendig
+abgedeckt werden; dafuer ist eine separat freizugebende, abgesicherte
+Online-Spracherzeugung oder weiterhin die Systemstimme notwendig.
+
 ## Starten
 
 1. Die signierte APK auf einem ARM64-Android-Geraet ab Android 7 installieren.
