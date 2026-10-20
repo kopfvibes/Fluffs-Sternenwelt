@@ -27,6 +27,10 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
+      - name: Offline-Fluff-Stimmenpaket vorbereiten und prüfen
+        run: |
+          python3 -m py_compile scripts/build_fluff_voice_pack.py
+          python3 scripts/build_fluff_voice_pack.py
       - run: flutter analyze
       # Smaller suites report exactly where a regression fails instead of
       # aborting one long test run without an actionable diagnosis.
