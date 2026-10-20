@@ -1413,6 +1413,25 @@ class SettingsPage extends StatelessWidget {
                     onChanged: (v) =>
                         act(context, () => controller.settings(sound: v)),
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.record_voice_over_rounded, color: blue),
+                    title: const Text('Vorlesestimme testen'),
+                    subtitle: const Text('Testet die deutsche Handy-Stimme, auch ohne Fluff Pro.'),
+                    enabled: controller.data.sound,
+                    onTap: !controller.data.sound ? null : () async {
+                      FluffAudio.instance.enabled = true;
+                      await FluffAudio.instance.narrate([
+                        'Hallo! Ich bin Fluff. Kannst du meine Stimme hören?'
+                      ], preferFluff: false);
+                      if (!context.mounted) return;
+                      final problem = FluffAudio.instance.voiceProblem.value;
+                      if (problem != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(problem),
+                            duration: const Duration(seconds: 9)));
+                      }
+                    },
+                  ),
                   SwitchListTile(
                     title: const Text('Sanfte Vibration'),
                     value: controller.data.haptics,

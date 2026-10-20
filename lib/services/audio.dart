@@ -118,7 +118,9 @@ class FluffAudio {
       await interrupted;
       if (!enabled || request != _voiceRequest) return;
       try {
-        await _voice.stop();
+        // Do not create and stop an unused asset player before Android TTS.
+        // Certain devices reject stop() before the first asset has played.
+        if (_playback != null) await _playback!.stop();
         voiceProblem.value = null;
         var textUnavailable = false;
         for (final part in parts) {
@@ -130,7 +132,7 @@ class FluffAudio {
           final subscription = events.listen((_) {
             if (!finished.isCompleted) finished.complete();
           }, onError: (Object error, StackTrace stack) {
-            if (!finished.isCompleted) finished.complete();
+            if (!finished.isCompleted) finished.completeError(error, stack);
           });
           try {
             speaking.value = true;
@@ -139,13 +141,18 @@ class FluffAudio {
             } else {
               await _text.play(part.text!);
             }
-            await finished.future.timeout(const Duration(seconds: 90));
+            final duration = part.asset != null
+              ? const Duration(seconds: 35)
+              : Duration(seconds: (12 + (part.text!.length ~/ 9)).clamp(15, 75));
+            await finished.future.timeout(duration);
           } catch (error) {
             if (request != _voiceRequest) return;
             voiceProblem.value = part.asset == null
-              ? 'Eine deutsche Offline-Vorlesestimme wird benötigt. '
-                'Deine Erwachsenen können sie in den Handy-Einstellungen einrichten.'
-              : 'Die Aufnahme konnte nicht abgespielt werden. Bitte noch einmal versuchen.';
+              ? error is StateError
+                ? error.message.toString()
+                : 'Die Vorlesestimme konnte nicht starten. Prüfe in den '
+                  'Android-Einstellungen die Text-in-Sprache-Ausgabe und die Medienlautstärke.'
+              : 'Die Fluff-Aufnahme konnte nicht abgespielt werden. Bitte erneut versuchen.';
             if (part.asset != null) rethrow;
             textUnavailable = true;
           } finally {
