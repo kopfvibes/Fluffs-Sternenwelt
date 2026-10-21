@@ -7,6 +7,7 @@ import '../services/audio.dart';
 import '../widgets/child_narration.dart';
 import '../widgets/common.dart';
 import 'task_flow.dart';
+import 'enchanted_story_pages.dart';
 
 Future<void> showFluffDay(BuildContext context, AppController controller) async {
   // Stop playback immediately, but never block opening a child screen on audio I/O.
@@ -113,6 +114,17 @@ class _FluffDayDialogState extends State<FluffDayDialog> {
                     }),
                 if (next.isEmpty)
                   const Text('Jetzt ist Zeit für Spielen und Pausen.', textAlign: TextAlign.center),
+                const SizedBox(height: 12),
+                GlossyButton('Neue Zaubergeschichte zum Mitmachen',
+                  key: const ValueKey('fluff-enchanted-story'),
+                  icon: Icons.auto_stories_rounded, color: gold,
+                  onPressed: () {
+                    final navigator = Navigator.of(context);
+                    final ownerContext = navigator.context;
+                    navigator.pop();
+                    navigator.push(MaterialPageRoute<void>(
+                      builder: (_) => EnchantedStoryLibrary(controller: c)));
+                  }),
                 const SizedBox(height: 12),
                 GlossyButton('Fluffs Geschichte hören', key: const ValueKey('fluff-story'),
                   icon: Icons.menu_book_rounded, color: gold,

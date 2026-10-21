@@ -57,7 +57,7 @@ class EnchantedStoryLibrary extends StatelessWidget {
                   style: const TextStyle(color: ink, fontSize: 24,
                     fontWeight: FontWeight.w900)),
                 const SizedBox(height: 7),
-                Text('Mit Fluff und ' + tale.friend,
+                Text("Mit Fluff und ${tale.friend}",
                   style: const TextStyle(fontSize: 16)),
                 const SizedBox(height: 11),
                 Text(finished ? 'Schon entdeckt! Du darfst sie noch einmal erleben.'
@@ -71,8 +71,7 @@ class EnchantedStoryLibrary extends StatelessWidget {
                   onPressed: () => _openStory(context, today)),
               ])),
               const SizedBox(height: 18),
-              Text('Mein Geschichtenschatz · ' +
-                (read.length + (finished ? 1 : 0)).toString() + ' von 60',
+              Text("Mein Geschichtenschatz · ${read.length + (finished ? 1 : 0)} von 60",
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontWeight: FontWeight.w900,
                   color: Colors.white, fontSize: 18)),
@@ -133,7 +132,7 @@ class _EnchantedStoryReaderState extends State<EnchantedStoryReader> {
     }
     if (childId != widget.controller.child.id) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) Navigator.maybePop(context);
+        if (mounted) { Navigator.maybePop(context); }
       });
     }
   }
@@ -167,7 +166,7 @@ class _EnchantedStoryReaderState extends State<EnchantedStoryReader> {
     setState(() { saving = true; error = null; });
     try {
       await widget.controller.completeStory(widget.index, childId: childId);
-      if (mounted) setState(() { saved = true; saving = false; });
+      if (mounted) { setState(() { saved = true; saving = false; }); }
     } catch (_) {
       if (mounted) setState(() {
         saving = false; error = 'Die Geschichte konnte nicht gespeichert werden.';
@@ -209,7 +208,7 @@ class _EnchantedStoryReaderState extends State<EnchantedStoryReader> {
                   color: i <= scene ? gold : const Color(0x88ffffff),
                   size: 28)))),
             const SizedBox(height: 7),
-            Text('Szene ' + (scene + 1).toString() + ' von 3',
+            Text("Szene ${scene + 1} von 3",
               textAlign: TextAlign.center,
               style: const TextStyle(color: Color(0xffffe4a2),
                 fontSize: 16, fontWeight: FontWeight.w900)),
