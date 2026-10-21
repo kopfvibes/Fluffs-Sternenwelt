@@ -150,7 +150,7 @@ class _EnchantedStoryReaderState extends State<EnchantedStoryReader> {
   void _read() {
     if (!mounted || !widget.controller.data.sound ||
         childId != widget.controller.child.id ||
-        !(ModalRoute.of(context)?.isCurrent ?? false)) return;
+        !(ModalRoute.of(context)?.isCurrent ?? false)) { return; }
     unawaited(FluffAudio.instance.narrate(spoken,
       preferFluff: widget.controller.proActive));
   }
@@ -163,16 +163,21 @@ class _EnchantedStoryReaderState extends State<EnchantedStoryReader> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _read());
   }
   Future<void> _finish() async {
-    if (saving || childId != widget.controller.child.id) return;
-    if (saved) { if (mounted) Navigator.pop(context); return; }
+    if (saving || childId != widget.controller.child.id) { return; }
+    if (saved) {
+      if (mounted) { Navigator.pop(context); }
+      return;
+    }
     setState(() { saving = true; error = null; });
     try {
       await widget.controller.completeStory(widget.index, childId: childId);
       if (mounted) { setState(() { saved = true; saving = false; }); }
     } catch (_) {
-      if (mounted) setState(() {
-        saving = false; error = 'Die Geschichte konnte nicht gespeichert werden.';
-      });
+      if (mounted) {
+        setState(() {
+          saving = false; error = 'Die Geschichte konnte nicht gespeichert werden.';
+        });
+      }
     }
   }
   @override

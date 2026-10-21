@@ -108,8 +108,7 @@ class _FluffDayDialogState extends State<FluffDayDialog> {
                   GlossyButton('Mit dieser Aufgabe anfangen', icon: Icons.play_arrow_rounded,
                     onPressed: () {
                       final navigator = Navigator.of(context);
-                      final ownerContext = navigator.context;
-                      Navigator.pop(context);
+                        Navigator.pop(context);
                       openTask(ownerContext, c, next.first);
                     }),
                 if (next.isEmpty)
