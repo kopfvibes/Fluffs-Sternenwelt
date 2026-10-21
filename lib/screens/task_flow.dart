@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +6,8 @@ import '../data/controller.dart';
 import '../data/models.dart';
 import '../services/audio.dart';
 import '../widgets/common.dart';
+import '../data/companion.dart';
+import '../widgets/child_narration.dart';
 
 Future<void> openTask(
   BuildContext context,
@@ -12,7 +15,10 @@ Future<void> openTask(
   TaskItem first,
 ) async {
   TaskItem? task = first;
+  // Stop playback immediately, but never block opening a child screen on audio I/O.
+  unawaited(FluffAudio.instance.stop());
   while (task != null && context.mounted) {
+    if (!context.mounted) return;
     final item = task;
     final earned = await showModalBottomSheet<bool>(
       context: context,
@@ -21,6 +27,8 @@ Future<void> openTask(
       backgroundColor: cream,
       builder: (sheet) => _TaskSheet(controller: controller, task: item),
     );
+    // Stop ongoing sounds without delaying the earned-star celebration route.
+    unawaited(FluffAudio.instance.stop());
     if (earned != true || !context.mounted) return;
     final next = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
@@ -55,6 +63,44 @@ class _TaskSheet extends StatefulWidget {
 
 class _TaskSheetState extends State<_TaskSheet> {
   bool assisted = false, saving = false;
+  int step = 0;
+  late final String childId;
+  int? ownRequest;
+  bool get small => widget.controller.child.age <= 4;
+  bool get available => widget.controller.child.id == childId;
+  List<String> get lines => [widget.task.title,
+    if (widget.controller.done(widget.task)) 'Das hast du heute schon geschafft.'
+    else ...[
+      if (small) widget.task.steps[step] else ...widget.task.steps,
+      'Du darfst Hilfe holen. Wenn du fertig bist, tippe auf Geschafft.',
+    ],
+  ];
+  @override
+  void initState() {
+    super.initState();
+    childId = widget.controller.child.id;
+    widget.controller.addListener(_changed);
+    WidgetsBinding.instance.addPostFrameCallback((_) => readStep());
+  }
+  void _changed() {
+    if (!available) {
+      FluffAudio.instance.stop();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && (ModalRoute.of(context)?.isCurrent ?? false)) Navigator.pop(context, false);
+      });
+    }
+  }
+  void readStep() {
+    if (!mounted || !available || !widget.controller.data.sound) return;
+    FluffAudio.instance.narrate(lines, preferFluff: widget.controller.proActive);
+    ownRequest = FluffAudio.instance.requestId;
+  }
+  @override
+  void dispose() {
+    widget.controller.removeListener(_changed);
+    if (ownRequest == FluffAudio.instance.requestId) FluffAudio.instance.stop();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final completed = widget.controller.done(widget.task);
@@ -64,7 +110,11 @@ class _TaskSheetState extends State<_TaskSheet> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ArtIcon(widget.task.icon, size: 76),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ArtIcon(widget.task.icon, size: 76),
+              FluffSprite(size: 112, animate: widget.controller.data.motion, onTap: readStep),
+              HearButton(controller: widget.controller, lines: lines),
+            ]),
             const SizedBox(height: 8),
             Text(
               widget.task.title,
@@ -73,6 +123,7 @@ class _TaskSheetState extends State<_TaskSheet> {
             ),
             const SizedBox(height: 16),
             for (var i = 0; i < widget.task.steps.length; i++)
+              if (!small || i == step)
               Padding(
                 padding: const EdgeInsets.only(bottom: 11),
                 child: Row(
@@ -102,6 +153,21 @@ class _TaskSheetState extends State<_TaskSheet> {
                 ),
               ),
             const SizedBox(height: 6),
+            if (small) ...[
+              Text('Schritt ${step + 1} von ${widget.task.steps.length}',
+                style: const TextStyle(fontWeight: FontWeight.w900)),
+              const SizedBox(height: 12),
+              if (step + 1 < widget.task.steps.length && !completed)
+                GlossyButton('Weiter', key: const ValueKey('next-task-step'),
+                  icon: Icons.arrow_forward_rounded, onPressed: () {
+                    setState(() => step++);
+                    readStep();
+                  }),
+              if (step > 0)
+                TextButton.icon(onPressed: () { setState(() => step--); readStep(); },
+                  icon: const Icon(Icons.arrow_back_rounded), label: const Text('Zurück')),
+              const SizedBox(height: 12),
+            ],
             GlossyPanel(
               child: SwitchListTile(
                 contentPadding: EdgeInsets.zero,
@@ -117,13 +183,14 @@ class _TaskSheetState extends State<_TaskSheet> {
               ),
             ),
             const SizedBox(height: 16),
+            if (!small || completed || step + 1 == widget.task.steps.length)
             GlossyButton(
               completed
                   ? 'Heute schon geschafft'
                   : 'Geschafft! + ${widget.task.stars} ${widget.task.stars == 1 ? 'Stern' : 'Sterne'}',
               color: green,
               key: const ValueKey('complete-task'),
-              onPressed: completed || saving
+              onPressed: completed || saving || !available
                   ? null
                   : () async {
                       setState(() => saving = true);
@@ -186,12 +253,18 @@ class _CelebrationPageState extends State<CelebrationPage>
       duration: const Duration(milliseconds: 3200),
     );
     if (widget.controller.data.motion) animation.repeat();
-    FluffAudio.instance.say('success');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && widget.controller.data.sound) { FluffAudio.instance.narrate(
+        earnedNarration(widget.task.stars, widget.controller.balance()),
+        preferFluff: widget.controller.proActive);
+      }
+    });
     FluffAudio.instance.star();
   }
 
   @override
   void dispose() {
+    FluffAudio.instance.stop();
     animation.dispose();
     super.dispose();
   }
@@ -304,6 +377,8 @@ class _CelebrationPageState extends State<CelebrationPage>
                       onPressed: () => Navigator.pop(context, true),
                     ),
                     const SizedBox(height: 11),
+                    HearButton(controller: widget.controller,
+                      lines: earnedNarration(widget.task.stars, widget.controller.balance())),
                     GlossyButton(
                       'Toll gemacht!',
                       color: const Color(0xffffd8bf),

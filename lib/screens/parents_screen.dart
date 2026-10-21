@@ -8,6 +8,7 @@ import '../services/audio.dart';
 import '../widgets/common.dart';
 import 'extra_pages.dart';
 import 'statistics.dart';
+import 'pro_pages.dart';
 
 Future<void> openParents(BuildContext context, AppController controller) async {
   FluffAudio.instance.stop();
@@ -169,6 +170,11 @@ class ParentHub extends StatelessWidget {
               crossAxisSpacing: 15,
               childAspectRatio: textScale > 1.3 ? 0.49 : 1.00,
               children: [
+                _tile(context, 'Fluff Pro', 'game',
+                  () => ProPage(controller: controller)),
+                _tile(context, 'Malbuch drucken', 'book',
+                  () => controller.proActive ? PrintBookPage(controller: controller)
+                    : ProPage(controller: controller), locked: !controller.proActive),
                 _tile(
                   context,
                   'Kinderprofile\nverwalten',
@@ -220,8 +226,9 @@ class ParentHub extends StatelessWidget {
     BuildContext context,
     String label,
     String icon,
-    Widget Function() page,
-  ) => GlossyPanel(
+    Widget Function() page, {
+    bool locked = false,
+  }) => GlossyPanel(
     radius: 25,
     padding: const EdgeInsets.all(11),
     onTap: () => pushParent(context, controller, page),
@@ -242,6 +249,8 @@ class ParentHub extends StatelessWidget {
                 ? const Icon(Icons.bar_chart_rounded, color: blue, size: 69)
                 : icon == 'settings'
                 ? const Icon(Icons.settings_rounded, color: blue, size: 65)
+                : locked
+                ? const Icon(Icons.lock_outline_rounded, color: blue, size: 56)
                 : ArtIcon(icon, size: 64),
           ),
         ),
@@ -1398,10 +1407,28 @@ class SettingsPage extends StatelessWidget {
                   ),
                   SwitchListTile(
                     title: const Text('Fluff-Stimme und Sternklang'),
-                    subtitle: const Text('Lokal gespeicherte Audiodateien'),
+                    subtitle: const Text('Pro: Fluffs echte Stimme, wo eine Aufnahme vorhanden ist. '
+                      'Weitere Texte werden derzeit noch mit der Handy-Stimme vorgelesen.'),
                     value: controller.data.sound,
                     onChanged: (v) =>
                         act(context, () => controller.settings(sound: v)),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.record_voice_over_rounded, color: blue),
+                    title: const Text('Fluffs Originalstimme anhören'),
+                    subtitle: const Text('Spielt eine echte Fluff-Aufnahme ab, keine Handy-Stimme.'),
+                    enabled: controller.data.sound,
+                    onTap: !controller.data.sound ? null : () async {
+                      FluffAudio.instance.enabled = true;
+                      await FluffAudio.instance.read('Welche Form ist das?');
+                      if (!context.mounted) return;
+                      final problem = FluffAudio.instance.voiceProblem.value;
+                      if (problem != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(problem),
+                            duration: const Duration(seconds: 9)));
+                      }
+                    },
                   ),
                   SwitchListTile(
                     title: const Text('Sanfte Vibration'),

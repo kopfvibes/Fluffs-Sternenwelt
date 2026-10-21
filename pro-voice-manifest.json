@@ -1,0 +1,2732 @@
+{
+  "voice_name": "Fluff",
+  "voice_id": "f3a225316b15429ba9c119d51353803a",
+  "provider": "HeyGen",
+  "engine": "elevenlabs",
+  "language": "de",
+  "speed": 0.95,
+  "generated_on": "2026-10-10",
+  "format": "MP3, mono, 24 kHz, 64 kbit/s",
+  "offline": true,
+  "clips": [
+    {
+      "key": "wie viele sterne siehst du",
+      "text": "Wie viele Sterne siehst du?",
+      "id": "pro_001",
+      "asset": "audio/pro/pro_001.mp3",
+      "duration": 1.567,
+      "sha256": "cac68a36f4d5ad9d493ec72285c5b5c4138b40ed7ec8fa8243c2d0c302c9a394",
+      "bytes": 13293
+    },
+    {
+      "key": "welche form ist das",
+      "text": "Welche Form ist das?",
+      "id": "pro_002",
+      "asset": "audio/pro/pro_002.mp3",
+      "duration": 1.419,
+      "sha256": "a0abbdaec4a66d57b205d6401952516cd7af5315a601a6b35013194885ca3add",
+      "bytes": 12141
+    },
+    {
+      "key": "was kommt als nächstes",
+      "text": "Was kommt als Nächstes?",
+      "id": "pro_003",
+      "asset": "audio/pro/pro_003.mp3",
+      "duration": 1.546,
+      "sha256": "6e06765134a2cf72b34ac39d1fa9181f556fb7a252721a627d852b1a020d45c8",
+      "bytes": 13101
+    },
+    {
+      "key": "du kannst wählen:",
+      "text": "Du kannst wählen:",
+      "id": "pro_004",
+      "asset": "audio/pro/pro_004.mp3",
+      "duration": 1.209,
+      "sha256": "d215e4480948f77631ae214bf346a1859960c8b32d4d22bb6e73af54290869de",
+      "bytes": 10413
+    },
+    {
+      "key": "1",
+      "text": "Eins.",
+      "id": "pro_005",
+      "asset": "audio/pro/pro_005.mp3",
+      "duration": 0.64,
+      "sha256": "7ae6965172f6313e15997ef258494c60ac8c90a002ca7a28ee6471fbd6306154",
+      "bytes": 5805
+    },
+    {
+      "key": "das ist 1 stern. du darfst jeden stern einzeln zählen",
+      "text": "Das ist 1 stern. du darfst jeden stern einzeln zählen.",
+      "id": "pro_006",
+      "asset": "audio/pro/pro_006.mp3",
+      "duration": 4.297,
+      "sha256": "845ff04a1a9b1cc9166a4ac0c8fd3e2d358fd6043bff45f0aa4a5371c415cba6",
+      "bytes": 35181
+    },
+    {
+      "key": "2",
+      "text": "Zwei.",
+      "id": "pro_007",
+      "asset": "audio/pro/pro_007.mp3",
+      "duration": 0.78,
+      "sha256": "92c04eb198c4320dc136161a0381e5f7fa174f99aeff8011497fa5478bcf1526",
+      "bytes": 6957
+    },
+    {
+      "key": "das sind 2 sterne. du darfst jeden stern einzeln zählen",
+      "text": "Das sind 2 sterne. du darfst jeden stern einzeln zählen.",
+      "id": "pro_008",
+      "asset": "audio/pro/pro_008.mp3",
+      "duration": 4.994,
+      "sha256": "b8b1d25aa800ffd04d8d30e7f6b800540ee38474f02c61b026eae48afa653bdf",
+      "bytes": 40749
+    },
+    {
+      "key": "3",
+      "text": "Drei.",
+      "id": "pro_009",
+      "asset": "audio/pro/pro_009.mp3",
+      "duration": 0.733,
+      "sha256": "c33e51360020af5a2342cf68647d0f42851403852839fc775b4639e82052aace",
+      "bytes": 6573
+    },
+    {
+      "key": "das sind 3 sterne. du darfst jeden stern einzeln zählen",
+      "text": "Das sind 3 sterne. du darfst jeden stern einzeln zählen.",
+      "id": "pro_010",
+      "asset": "audio/pro/pro_010.mp3",
+      "duration": 4.236,
+      "sha256": "abb0acedb51f009490517c032b677805a5ac4ab2402d124cd50bbd53091d9cfe",
+      "bytes": 34605
+    },
+    {
+      "key": "4",
+      "text": "Vier.",
+      "id": "pro_011",
+      "asset": "audio/pro/pro_011.mp3",
+      "duration": 0.709,
+      "sha256": "345f4522120a3a98890b0594999bdba2a4d164beead6c7adb8f824cfe0a8259f",
+      "bytes": 6381
+    },
+    {
+      "key": "das sind 4 sterne. du darfst jeden stern einzeln zählen",
+      "text": "Das sind 4 sterne. du darfst jeden stern einzeln zählen.",
+      "id": "pro_012",
+      "asset": "audio/pro/pro_012.mp3",
+      "duration": 3.647,
+      "sha256": "5a579ad46accd9311d3945a573619df8c9d61203564db796c647186005cd8953",
+      "bytes": 29805
+    },
+    {
+      "key": "5",
+      "text": "Fünf.",
+      "id": "pro_013",
+      "asset": "audio/pro/pro_013.mp3",
+      "duration": 0.629,
+      "sha256": "c165aa401bb0c6712f05de42a931ffbf3fc4e77d797af8cd1a173a2de6aef091",
+      "bytes": 5805
+    },
+    {
+      "key": "das sind 5 sterne. du darfst jeden stern einzeln zählen",
+      "text": "Das sind 5 sterne. du darfst jeden stern einzeln zählen.",
+      "id": "pro_014",
+      "asset": "audio/pro/pro_014.mp3",
+      "duration": 4.018,
+      "sha256": "540d642fdeb4926a8bc6864fbbd274c9f9a5f7a4842e027c3d775538ef5ff0c1",
+      "bytes": 32877
+    },
+    {
+      "key": "6",
+      "text": "Sechs.",
+      "id": "pro_015",
+      "asset": "audio/pro/pro_015.mp3",
+      "duration": 0.652,
+      "sha256": "674de3e81355607345af8035d69f05ccd1b5923f1260bcedc8e8236029a82024",
+      "bytes": 5997
+    },
+    {
+      "key": "das sind 6 sterne. du darfst jeden stern einzeln zählen",
+      "text": "Das sind 6 sterne. du darfst jeden stern einzeln zählen.",
+      "id": "pro_016",
+      "asset": "audio/pro/pro_016.mp3",
+      "duration": 4.379,
+      "sha256": "3d3765836d4854170b80737ec4878463895518e60fcd87fc9fe845e420ad704c",
+      "bytes": 35757
+    },
+    {
+      "key": "7",
+      "text": "Sieben.",
+      "id": "pro_017",
+      "asset": "audio/pro/pro_017.mp3",
+      "duration": 0.779,
+      "sha256": "ed445f473a216eb37a7cf40f86a48b527e72c233813be82c777b3f630a489459",
+      "bytes": 6957
+    },
+    {
+      "key": "das sind 7 sterne. du darfst jeden stern einzeln zählen",
+      "text": "Das sind 7 sterne. du darfst jeden stern einzeln zählen.",
+      "id": "pro_018",
+      "asset": "audio/pro/pro_018.mp3",
+      "duration": 4.111,
+      "sha256": "ae0a66785844e34362b8be2cdb91721b060788d988daeb9393303e1cc10d8d10",
+      "bytes": 33645
+    },
+    {
+      "key": "8",
+      "text": "Acht.",
+      "id": "pro_019",
+      "asset": "audio/pro/pro_019.mp3",
+      "duration": 0.64,
+      "sha256": "72eb5cba3bcf93d58752c937df1d70668ca2245b188aa9d733726b909baec93c",
+      "bytes": 5805
+    },
+    {
+      "key": "das sind 8 sterne. du darfst jeden stern einzeln zählen",
+      "text": "Das sind 8 sterne. du darfst jeden stern einzeln zählen.",
+      "id": "pro_020",
+      "asset": "audio/pro/pro_020.mp3",
+      "duration": 3.914,
+      "sha256": "b78706220a4d404ba59af9c4170a5f9c6209d53270bf4dee8fdf47a34cbf0822",
+      "bytes": 32109
+    },
+    {
+      "key": "9",
+      "text": "Neun.",
+      "id": "pro_021",
+      "asset": "audio/pro/pro_021.mp3",
+      "duration": 0.675,
+      "sha256": "4d71c2f32ef533c10a608eb2b04a31bcd41f193a56aaa3c10253b625c05d0da0",
+      "bytes": 6189
+    },
+    {
+      "key": "das sind 9 sterne. du darfst jeden stern einzeln zählen",
+      "text": "Das sind 9 sterne. du darfst jeden stern einzeln zählen.",
+      "id": "pro_022",
+      "asset": "audio/pro/pro_022.mp3",
+      "duration": 3.914,
+      "sha256": "7c20b8c00c686ecb302b3281d73acfb7a58cd8b7d8b100de0f81b8046e0ac4cc",
+      "bytes": 32109
+    },
+    {
+      "key": "kreis",
+      "text": "Kreis.",
+      "id": "pro_023",
+      "asset": "audio/pro/pro_023.mp3",
+      "duration": 0.768,
+      "sha256": "a8c84894a2da4bb665089ff573a9bf6dfbc0e1d8bfff399d723e31dd91889c79",
+      "bytes": 6765
+    },
+    {
+      "key": "kreis – jede form sieht anders aus",
+      "text": "Kreis – jede form sieht anders aus.",
+      "id": "pro_024",
+      "asset": "audio/pro/pro_024.mp3",
+      "duration": 2.3,
+      "sha256": "8e120bb02aed216f02cacfffa756ad2086ecc6e3947372a8c5a333712d2e6732",
+      "bytes": 19053
+    },
+    {
+      "key": "dreieck",
+      "text": "Dreieck.",
+      "id": "pro_025",
+      "asset": "audio/pro/pro_025.mp3",
+      "duration": 0.861,
+      "sha256": "32fd75205bb65eb35fac345a0e3186035f359195034f72240792985f5cc7dd0a",
+      "bytes": 7533
+    },
+    {
+      "key": "dreieck – jede form sieht anders aus",
+      "text": "Dreieck – jede form sieht anders aus.",
+      "id": "pro_026",
+      "asset": "audio/pro/pro_026.mp3",
+      "duration": 2.474,
+      "sha256": "7d2a74a0294e94e3c59a112c07825044a3c604f72c9f7ce8db98131281346b7d",
+      "bytes": 20589
+    },
+    {
+      "key": "quadrat",
+      "text": "Quadrat.",
+      "id": "pro_027",
+      "asset": "audio/pro/pro_027.mp3",
+      "duration": 0.919,
+      "sha256": "f13c37fadb5cbc9c678be72873fa5f75bd8ab137f8df08b215dca92bb4f32629",
+      "bytes": 8109
+    },
+    {
+      "key": "quadrat – jede form sieht anders aus",
+      "text": "Quadrat – jede form sieht anders aus.",
+      "id": "pro_028",
+      "asset": "audio/pro/pro_028.mp3",
+      "duration": 2.556,
+      "sha256": "6ef9e79d778196f674cfb1cd63a30da2df7ef991e9b9886b82c39c18b8b56bac",
+      "bytes": 21165
+    },
+    {
+      "key": "stern",
+      "text": "Stern.",
+      "id": "pro_029",
+      "asset": "audio/pro/pro_029.mp3",
+      "duration": 0.756,
+      "sha256": "7262fceb3a618e1515b8d12607e622dc48da8c8e32129ababe2849e8e2c7e36b",
+      "bytes": 6765
+    },
+    {
+      "key": "stern – jede form sieht anders aus",
+      "text": "Stern – jede form sieht anders aus.",
+      "id": "pro_030",
+      "asset": "audio/pro/pro_030.mp3",
+      "duration": 2.44,
+      "sha256": "bfc599820c1ee0b70a2d263a7c72c52cf9b39c6d6a75a8f3cd7a00e004a45fce",
+      "bytes": 20205
+    },
+    {
+      "key": "blauer kreis",
+      "text": "Blauer kreis.",
+      "id": "pro_031",
+      "asset": "audio/pro/pro_031.mp3",
+      "duration": 1.092,
+      "sha256": "d40f0bde92d59dfddd0643e4c51e8df9a205866445a89da47d5129cc44f3fcb2",
+      "bytes": 9453
+    },
+    {
+      "key": "das muster beginnt wieder mit blauer kreis",
+      "text": "Das muster beginnt wieder mit blauer kreis.",
+      "id": "pro_032",
+      "asset": "audio/pro/pro_032.mp3",
+      "duration": 2.358,
+      "sha256": "f934d9b50d23cef98f9ac760fe81ea294204d65a3dac368c6eb093ebb902c7f2",
+      "bytes": 19629
+    },
+    {
+      "key": "gelber kreis",
+      "text": "Gelber kreis.",
+      "id": "pro_033",
+      "asset": "audio/pro/pro_033.mp3",
+      "duration": 1.208,
+      "sha256": "375ab3f460428f4a105f2575cb5f0c94325674b260baf45d9adcf2d694e3d10b",
+      "bytes": 10413
+    },
+    {
+      "key": "das muster beginnt wieder mit gelber kreis",
+      "text": "Das muster beginnt wieder mit gelber kreis.",
+      "id": "pro_034",
+      "asset": "audio/pro/pro_034.mp3",
+      "duration": 2.625,
+      "sha256": "e2bc24a20f5ae2972b5d6b3de61f4fbc9718168e47c131b73bf22c75146a6729",
+      "bytes": 21741
+    },
+    {
+      "key": "lila kreis",
+      "text": "Lila kreis.",
+      "id": "pro_035",
+      "asset": "audio/pro/pro_035.mp3",
+      "duration": 1.185,
+      "sha256": "ce260e44aacd0820799eb16182f60d5aa35fc9c75db4c5578feec07b757b5d89",
+      "bytes": 10221
+    },
+    {
+      "key": "das muster beginnt wieder mit lila kreis",
+      "text": "Das muster beginnt wieder mit lila kreis.",
+      "id": "pro_036",
+      "asset": "audio/pro/pro_036.mp3",
+      "duration": 2.637,
+      "sha256": "601d4ab342608f0c12816acb4d6653191798970e240f768f7b0493f7a19286ea",
+      "bytes": 21741
+    },
+    {
+      "key": "grüner kreis",
+      "text": "Grüner kreis.",
+      "id": "pro_037",
+      "asset": "audio/pro/pro_037.mp3",
+      "duration": 1.278,
+      "sha256": "edd53d9b0609ae73bab451b204cb7d3bfe461b068f97cf3d0d615510bc9c3b9e",
+      "bytes": 10989
+    },
+    {
+      "key": "das muster beginnt wieder mit grüner kreis",
+      "text": "Das muster beginnt wieder mit grüner kreis.",
+      "id": "pro_038",
+      "asset": "audio/pro/pro_038.mp3",
+      "duration": 2.776,
+      "sha256": "db183e07f6122f797b997835bf175c9e5a43dbf54411cee545c740bc6d16d14c",
+      "bytes": 22893
+    },
+    {
+      "key": "das muster beginnt wieder mit stern",
+      "text": "Das muster beginnt wieder mit stern.",
+      "id": "pro_039",
+      "asset": "audio/pro/pro_039.mp3",
+      "duration": 2.335,
+      "sha256": "1506784c165307e59295e8bece9b6bcc8921d6def5c3bbc917089909fe286795",
+      "bytes": 19437
+    },
+    {
+      "key": "herz",
+      "text": "Herz.",
+      "id": "pro_040",
+      "asset": "audio/pro/pro_040.mp3",
+      "duration": 0.78,
+      "sha256": "72b0454d0269733c56f47c91cece7a13e3afa5762ef8ab45ad7e778666067d07",
+      "bytes": 6957
+    },
+    {
+      "key": "das muster beginnt wieder mit herz",
+      "text": "Das muster beginnt wieder mit herz.",
+      "id": "pro_041",
+      "asset": "audio/pro/pro_041.mp3",
+      "duration": 1.87,
+      "sha256": "473dec3c01ba825b793d6e22ce68df5ee4f2fd885ad63e507a4ebf30535ad26f",
+      "bytes": 15597
+    },
+    {
+      "key": "blume",
+      "text": "Blume.",
+      "id": "pro_042",
+      "asset": "audio/pro/pro_042.mp3",
+      "duration": 0.756,
+      "sha256": "07aaf09cf2e8df2c19b6a9091110e05e12512aa71b7271637d0172e24ec2d351",
+      "bytes": 6765
+    },
+    {
+      "key": "das muster beginnt wieder mit blume",
+      "text": "Das muster beginnt wieder mit blume.",
+      "id": "pro_043",
+      "asset": "audio/pro/pro_043.mp3",
+      "duration": 2.288,
+      "sha256": "c9cb359d8f96059c11b359f8bd3df28fec1c4a8f8545f0631d544b993656b35e",
+      "bytes": 19053
+    },
+    {
+      "key": "baum",
+      "text": "Baum.",
+      "id": "pro_044",
+      "asset": "audio/pro/pro_044.mp3",
+      "duration": 0.675,
+      "sha256": "5bf031b578cb88a85638fa2a970da994ea9fc1a8ba6b771021074c5e94cf9d67",
+      "bytes": 6189
+    },
+    {
+      "key": "das muster beginnt wieder mit baum",
+      "text": "Das muster beginnt wieder mit baum.",
+      "id": "pro_045",
+      "asset": "audio/pro/pro_045.mp3",
+      "duration": 2.207,
+      "sha256": "a721868d6c80d7ec107764c3c234c54615655caaf8175987359e9714fd3dcc04",
+      "bytes": 18285
+    },
+    {
+      "key": "teddybär",
+      "text": "Teddybär.",
+      "id": "pro_046",
+      "asset": "audio/pro/pro_046.mp3",
+      "duration": 0.988,
+      "sha256": "7d743034501922b26283edd337a099e487d96cf7bdfdeb6e6ff27d1de76502e1",
+      "bytes": 8685
+    },
+    {
+      "key": "das muster beginnt wieder mit teddybär",
+      "text": "Das muster beginnt wieder mit teddybär.",
+      "id": "pro_047",
+      "asset": "audio/pro/pro_047.mp3",
+      "duration": 2.475,
+      "sha256": "38f318dbe7fade17dc5767840ce1b5fa3140d1a297039e2aa9c9151899554a5d",
+      "bytes": 20589
+    },
+    {
+      "key": "buch",
+      "text": "Buch.",
+      "id": "pro_048",
+      "asset": "audio/pro/pro_048.mp3",
+      "duration": 0.651,
+      "sha256": "50ad0b057e826dbf15d41233326ab64c72bceb57d2c2e8e320809ec91cf195ac",
+      "bytes": 5997
+    },
+    {
+      "key": "das muster beginnt wieder mit buch",
+      "text": "Das muster beginnt wieder mit buch.",
+      "id": "pro_049",
+      "asset": "audio/pro/pro_049.mp3",
+      "duration": 1.941,
+      "sha256": "be242cf6ef0e380ffd060b5fe9fe2074ae47b527713d1acc128455d4be4a72d3",
+      "bytes": 16173
+    },
+    {
+      "key": "mond",
+      "text": "Mond.",
+      "id": "pro_050",
+      "asset": "audio/pro/pro_050.mp3",
+      "duration": 0.698,
+      "sha256": "903156a575dfa9b06595790494a1fc804720be29f93ffba5bf24b61ae5d8a65f",
+      "bytes": 6381
+    },
+    {
+      "key": "das muster beginnt wieder mit mond",
+      "text": "Das muster beginnt wieder mit mond.",
+      "id": "pro_051",
+      "asset": "audio/pro/pro_051.mp3",
+      "duration": 2.114,
+      "sha256": "349b6b69af32b4e09fa30a780334f33941d554032f0666cb19f4af0839a6bd52",
+      "bytes": 17709
+    },
+    {
+      "key": "sonne",
+      "text": "Sonne.",
+      "id": "pro_052",
+      "asset": "audio/pro/pro_052.mp3",
+      "duration": 0.744,
+      "sha256": "d063801ede2a16cacf8ed66634c7345fffdb7faf278b27c93b376e8fe6f1c244",
+      "bytes": 6573
+    },
+    {
+      "key": "das muster beginnt wieder mit sonne",
+      "text": "Das muster beginnt wieder mit sonne.",
+      "id": "pro_053",
+      "asset": "audio/pro/pro_053.mp3",
+      "duration": 2.15,
+      "sha256": "bd389ac78f76a25e936a851c638a0cb2c3c6f5df30af62fa5386a64abd2ea184",
+      "bytes": 17901
+    },
+    {
+      "key": "regenbogen",
+      "text": "Regenbogen.",
+      "id": "pro_054",
+      "asset": "audio/pro/pro_054.mp3",
+      "duration": 1.093,
+      "sha256": "dad74bc36fcc82e02c8a13e54eea06eb1004c5c924195b42fc3e312bc0176763",
+      "bytes": 9453
+    },
+    {
+      "key": "das muster beginnt wieder mit regenbogen",
+      "text": "Das muster beginnt wieder mit regenbogen.",
+      "id": "pro_055",
+      "asset": "audio/pro/pro_055.mp3",
+      "duration": 2.405,
+      "sha256": "f73695a7f05b500233a7526243b1300e6fdf61316fb42cc3fc80b245ab480fea",
+      "bytes": 20013
+    },
+    {
+      "key": "dein turm fällt um. wie könntest du dich fühlen",
+      "text": "Dein Turm fällt um. Wie könntest du dich fühlen?",
+      "id": "pro_056",
+      "asset": "audio/pro/pro_056.mp3",
+      "duration": 3.728,
+      "sha256": "7444ed3407dc74e41ceba0c28d0f8970681f96b0d21d0b9accea243879ce9693",
+      "bytes": 30573
+    },
+    {
+      "key": "traurig",
+      "text": "Traurig.",
+      "id": "pro_057",
+      "asset": "audio/pro/pro_057.mp3",
+      "duration": 0.907,
+      "sha256": "aab6d7536284422459de35d16da80536702ba0c9054ef74414dbb41e78bd2cd1",
+      "bytes": 7917
+    },
+    {
+      "key": "hungrig",
+      "text": "Hungrig.",
+      "id": "pro_058",
+      "asset": "audio/pro/pro_058.mp3",
+      "duration": 0.849,
+      "sha256": "3adcffbc868850f3852b4ee8ad39681c9ba0db9d457380268d342f947a3147a5",
+      "bytes": 7533
+    },
+    {
+      "key": "ausgeschlafen",
+      "text": "Ausgeschlafen.",
+      "id": "pro_059",
+      "asset": "audio/pro/pro_059.mp3",
+      "duration": 1.035,
+      "sha256": "dad4f28ee1337e70ed9855283757f30f1525d319c47e8e8492afa16d3e18fd18",
+      "bytes": 9069
+    },
+    {
+      "key": "du darfst traurig sein. wenn du magst, baust du später neu",
+      "text": "Du darfst traurig sein. Wenn du magst, baust du später neu.",
+      "id": "pro_060",
+      "asset": "audio/pro/pro_060.mp3",
+      "duration": 3.38,
+      "sha256": "58fbbe061815f2b9ee3c9bda4684fabd2ac06e247938213a215490dd94f779b3",
+      "bytes": 27693
+    },
+    {
+      "key": "jemand nimmt dir ungefragt dein spielzeug weg",
+      "text": "Jemand nimmt dir ungefragt dein Spielzeug weg.",
+      "id": "pro_061",
+      "asset": "audio/pro/pro_061.mp3",
+      "duration": 2.37,
+      "sha256": "f1d22eedb90bd01779ba3c19b3cbd608b2fda0b02501b4e6d6a8160a2f7cfaa3",
+      "bytes": 19629
+    },
+    {
+      "key": "wütend",
+      "text": "Wütend.",
+      "id": "pro_062",
+      "asset": "audio/pro/pro_062.mp3",
+      "duration": 0.814,
+      "sha256": "4fe4b6a7af219a219eedcd2499a4e9cbd04dad08f487e0dfdfcff301535f8d8c",
+      "bytes": 7149
+    },
+    {
+      "key": "müde",
+      "text": "Müde.",
+      "id": "pro_063",
+      "asset": "audio/pro/pro_063.mp3",
+      "duration": 0.756,
+      "sha256": "73e9038cc9378d4f19de5ef0f725f4afb9bcd72cd77fd42385e9c4ab1f118b73",
+      "bytes": 6765
+    },
+    {
+      "key": "satt",
+      "text": "Satt.",
+      "id": "pro_064",
+      "asset": "audio/pro/pro_064.mp3",
+      "duration": 0.651,
+      "sha256": "ef3c1415f41e4c86d3d33daa1a6d001eb8c09a6ef9aaf336398a4c29bcee9eae",
+      "bytes": 5997
+    },
+    {
+      "key": "wut ist okay. sag: ich möchte gefragt werden. du musst niemanden hauen",
+      "text": "Wut ist okay. Sag: Ich möchte gefragt werden. Du musst niemanden hauen.",
+      "id": "pro_065",
+      "asset": "audio/pro/pro_065.mp3",
+      "duration": 5.179,
+      "sha256": "f20e728bf40c48e29a84815354d6800b0493c4ad4eae04d21ff15893e93b0379",
+      "bytes": 42093
+    },
+    {
+      "key": "du hast lange gespielt und gähnst",
+      "text": "Du hast lange gespielt und gähnst.",
+      "id": "pro_066",
+      "asset": "audio/pro/pro_066.mp3",
+      "duration": 2.01,
+      "sha256": "76e35de79bf9b2cc66eb86c550f0f6858d74934b7840da806544d4545063c072",
+      "bytes": 16749
+    },
+    {
+      "key": "erschrocken",
+      "text": "Erschrocken.",
+      "id": "pro_067",
+      "asset": "audio/pro/pro_067.mp3",
+      "duration": 0.814,
+      "sha256": "fb6ad2ff9e01c5d68b81a40442a2e019638a8f4940e41cfa5aa3781b363849d5",
+      "bytes": 7149
+    },
+    {
+      "key": "dein körper braucht eine pause. ruhe ist wichtig",
+      "text": "Dein Körper braucht eine Pause. Ruhe ist wichtig.",
+      "id": "pro_068",
+      "asset": "audio/pro/pro_068.mp3",
+      "duration": 3.415,
+      "sha256": "5fd162075f4b581d1fa410e718d133272034be77297eabd6cac378157ba6f704",
+      "bytes": 28077
+    },
+    {
+      "key": "du schaffst etwas nach mehreren versuchen",
+      "text": "Du schaffst etwas nach mehreren Versuchen.",
+      "id": "pro_069",
+      "asset": "audio/pro/pro_069.mp3",
+      "duration": 2.301,
+      "sha256": "0cc3e209881318063cd8e493c57c0b17e8ad0c6ade226e6b2711dd80e8ea5db4",
+      "bytes": 19053
+    },
+    {
+      "key": "stolz",
+      "text": "Stolz.",
+      "id": "pro_070",
+      "asset": "audio/pro/pro_070.mp3",
+      "duration": 0.779,
+      "sha256": "545dd64c0cece77a2814b090838eebe34aa7a65ba885a401c826629c1ccf32d5",
+      "bytes": 6957
+    },
+    {
+      "key": "durstig",
+      "text": "Durstig.",
+      "id": "pro_071",
+      "asset": "audio/pro/pro_071.mp3",
+      "duration": 0.895,
+      "sha256": "0199998ad114afcfe1e3ba98f14477d5373558b921f54c756631be8298dfb064",
+      "bytes": 7917
+    },
+    {
+      "key": "du darfst stolz sein. du hast es in deinem tempo versucht",
+      "text": "Du darfst stolz sein. Du hast es in deinem Tempo versucht.",
+      "id": "pro_072",
+      "asset": "audio/pro/pro_072.mp3",
+      "duration": 3.671,
+      "sha256": "15fca334af40ab2a5776461f8df4b8a7db738e118ef418e2b4189fc85337de21",
+      "bytes": 29997
+    },
+    {
+      "key": "heute ist alles neu. du weißt noch nicht, was passiert",
+      "text": "Heute ist alles neu. Du weißt noch nicht, was passiert.",
+      "id": "pro_073",
+      "asset": "audio/pro/pro_073.mp3",
+      "duration": 3.31,
+      "sha256": "0b9dea33f3d04ef50c55905ae18328339147e4f881b37557d8f35f6ce2426da3",
+      "bytes": 27117
+    },
+    {
+      "key": "unsicher",
+      "text": "Unsicher.",
+      "id": "pro_074",
+      "asset": "audio/pro/pro_074.mp3",
+      "duration": 0.976,
+      "sha256": "fa61e254c7e42926317fcb65606cc314e61f86a107387288a999bed8bf1b8332",
+      "bytes": 8493
+    },
+    {
+      "key": "unsicher sein ist okay. frag eine vertraute person, was als nächstes kommt",
+      "text": "Unsicher sein ist okay. Frag eine vertraute Person, was als Nächstes kommt.",
+      "id": "pro_075",
+      "asset": "audio/pro/pro_075.mp3",
+      "duration": 5.121,
+      "sha256": "26af73f164b8b543dc241bef9f7a9cb594370e146c7f5461723505cdfb08d689",
+      "bytes": 41709
+    },
+    {
+      "key": "du freust dich auf ein spiel mit deinem freund",
+      "text": "Du freust dich auf ein Spiel mit deinem Freund.",
+      "id": "pro_076",
+      "asset": "audio/pro/pro_076.mp3",
+      "duration": 2.637,
+      "sha256": "5cde49d49697a01df22a3779465f3da9c7dbb6e6305115a9ab659a28a69a1238",
+      "bytes": 21741
+    },
+    {
+      "key": "glücklich",
+      "text": "Glücklich.",
+      "id": "pro_077",
+      "asset": "audio/pro/pro_077.mp3",
+      "duration": 0.837,
+      "sha256": "fcfd42528131a9972293a0b84e85dea3f7892ca9999177f9a7e2e190f83d8916",
+      "bytes": 7341
+    },
+    {
+      "key": "freude darfst du zeigen. andere dürfen sich anders fühlen",
+      "text": "Freude darfst du zeigen. Andere dürfen sich anders fühlen.",
+      "id": "pro_078",
+      "asset": "audio/pro/pro_078.mp3",
+      "duration": 3.682,
+      "sha256": "bc6dbf90446696318a3a3ead3e5acb49bb5c4090a19fdbdfa4bec8156af43823",
+      "bytes": 30189
+    },
+    {
+      "key": "dein freund ist traurig. was hilft",
+      "text": "Dein Freund ist traurig. Was hilft?",
+      "id": "pro_079",
+      "asset": "audio/pro/pro_079.mp3",
+      "duration": 2.904,
+      "sha256": "9ff35e1fc2864f03bc62589483f615a9b716a4984297dc45bafa3fc5bce84e7b",
+      "bytes": 23853
+    },
+    {
+      "key": "fragen: soll ich bei dir bleiben",
+      "text": "Fragen: Soll ich bei dir bleiben?",
+      "id": "pro_080",
+      "asset": "audio/pro/pro_080.mp3",
+      "duration": 2.23,
+      "sha256": "66c1c02c39d8f9d551dea6ab221bb4933acb6035376fa4809a5dea2ad04055cd",
+      "bytes": 18477
+    },
+    {
+      "key": "sagen: stell dich nicht so an",
+      "text": "Sagen: Stell dich nicht so an.",
+      "id": "pro_081",
+      "asset": "audio/pro/pro_081.mp3",
+      "duration": 2.534,
+      "sha256": "431b503584f4b4a1b4a63e6cc1c92e765125ccaa5db3866fe153acc0e0727a8c",
+      "bytes": 20973
+    },
+    {
+      "key": "sofort lachen",
+      "text": "Sofort lachen.",
+      "id": "pro_082",
+      "asset": "audio/pro/pro_082.mp3",
+      "duration": 1.337,
+      "sha256": "e18e3be50bcb01aa168104ecb29b7329e453484183c445877664011b7dcd3a28",
+      "bytes": 11373
+    },
+    {
+      "key": "du kannst zuhören. dein freund entscheidet, ob er nähe möchte",
+      "text": "Du kannst zuhören. Dein Freund entscheidet, ob er Nähe möchte.",
+      "id": "pro_083",
+      "asset": "audio/pro/pro_083.mp3",
+      "duration": 4.1,
+      "sha256": "dc9bf4584829e3ebada6aa715074ab7ce38bd3c95f2b0b2a88b631ec2dffd067",
+      "bytes": 33453
+    },
+    {
+      "key": "du bist wütend. was kannst du tun",
+      "text": "Du bist wütend. Was kannst du tun?",
+      "id": "pro_084",
+      "asset": "audio/pro/pro_084.mp3",
+      "duration": 3.218,
+      "sha256": "e0020169bd94a02b7fd9d91395089c3ad0e6148845b5f9cec9df3fd938498aff",
+      "bytes": 26541
+    },
+    {
+      "key": "abstand nehmen und ruhig atmen",
+      "text": "Abstand nehmen und ruhig atmen.",
+      "id": "pro_085",
+      "asset": "audio/pro/pro_085.mp3",
+      "duration": 2.16,
+      "sha256": "01ba84471f2d2f0ced98966435aaf4cbc34047d1bc994759b2b90d534b470150",
+      "bytes": 17901
+    },
+    {
+      "key": "jemanden hauen",
+      "text": "Jemanden hauen.",
+      "id": "pro_086",
+      "asset": "audio/pro/pro_086.mp3",
+      "duration": 1.302,
+      "sha256": "3f7d4ce7092e01dddf4aef8a5e27137a49c2c75f927a6d0f2dccfef3a1f83a22",
+      "bytes": 11181
+    },
+    {
+      "key": "alles werfen",
+      "text": "Alles werfen.",
+      "id": "pro_087",
+      "asset": "audio/pro/pro_087.mp3",
+      "duration": 1.244,
+      "sha256": "99ace69bb0275164d7c6b69177583254bf86d49c23f4c9bdfc605ceec56d99e0",
+      "bytes": 10605
+    },
+    {
+      "key": "du darfst wütend sein. hände bleiben sicher. hol hilfe, wenn du sie brauchst",
+      "text": "Du darfst wütend sein. Hände bleiben sicher. Hol Hilfe, wenn du sie brauchst.",
+      "id": "pro_088",
+      "asset": "audio/pro/pro_088.mp3",
+      "duration": 5.333,
+      "sha256": "dda40a3a549c20b01addec10c37ce5022f4d74746850793436052e1b60897eb6",
+      "bytes": 43437
+    },
+    {
+      "key": "du möchtest mit einem spielzeug spielen, das jemand benutzt",
+      "text": "Du möchtest mit einem Spielzeug spielen, das jemand benutzt.",
+      "id": "pro_089",
+      "asset": "audio/pro/pro_089.mp3",
+      "duration": 3.241,
+      "sha256": "8bd917486fb9567ab4f24489f6344f3011b636dd584c7001b7a776d866ea4c7a",
+      "bytes": 26733
+    },
+    {
+      "key": "freundlich fragen und warten",
+      "text": "Freundlich fragen und warten.",
+      "id": "pro_090",
+      "asset": "audio/pro/pro_090.mp3",
+      "duration": 1.87,
+      "sha256": "5ec292e190659e534a693b3bc95992579199585ee642684fe78376619c8c7edf",
+      "bytes": 15597
+    },
+    {
+      "key": "es einfach wegnehmen",
+      "text": "Es einfach wegnehmen.",
+      "id": "pro_091",
+      "asset": "audio/pro/pro_091.mp3",
+      "duration": 1.545,
+      "sha256": "36ddd5b56620e5a4333c7515c2785d80cf142803351ff60b49157868fd309c8f",
+      "bytes": 13101
+    },
+    {
+      "key": "schubsen",
+      "text": "Schubsen.",
+      "id": "pro_092",
+      "asset": "audio/pro/pro_092.mp3",
+      "duration": 0.802,
+      "sha256": "b0cdcd06516878b4121b08ff427173322d1423f141cc6bc06618767336298f13",
+      "bytes": 7149
+    },
+    {
+      "key": "sag: darf ich danach dran sein? ein nein darfst du auch hören",
+      "text": "Sag: Darf ich danach dran sein? Ein Nein darfst du auch hören.",
+      "id": "pro_093",
+      "asset": "audio/pro/pro_093.mp3",
+      "duration": 5.632,
+      "sha256": "19787d20ef3b351eb41c56de446ba37fbb7aa5e7b777a8335b834fd293d8e1ea",
+      "bytes": 45741
+    },
+    {
+      "key": "du schaffst den reißverschluss noch nicht",
+      "text": "Du schaffst den Reißverschluss noch nicht.",
+      "id": "pro_094",
+      "asset": "audio/pro/pro_094.mp3",
+      "duration": 2.172,
+      "sha256": "71eb59b4e10ec86795349af455b3b8145c14ac88d4f98a8d2723761dccbf6e7e",
+      "bytes": 18093
+    },
+    {
+      "key": "um hilfe bitten",
+      "text": "Um Hilfe bitten.",
+      "id": "pro_095",
+      "asset": "audio/pro/pro_095.mp3",
+      "duration": 1.198,
+      "sha256": "a8f234de9ce3fc80ae01de8fde31f307895ceb1606a0c70c36d61953b350fd1a",
+      "bytes": 10221
+    },
+    {
+      "key": "dich selbst schimpfen",
+      "text": "Dich selbst schimpfen.",
+      "id": "pro_096",
+      "asset": "audio/pro/pro_096.mp3",
+      "duration": 1.592,
+      "sha256": "df8a1f621e7e7232e3189608d9b33c6ba4675314d9346535c2c89bf1a871eac5",
+      "bytes": 13485
+    },
+    {
+      "key": "die jacke wegwerfen",
+      "text": "Die Jacke wegwerfen.",
+      "id": "pro_097",
+      "asset": "audio/pro/pro_097.mp3",
+      "duration": 1.464,
+      "sha256": "bbf734169207f083f8483a254c24a5c34679d4838060f4dfb8d4784549840260",
+      "bytes": 12333
+    },
+    {
+      "key": "sag: kannst du mir bitte helfen? hilfe holen ist mutig",
+      "text": "Sag: Kannst du mir bitte helfen? Hilfe holen ist mutig.",
+      "id": "pro_098",
+      "asset": "audio/pro/pro_098.mp3",
+      "duration": 4.181,
+      "sha256": "cd191bb67cca68bc12966b6328688b4f3b3359b3d0b569291580a1408b3f3dec",
+      "bytes": 34221
+    },
+    {
+      "key": "du hast aus versehen wasser verschüttet",
+      "text": "Du hast aus Versehen Wasser verschüttet.",
+      "id": "pro_099",
+      "asset": "audio/pro/pro_099.mp3",
+      "duration": 2.37,
+      "sha256": "48a8dc6adbffffcaaee9a92a5b27f14bee87404e57a9dfab5ac740f65c9b896d",
+      "bytes": 19629
+    },
+    {
+      "key": "bescheid sagen und zusammen aufwischen",
+      "text": "Bescheid sagen und zusammen aufwischen.",
+      "id": "pro_100",
+      "asset": "audio/pro/pro_100.mp3",
+      "duration": 2.962,
+      "sha256": "03993bed87d9e0b2fc70eab13f77f1b4aea71464681083d7f5aff5d56c7e194f",
+      "bytes": 24429
+    },
+    {
+      "key": "jemand anderem die schuld geben",
+      "text": "Jemand anderem die Schuld geben.",
+      "id": "pro_101",
+      "asset": "audio/pro/pro_101.mp3",
+      "duration": 2.242,
+      "sha256": "e76bbb5c3fbbf07bb2d121a19a18e58e8ecff1ed404cf2d3b433fbba6e8a31fb",
+      "bytes": 18669
+    },
+    {
+      "key": "so tun, als wäre nichts",
+      "text": "So tun, als wäre nichts.",
+      "id": "pro_102",
+      "asset": "audio/pro/pro_102.mp3",
+      "duration": 1.975,
+      "sha256": "b54a5d0fe31a8fe7aac1d79dea53ff2b6a7dbe36ffb8a7d8ab663c87984a575d",
+      "bytes": 16557
+    },
+    {
+      "key": "fehler passieren. ein erwachsener kann dir beim aufwischen helfen",
+      "text": "Fehler passieren. Ein Erwachsener kann dir beim Aufwischen helfen.",
+      "id": "pro_103",
+      "asset": "audio/pro/pro_103.mp3",
+      "duration": 4.436,
+      "sha256": "83dad74828bcf3c4bec97e6e8c0921c22e51953d71326790cae004a0e23e80b9",
+      "bytes": 36141
+    },
+    {
+      "key": "du möchtest gerade keine umarmung",
+      "text": "Du möchtest gerade keine Umarmung.",
+      "id": "pro_104",
+      "asset": "audio/pro/pro_104.mp3",
+      "duration": 2.497,
+      "sha256": "c6d6c9daecde7c4984f3c55ec430db9142475d126bf177ea730281e07ec66c7b",
+      "bytes": 20781
+    },
+    {
+      "key": "nein sagen. mein körper gehört mir",
+      "text": "Nein sagen. Mein Körper gehört mir.",
+      "id": "pro_105",
+      "asset": "audio/pro/pro_105.mp3",
+      "duration": 2.498,
+      "sha256": "0996269a83ae71840492d5278b4b69e5cf46ca9e1a1fa5e67c221f97bf3b4e0d",
+      "bytes": 20781
+    },
+    {
+      "key": "du musst immer ja sagen",
+      "text": "Du musst immer Ja sagen.",
+      "id": "pro_106",
+      "asset": "audio/pro/pro_106.mp3",
+      "duration": 1.754,
+      "sha256": "6f25fa1f4d098bc2279481493853cde71b1e5be7c73ab4925654879c628612db",
+      "bytes": 14829
+    },
+    {
+      "key": "du darfst nie etwas sagen",
+      "text": "Du darfst nie etwas sagen.",
+      "id": "pro_107",
+      "asset": "audio/pro/pro_107.mp3",
+      "duration": 2.022,
+      "sha256": "d07cc32b84390fca5fbcba8956c3601d8f4fb26fa7eb6faba427d0b65abc0ba1",
+      "bytes": 16941
+    },
+    {
+      "key": "dein nein zählt. nähe soll sich für dich gut anfühlen",
+      "text": "Dein Nein zählt. Nähe soll sich für dich gut anfühlen.",
+      "id": "pro_108",
+      "asset": "audio/pro/pro_108.mp3",
+      "duration": 4.157,
+      "sha256": "722e7e3a59817abe1f16c9da408d236b0ef9027eb6919021f3d28912f9af946d",
+      "bytes": 34029
+    },
+    {
+      "key": "dein freund möchte nicht teilen",
+      "text": "Dein Freund möchte nicht teilen.",
+      "id": "pro_109",
+      "asset": "audio/pro/pro_109.mp3",
+      "duration": 1.906,
+      "sha256": "1f0447f29d0e9486e28dd0a88e527a12e497b932be1c14cf2eaa7edd4ad525ff",
+      "bytes": 15981
+    },
+    {
+      "key": "nach einer gemeinsamen lösung fragen",
+      "text": "Nach einer gemeinsamen Lösung fragen.",
+      "id": "pro_110",
+      "asset": "audio/pro/pro_110.mp3",
+      "duration": 2.254,
+      "sha256": "d2de6dc4fa0e3ebc52aa668871b8c15b626be056bd50c16968ea6bc20ab634f0",
+      "bytes": 18669
+    },
+    {
+      "key": "es ihm wegnehmen",
+      "text": "Es ihm wegnehmen.",
+      "id": "pro_111",
+      "asset": "audio/pro/pro_111.mp3",
+      "duration": 1.244,
+      "sha256": "18c14c05561c7be50beaefbe7b8fc7f43c774e2e9d3276d19bed9287313d375c",
+      "bytes": 10605
+    },
+    {
+      "key": "ihn auslachen",
+      "text": "Ihn auslachen.",
+      "id": "pro_112",
+      "asset": "audio/pro/pro_112.mp3",
+      "duration": 1.162,
+      "sha256": "855ecd46a49ae569cebe5c47f5767c23ee33571d640729b92abea62b8a71c9ad",
+      "bytes": 10029
+    },
+    {
+      "key": "teilen darf freiwillig sein. vielleicht könnt ihr abwechseln oder anders spielen",
+      "text": "Teilen darf freiwillig sein. Vielleicht könnt ihr abwechseln oder anders spielen.",
+      "id": "pro_113",
+      "asset": "audio/pro/pro_113.mp3",
+      "duration": 4.634,
+      "sha256": "ddda65bad857479953898ecd05250b45c5cd143801b341a215e708f9edf9fa38",
+      "bytes": 37869
+    },
+    {
+      "key": "du hast jemanden aus versehen verletzt",
+      "text": "Du hast jemanden aus Versehen verletzt.",
+      "id": "pro_114",
+      "asset": "audio/pro/pro_114.mp3",
+      "duration": 2.369,
+      "sha256": "f18730d211eda989e428eeda238d685dfc513d09048fbd87ef5479e70ad0ffb6",
+      "bytes": 19629
+    },
+    {
+      "key": "entschuldigen und fragen, was hilft",
+      "text": "Entschuldigen und fragen, was hilft.",
+      "id": "pro_115",
+      "asset": "audio/pro/pro_115.mp3",
+      "duration": 2.253,
+      "sha256": "eba033f4258d88dcd7cee808017ab4325d4aa55d422d8af034391569429be1c1",
+      "bytes": 18669
+    },
+    {
+      "key": "darüber lachen",
+      "text": "Darüber lachen.",
+      "id": "pro_116",
+      "asset": "audio/pro/pro_116.mp3",
+      "duration": 1.104,
+      "sha256": "ff6f397e276f5b7bf014e76c59adc7357b43c73aa93ecd260b09db3f2d3a5afb",
+      "bytes": 9453
+    },
+    {
+      "key": "einfach weitergehen",
+      "text": "Einfach weitergehen.",
+      "id": "pro_117",
+      "asset": "audio/pro/pro_117.mp3",
+      "duration": 1.418,
+      "sha256": "534e2e23b536778fa8c62741e0b17244ebdc2911da55d9243f961ff341d6a8eb",
+      "bytes": 12141
+    },
+    {
+      "key": "sag: das tut mir leid. brauchst du hilfe? hol einen erwachsenen dazu",
+      "text": "Sag: Das tut mir leid. Brauchst du Hilfe? Hol einen Erwachsenen dazu.",
+      "id": "pro_118",
+      "asset": "audio/pro/pro_118.mp3",
+      "duration": 5.707,
+      "sha256": "1f867e70d13093259c577438f75466e428e3bcbe66ae8c92ca020bdc1dd9fa93",
+      "bytes": 46317
+    },
+    {
+      "key": "du willst über eine straße gehen",
+      "text": "Du willst über eine Straße gehen.",
+      "id": "pro_119",
+      "asset": "audio/pro/pro_119.mp3",
+      "duration": 1.87,
+      "sha256": "3b4555aacd3158e1325310ef657cd5f376aa53d4beabc67895d0c7847c0fd18a",
+      "bytes": 15597
+    },
+    {
+      "key": "mit einer erwachsenen person gehen",
+      "text": "Mit einer erwachsenen Person gehen.",
+      "id": "pro_120",
+      "asset": "audio/pro/pro_120.mp3",
+      "duration": 2.23,
+      "sha256": "fd25dcf11487ef3ff78a1b421dfb0e5c7d20a12c107f5680d63d75ba6f59cd05",
+      "bytes": 18477
+    },
+    {
+      "key": "einfach loslaufen",
+      "text": "Einfach loslaufen.",
+      "id": "pro_121",
+      "asset": "audio/pro/pro_121.mp3",
+      "duration": 1.51,
+      "sha256": "b6eee6d03873874046f207457d3259d0b545feacc76eb2ad151d29c103e5fb4c",
+      "bytes": 12717
+    },
+    {
+      "key": "nur dem ball folgen",
+      "text": "Nur dem Ball folgen.",
+      "id": "pro_122",
+      "asset": "audio/pro/pro_122.mp3",
+      "duration": 1.499,
+      "sha256": "6f8b735053ec7e1d60a4215dbd998f86e63d2aabbddf594a48b084c4bc083bde",
+      "bytes": 12717
+    },
+    {
+      "key": "an der straße hältst du an. geh mit einer vertrauten erwachsenen person",
+      "text": "An der Straße hältst du an. Geh mit einer vertrauten erwachsenen Person.",
+      "id": "pro_123",
+      "asset": "audio/pro/pro_123.mp3",
+      "duration": 5.122,
+      "sha256": "e7c85e308afd0592276270991f91ec9992d3abff67c7719d0004a984fdf7b542",
+      "bytes": 41709
+    },
+    {
+      "key": "dir ist etwas unheimlich",
+      "text": "Dir ist etwas unheimlich.",
+      "id": "pro_124",
+      "asset": "audio/pro/pro_124.mp3",
+      "duration": 2.254,
+      "sha256": "051fbce87add1928951d9623576137fdd0a991de1e70173bd568334bd206c0fd",
+      "bytes": 18669
+    },
+    {
+      "key": "zu einer vertrauten person gehen",
+      "text": "Zu einer vertrauten Person gehen.",
+      "id": "pro_125",
+      "asset": "audio/pro/pro_125.mp3",
+      "duration": 2.451,
+      "sha256": "d134982e83673dfbab0911d60e969da3a6d30ccd29ba3c459863a30301efbff6",
+      "bytes": 20397
+    },
+    {
+      "key": "du musst alles allein schaffen",
+      "text": "Du musst alles allein schaffen.",
+      "id": "pro_126",
+      "asset": "audio/pro/pro_126.mp3",
+      "duration": 1.859,
+      "sha256": "8fd428717ea1edab355343fe8efdd9cd0c6d954d60864c4384a16898e4a85bb0",
+      "bytes": 15597
+    },
+    {
+      "key": "nichts erzählen",
+      "text": "Nichts erzählen.",
+      "id": "pro_127",
+      "asset": "audio/pro/pro_127.mp3",
+      "duration": 1.546,
+      "sha256": "d7ffdaf58b2b3aa79a8999387978e2096217f4422a75cc07f3f9a9b569d4911e",
+      "bytes": 13101
+    },
+    {
+      "key": "du darfst hilfe holen und erzählen, was dir angst macht",
+      "text": "Du darfst Hilfe holen und erzählen, was dir Angst macht.",
+      "id": "pro_128",
+      "asset": "audio/pro/pro_128.mp3",
+      "duration": 3.705,
+      "sha256": "1567783d81460565b3aacbf832355f991ea70b1fa4237c0b65d2bc1dce4d50ff",
+      "bytes": 30381
+    },
+    {
+      "key": "finde zwei gleiche bilder",
+      "text": "Finde zwei gleiche Bilder.",
+      "id": "pro_129",
+      "asset": "audio/pro/pro_129.mp3",
+      "duration": 1.812,
+      "sha256": "5e5f3ae82dffe44e220aebfbc3d453b5c5b44a84a634186975aec8359c3e5e3b",
+      "bytes": 15213
+    },
+    {
+      "key": "ein paar gefunden",
+      "text": "Ein Paar gefunden!",
+      "id": "pro_130",
+      "asset": "audio/pro/pro_130.mp3",
+      "duration": 1.662,
+      "sha256": "260e27705c9ff1aa7d7602d2ab741547f28e461e5e7dac4f0aeaa9d7a9d29e3b",
+      "bytes": 14061
+    },
+    {
+      "key": "schau dir die bilder an. du darfst es neu versuchen",
+      "text": "Schau dir die Bilder an. Du darfst es neu versuchen.",
+      "id": "pro_131",
+      "asset": "audio/pro/pro_131.mp3",
+      "duration": 3.565,
+      "sha256": "2cc1010c132ab56f6b2f21e7675cbfd0797789f3f3fd5d66186ae64a110b9402",
+      "bytes": 29229
+    },
+    {
+      "key": "schau noch einmal hin. du darfst dir zeit nehmen",
+      "text": "Schau noch einmal hin. Du darfst dir Zeit nehmen.",
+      "id": "pro_132",
+      "asset": "audio/pro/pro_132.mp3",
+      "duration": 3.391,
+      "sha256": "068ca5f12913ef3811b1a35f3667e2f26b676dc1e67ca3ca5e515d70d5aa263b",
+      "bytes": 27885
+    },
+    {
+      "key": "du hast alle paare gefunden. dein entdecker-sticker ist in deinem album",
+      "text": "Du hast alle Paare gefunden. Dein Entdecker-Sticker ist in deinem Album.",
+      "id": "pro_133",
+      "asset": "audio/pro/pro_133.mp3",
+      "duration": 5.167,
+      "sha256": "a2cbb8a5e7d8bd514ef483a5e1d55156612c6c5eb806f49ca519e0be2aaccacf",
+      "bytes": 42093
+    },
+    {
+      "key": "du hast etwas neues entdeckt. dein entdecker-sticker ist in deinem album",
+      "text": "Du hast etwas Neues entdeckt. Dein Entdecker-Sticker ist in deinem Album.",
+      "id": "pro_134",
+      "asset": "audio/pro/pro_134.mp3",
+      "duration": 4.913,
+      "sha256": "f02c0ccf3786440fa56141bcd7c9cade32765b972ea9e37b8ec3a8f5001629c9",
+      "bytes": 39981
+    },
+    {
+      "key": "dein fortschritt konnte nicht gespeichert werden. du kannst es noch einmal versuchen",
+      "text": "Dein Fortschritt konnte nicht gespeichert werden. Du kannst es noch einmal versuchen.",
+      "id": "pro_135",
+      "asset": "audio/pro/pro_135.mp3",
+      "duration": 4.425,
+      "sha256": "e4237613fe4d95714dea8cb7e9e7f22d97f32a41115f9ebe164faa53464edc69",
+      "bytes": 36141
+    },
+    {
+      "key": "willkommen in meinem malatelier! hier kannst du malen, ein ausmalbild aussuchen und deine bilder im album anschauen",
+      "text": "Willkommen in meinem Malatelier! Hier kannst du malen, ein Ausmalbild aussuchen und deine Bilder im Album anschauen.",
+      "id": "pro_136",
+      "asset": "audio/pro/pro_136.mp3",
+      "duration": 8.082,
+      "sha256": "078cde9919d60cad1f258b396bba67991762826d5d17b87eedbe92ead567f037",
+      "bytes": 65325
+    },
+    {
+      "key": "freies malen",
+      "text": "Freies Malen.",
+      "id": "pro_137",
+      "asset": "audio/pro/pro_137.mp3",
+      "duration": 1.429,
+      "sha256": "80f1a99e9f6863c117f8b0f308443db59ae885e61479d10822db82c8d4bc7285",
+      "bytes": 12141
+    },
+    {
+      "key": "such dir eine farbe aus. male in deinem tempo. wenn du fertig bist, kannst du dein bild im album speichern",
+      "text": "Such dir eine Farbe aus. Male in deinem Tempo. Wenn du fertig bist, kannst du dein Bild im Album speichern.",
+      "id": "pro_138",
+      "asset": "audio/pro/pro_138.mp3",
+      "duration": 8.221,
+      "sha256": "6015cf950a647fb31da2a2722882f90ffc5b331d44692c28063d2683218fac5b",
+      "bytes": 66477
+    },
+    {
+      "key": "dein bild ist im album gespeichert",
+      "text": "Dein Bild ist im Album gespeichert.",
+      "id": "pro_139",
+      "asset": "audio/pro/pro_139.mp3",
+      "duration": 3.067,
+      "sha256": "95c102820ce290ed5161d8f16c24836fe58a13a03ac3c49bf150b6b034dc64d2",
+      "bytes": 25197
+    },
+    {
+      "key": "dein bild konnte nicht gespeichert werden. bitte versuche es noch einmal",
+      "text": "Dein Bild konnte nicht gespeichert werden. Bitte versuche es noch einmal.",
+      "id": "pro_140",
+      "asset": "audio/pro/pro_140.mp3",
+      "duration": 4.866,
+      "sha256": "0ba8f6f363512800905779a6eb808f1c3a8977bd9a6599d6702066ac187e5a1c",
+      "bytes": 39597
+    },
+    {
+      "key": "rosa",
+      "text": "Rosa.",
+      "id": "pro_141",
+      "asset": "audio/pro/pro_141.mp3",
+      "duration": 0.942,
+      "sha256": "d7808f7fc27499517d86d344e1d6ea0c73fb3a1ad9477601868a05f5d833b765",
+      "bytes": 8301
+    },
+    {
+      "key": "gelb",
+      "text": "Gelb.",
+      "id": "pro_142",
+      "asset": "audio/pro/pro_142.mp3",
+      "duration": 0.803,
+      "sha256": "e6efa1ac935c98a4b2743ab4fde535f8e15f445daa1e076f457198eb597b9592",
+      "bytes": 7149
+    },
+    {
+      "key": "grün",
+      "text": "Grün.",
+      "id": "pro_143",
+      "asset": "audio/pro/pro_143.mp3",
+      "duration": 0.907,
+      "sha256": "408159b3bb173278846ef11aec9cb0cf59c9df7fb179c108d8bcdfe5d6fc96f7",
+      "bytes": 7917
+    },
+    {
+      "key": "blau",
+      "text": "Blau.",
+      "id": "pro_144",
+      "asset": "audio/pro/pro_144.mp3",
+      "duration": 0.814,
+      "sha256": "b7ce0b5fdd462863a3c935cdabdd0308820073f6a3f5e73cf65cf900e1a5346b",
+      "bytes": 7149
+    },
+    {
+      "key": "lila",
+      "text": "Lila.",
+      "id": "pro_145",
+      "asset": "audio/pro/pro_145.mp3",
+      "duration": 0.884,
+      "sha256": "ba51df21c7c346b32336fd54d4053d448bd4cb3c10f94c91a16f04e90abf1c7b",
+      "bytes": 7725
+    },
+    {
+      "key": "rot",
+      "text": "Rot.",
+      "id": "pro_146",
+      "asset": "audio/pro/pro_146.mp3",
+      "duration": 0.814,
+      "sha256": "e448c6208cf5e31f8ce4380d5125863891a2b60c6626a809ab22c6f1f617e73f",
+      "bytes": 7149
+    },
+    {
+      "key": "braun",
+      "text": "Braun.",
+      "id": "pro_147",
+      "asset": "audio/pro/pro_147.mp3",
+      "duration": 0.86,
+      "sha256": "10fe664a148d8fbc092ab48fbefc41ab875322306ce163fcc63e7698ecac233b",
+      "bytes": 7533
+    },
+    {
+      "key": "schwarz",
+      "text": "Schwarz.",
+      "id": "pro_148",
+      "asset": "audio/pro/pro_148.mp3",
+      "duration": 0.954,
+      "sha256": "b6dab5fc19db6d603cefa77e7462e40fd47ed78bd8d023593b41d460afe79659",
+      "bytes": 8301
+    },
+    {
+      "key": "weiß",
+      "text": "Weiß.",
+      "id": "pro_149",
+      "asset": "audio/pro/pro_149.mp3",
+      "duration": 0.746,
+      "sha256": "8ac66c267e3750634a0a577970f34ffc7e3bad0852d8907f2fdc8ce76ba351ab",
+      "bytes": 6765
+    },
+    {
+      "key": "fluff baut einen turm",
+      "text": "Fluff baut einen turm.",
+      "id": "pro_150",
+      "asset": "audio/pro/pro_150.mp3",
+      "duration": 1.638,
+      "sha256": "63ad27b7dae2c28bd6764b4e60bd460374daa69768c3c0a140d7f7c295a07e5e",
+      "bytes": 13869
+    },
+    {
+      "key": "fluffs blumengarten",
+      "text": "Fluffs blumengarten.",
+      "id": "pro_151",
+      "asset": "audio/pro/pro_151.mp3",
+      "duration": 1.674,
+      "sha256": "fbe5ec7371c910a7f4529c3ddaf32598437fd45b8a1b3c07c64bbc12580c1c73",
+      "bytes": 14061
+    },
+    {
+      "key": "fluff und die sterne",
+      "text": "Fluff und die sterne.",
+      "id": "pro_152",
+      "asset": "audio/pro/pro_152.mp3",
+      "duration": 1.557,
+      "sha256": "184d158ddaf1fc31623fe04eb3c8b14091f55c5a917decef57e5b2a119ea34e1",
+      "bytes": 13101
+    },
+    {
+      "key": "fluffs lesezeit",
+      "text": "Fluffs lesezeit.",
+      "id": "pro_153",
+      "asset": "audio/pro/pro_153.mp3",
+      "duration": 1.499,
+      "sha256": "aa40abada195293b2862fa6d71b582abd8d475625857f436e7d1aa13ba83d106",
+      "bytes": 12717
+    },
+    {
+      "key": "fluff hilft einem freund",
+      "text": "Fluff hilft einem freund.",
+      "id": "pro_154",
+      "asset": "audio/pro/pro_154.mp3",
+      "duration": 1.58,
+      "sha256": "919a077de35eea125a37344bbb30dba30232f9ce88c60d7071739a868bca325d",
+      "bytes": 13293
+    },
+    {
+      "key": "gute nacht, fluff",
+      "text": "Gute nacht, fluff.",
+      "id": "pro_155",
+      "asset": "audio/pro/pro_155.mp3",
+      "duration": 1.29,
+      "sha256": "53794510f7022d0383407b58366acefead7d2beef07b94241310113ade574b40",
+      "bytes": 10989
+    },
+    {
+      "key": "formen entdecken",
+      "text": "Formen entdecken.",
+      "id": "pro_156",
+      "asset": "audio/pro/pro_156.mp3",
+      "duration": 1.267,
+      "sha256": "59e0d0a04ce936c58a4c25897306d252c30d3ec4077c6f4ee53cb4edd9686acb",
+      "bytes": 10797
+    },
+    {
+      "key": "meine zählsterne",
+      "text": "Meine zählsterne.",
+      "id": "pro_157",
+      "asset": "audio/pro/pro_157.mp3",
+      "duration": 1.441,
+      "sha256": "f158c18d7fb7330a2fde857627100e137fbb614269f855041aa0007a334c095a",
+      "bytes": 12333
+    },
+    {
+      "key": "der weg zu fluff",
+      "text": "Der weg zu fluff.",
+      "id": "pro_158",
+      "asset": "audio/pro/pro_158.mp3",
+      "duration": 1.29,
+      "sha256": "c9bbd272e8d74855a067a696d414c44203120096515d67112853f840c13133d2",
+      "bytes": 10989
+    },
+    {
+      "key": "muster weiterzeichnen",
+      "text": "Muster weiterzeichnen.",
+      "id": "pro_159",
+      "asset": "audio/pro/pro_159.mp3",
+      "duration": 1.708,
+      "sha256": "81ee61e426f4bacfd877bf6844450382ffe3e679f65f029c306327f3b7e957be",
+      "bytes": 14445
+    },
+    {
+      "key": "mein gefühl heute",
+      "text": "Mein gefühl heute.",
+      "id": "pro_160",
+      "asset": "audio/pro/pro_160.mp3",
+      "duration": 1.615,
+      "sha256": "5f518e75012862bafba7c242f497d4aa2cc3e2837803b9099d9118d4f48d604c",
+      "bytes": 13677
+    },
+    {
+      "key": "mein eigenes sternenglas",
+      "text": "Mein eigenes sternenglas.",
+      "id": "pro_161",
+      "asset": "audio/pro/pro_161.mp3",
+      "duration": 2.126,
+      "sha256": "c794b11930d8c4b4902ac8268a96279b109030bd52cfdda132f241e2f92fac5a",
+      "bytes": 17709
+    },
+    {
+      "key": "ich bin fluff. wir merken uns bilder und finden zwei gleiche. du entscheidest, wann die karten wieder zugedeckt werden",
+      "text": "Ich bin Fluff. Wir merken uns Bilder und finden zwei gleiche. Du entscheidest, wann die Karten wieder zugedeckt werden.",
+      "id": "pro_162",
+      "asset": "audio/pro/pro_162.mp3",
+      "duration": 7.479,
+      "sha256": "5962e88ebbd2bdfed525a4842b39129cb997c55b04a1a1e9fa9e71f5253d5570",
+      "bytes": 60525
+    },
+    {
+      "key": "ich bin fluff. wir zählen jeden stern einmal. die letzte zahl sagt uns, wie viele sterne es zusammen sind",
+      "text": "Ich bin Fluff. Wir zählen jeden Stern einmal. Die letzte Zahl sagt uns, wie viele Sterne es zusammen sind.",
+      "id": "pro_163",
+      "asset": "audio/pro/pro_163.mp3",
+      "duration": 7.64,
+      "sha256": "9206a30825d3481e95d442b7182ae8c7339ae69dcb35dcdb6e20b74a0bff1d3f",
+      "bytes": 61869
+    },
+    {
+      "key": "ich bin fluff. wir untersuchen formen. wir entdecken ecken, runde linien und die spitzen eines sterns",
+      "text": "Ich bin Fluff. Wir untersuchen Formen. Wir entdecken Ecken, runde Linien und die Spitzen eines Sterns.",
+      "id": "pro_164",
+      "asset": "audio/pro/pro_164.mp3",
+      "duration": 7.328,
+      "sha256": "8b405a70a50536307fee2bb60581d5732ecd78e6643016bace04ba64c9a9dcb7",
+      "bytes": 59373
+    },
+    {
+      "key": "ich bin fluff. wir entdecken eine gruppe, die sich wiederholt. dann setzen wir das muster fort",
+      "text": "Ich bin Fluff. Wir entdecken eine Gruppe, die sich wiederholt. Dann setzen wir das Muster fort.",
+      "id": "pro_165",
+      "asset": "audio/pro/pro_165.mp3",
+      "duration": 6.305,
+      "sha256": "dbbd111c17a69cf9732331ba95352c8e78637502dafe9f0b07f4bd8db7e67ed5",
+      "bytes": 51117
+    },
+    {
+      "key": "ich bin fluff. wir lernen wörter für gefühle. menschen dürfen sich verschieden fühlen. dann probieren wir aus, was helfen kann",
+      "text": "Ich bin Fluff. Wir lernen Wörter für Gefühle. Menschen dürfen sich verschieden fühlen. Dann probieren wir aus, was helfen kann.",
+      "id": "pro_166",
+      "asset": "audio/pro/pro_166.mp3",
+      "duration": 8.744,
+      "sha256": "20cab29790a3e70deb5c5a608572ab664653c0a90773b9cc561850d502c52237",
+      "bytes": 70701
+    },
+    {
+      "key": "ich bin fluff. wir üben freundliche worte, hilfe holen und nein sagen. wir spielen kleine alltagssituationen zusammen durch",
+      "text": "Ich bin Fluff. Wir üben freundliche Worte, Hilfe holen und Nein sagen. Wir spielen kleine Alltagssituationen zusammen durch.",
+      "id": "pro_167",
+      "asset": "audio/pro/pro_167.mp3",
+      "duration": 9.307,
+      "sha256": "4ebe4b5e4a2db5f3c16d41804e648f3839bfd2e52f85fd7593140402cafda399",
+      "bytes": 75117
+    },
+    {
+      "key": "du hast dir bilder und ihre plätze gemerkt und gleiche bilder verglichen",
+      "text": "Du hast dir Bilder und ihre Plätze gemerkt und gleiche Bilder verglichen.",
+      "id": "pro_168",
+      "asset": "audio/pro/pro_168.mp3",
+      "duration": 4.448,
+      "sha256": "dbf3435d8d8156204d3431ffa75899559d0b1d5eb78d249533057b2a3d620f25",
+      "bytes": 36333
+    },
+    {
+      "key": "du hast jeden stern einmal gezählt. die letzte zahl nennt die ganze menge",
+      "text": "Du hast jeden Stern einmal gezählt. Die letzte Zahl nennt die ganze Menge.",
+      "id": "pro_169",
+      "asset": "audio/pro/pro_169.mp3",
+      "duration": 5.388,
+      "sha256": "420c3a4b73f1da214153975261c69ee497b8fee1d6acacd330b34e0969af998d",
+      "bytes": 43821
+    },
+    {
+      "key": "du hast formen an ihren ecken, runden linien und spitzen erkannt",
+      "text": "Du hast Formen an ihren Ecken, runden Linien und Spitzen erkannt.",
+      "id": "pro_170",
+      "asset": "audio/pro/pro_170.mp3",
+      "duration": 5.423,
+      "sha256": "dce3c3e762cf116cb2314be9d0a9a4ccf62479c71e5337d044272f6a1feb01b4",
+      "bytes": 44013
+    },
+    {
+      "key": "du hast wiederkehrende gruppen entdeckt und muster fortgesetzt",
+      "text": "Du hast wiederkehrende Gruppen entdeckt und Muster fortgesetzt.",
+      "id": "pro_171",
+      "asset": "audio/pro/pro_171.mp3",
+      "duration": 4.134,
+      "sha256": "47c547263bab8fcfd2184f21ed56133e0e7d9c3740c192251afe2fd63395138c",
+      "bytes": 33837
+    },
+    {
+      "key": "du hast gefühle benannt und ausprobiert, was dir helfen könnte. alle gefühle dürfen da sein",
+      "text": "Du hast Gefühle benannt und ausprobiert, was dir helfen könnte. Alle Gefühle dürfen da sein.",
+      "id": "pro_172",
+      "asset": "audio/pro/pro_172.mp3",
+      "duration": 6.202,
+      "sha256": "ceb45ebae77159d022bad5e4a453e8c5c18f22e15ca03cd0fbe49da2134c783c",
+      "bytes": 50349
+    },
+    {
+      "key": "du hast freundliche worte, grenzen und hilfe holen geübt. du darfst dir unterstützung holen",
+      "text": "Du hast freundliche Worte, Grenzen und Hilfe holen geübt. Du darfst dir Unterstützung holen.",
+      "id": "pro_173",
+      "asset": "audio/pro/pro_173.mp3",
+      "duration": 5.505,
+      "sha256": "6e67fa07f6dd08a138483a8bac9049a301a2a83cdf298365b177705eb67fb7ae",
+      "bytes": 44781
+    },
+    {
+      "key": "schau auf das bild und merke dir seinen platz. suche dann dasselbe bild auf einer anderen karte. ich kann dir ein paar zeigen",
+      "text": "Schau auf das Bild und merke dir seinen Platz. Suche dann dasselbe Bild auf einer anderen Karte. Ich kann dir ein Paar zeigen.",
+      "id": "pro_174",
+      "asset": "audio/pro/pro_174.mp3",
+      "duration": 7.718,
+      "sha256": "20d00cb521956dc81dfb95d25547eb3d3d947d4f85ce2a40a9ac6c335f44fbfe",
+      "bytes": 62445
+    },
+    {
+      "key": "tippe jeden stern genau einmal an. zähle mit mir mit. die letzte zahl sagt, wie viele es zusammen sind",
+      "text": "Tippe jeden Stern genau einmal an. Zähle mit mir mit. Die letzte Zahl sagt, wie viele es zusammen sind.",
+      "id": "pro_175",
+      "asset": "audio/pro/pro_175.mp3",
+      "duration": 7.222,
+      "sha256": "99de16ba2a350c85dd319532c9851d5c540d371c1f85ddfbe25663c8127adfd3",
+      "bytes": 58413
+    },
+    {
+      "key": "fahre die form mit deinem finger nach. tippe die markierten stellen an. wir untersuchen sie zusammen",
+      "text": "Fahre die Form mit deinem Finger nach. Tippe die markierten Stellen an. Wir untersuchen sie zusammen.",
+      "id": "pro_176",
+      "asset": "audio/pro/pro_176.mp3",
+      "duration": 6.097,
+      "sha256": "5a04df3339e77f39c777808231deb6a73027fe79ecb7711ff40e41976fb2516e",
+      "bytes": 49581
+    },
+    {
+      "key": "schau auf die erste farbig umrahmte gruppe. tippe ihre bilder der reihe nach an. dieselbe gruppe kommt wieder",
+      "text": "Schau auf die erste farbig umrahmte Gruppe. Tippe ihre Bilder der Reihe nach an. Dieselbe Gruppe kommt wieder.",
+      "id": "pro_177",
+      "asset": "audio/pro/pro_177.mp3",
+      "duration": 7.089,
+      "sha256": "4eff4c32dc2d9f540d8d4499a2f426eb12f472b6ad0088e9e8c60cce4a5d35bd",
+      "bytes": 57453
+    },
+    {
+      "key": "es gibt hier kein falsches gefühl. überlege, wie es dir in dieser geschichte gehen könnte. du darfst auch noch unsicher sein",
+      "text": "Es gibt hier kein falsches Gefühl. Überlege, wie es dir in dieser Geschichte gehen könnte. Du darfst auch noch unsicher sein.",
+      "id": "pro_178",
+      "asset": "audio/pro/pro_178.mp3",
+      "duration": 8.256,
+      "sha256": "1f8e3ccd3dd62035e7b289378c140b0ef764292b57d815eec070de0906ae7cc4",
+      "bytes": 66669
+    },
+    {
+      "key": "überlege: bleiben alle sicher? darf jeder nein sagen? welche worte helfen, ohne jemandem weh zu tun",
+      "text": "Überlege: Bleiben alle sicher? Darf jeder Nein sagen? Welche Worte helfen, ohne jemandem weh zu tun?",
+      "id": "pro_179",
+      "asset": "audio/pro/pro_179.mp3",
+      "duration": 7.304,
+      "sha256": "e7a17162e96354b56ea6de7052eec64002f18f1a5d9ee64c96d0a92103c3a0c0",
+      "bytes": 59181
+    },
+    {
+      "key": "tippe die sterne an und zähle mit mir",
+      "text": "Tippe die Sterne an und zähle mit mir.",
+      "id": "pro_180",
+      "asset": "audio/pro/pro_180.mp3",
+      "duration": 2.718,
+      "sha256": "33bc4bf5bc75ec00517fa3d6973e1e6469693226097c44ed831259660390fd50",
+      "bytes": 22509
+    },
+    {
+      "key": "alle sterne sind gezählt. welche zahl war die letzte",
+      "text": "Alle Sterne sind gezählt. Welche Zahl war die letzte?",
+      "id": "pro_181",
+      "asset": "audio/pro/pro_181.mp3",
+      "duration": 4.216,
+      "sha256": "67c0686261d5af25abe4bc3d5a78da2cbb285dab3ae205537cd81f202eb40097",
+      "bytes": 34413
+    },
+    {
+      "key": "vergleiche deine zahl mit der letzten zählzahl. du kannst die sterne noch einmal zählen",
+      "text": "Vergleiche deine Zahl mit der letzten Zählzahl. Du kannst die Sterne noch einmal zählen.",
+      "id": "pro_182",
+      "asset": "audio/pro/pro_182.mp3",
+      "duration": 5.551,
+      "sha256": "304a99e9d62399fcb41235d1566a2e9a508ccb3d6e9c1daa992679afe07d0cfd",
+      "bytes": 45165
+    },
+    {
+      "key": "die letzte zählzahl sagt uns, wie viele sterne es zusammen sind",
+      "text": "Die letzte Zählzahl sagt uns, wie viele Sterne es zusammen sind.",
+      "id": "pro_183",
+      "asset": "audio/pro/pro_183.mp3",
+      "duration": 4.158,
+      "sha256": "1d9342e9e0d67ac16badc92781ef5c5ae19e776c74a18df4d2b57a3fde8afb60",
+      "bytes": 34029
+    },
+    {
+      "key": "tippe auf die runde linie. findest du eine ecke",
+      "text": "Tippe auf die runde Linie. Findest du eine Ecke?",
+      "id": "pro_184",
+      "asset": "audio/pro/pro_184.mp3",
+      "duration": 3.444,
+      "sha256": "e40a17492d1f290eca74a12f0f54922eccdd5fae839eb11d8950d6b65a8107d1",
+      "bytes": 28269
+    },
+    {
+      "key": "tippe die drei markierten ecken an",
+      "text": "Tippe die drei markierten Ecken an.",
+      "id": "pro_185",
+      "asset": "audio/pro/pro_185.mp3",
+      "duration": 2.23,
+      "sha256": "fdec998936e0b3f4d5df89816d7b0c694520bc006d44741640746c246895ab65",
+      "bytes": 18477
+    },
+    {
+      "key": "tippe die vier markierten ecken an",
+      "text": "Tippe die vier markierten Ecken an.",
+      "id": "pro_186",
+      "asset": "audio/pro/pro_186.mp3",
+      "duration": 2.231,
+      "sha256": "d2fbbb5bf461a40b2a3e152e9615d256bf2469e6af3389aecd72509d24317ffa",
+      "bytes": 18477
+    },
+    {
+      "key": "tippe die fünf äußeren spitzen an",
+      "text": "Tippe die fünf äußeren Spitzen an.",
+      "id": "pro_187",
+      "asset": "audio/pro/pro_187.mp3",
+      "duration": 2.242,
+      "sha256": "d2f8b9cbfda67ec6cf63b2b39b487639d4476afd8281e695c999bf2f0dc397f4",
+      "bytes": 18669
+    },
+    {
+      "key": "ein kreis ist rund und hat keine ecken",
+      "text": "Ein Kreis ist rund und hat keine Ecken.",
+      "id": "pro_188",
+      "asset": "audio/pro/pro_188.mp3",
+      "duration": 2.741,
+      "sha256": "819a41c425026fe81571b381328573406030119505ab6730580004d6304c9f85",
+      "bytes": 22701
+    },
+    {
+      "key": "ein dreieck hat drei ecken und drei seiten",
+      "text": "Ein Dreieck hat drei Ecken und drei Seiten.",
+      "id": "pro_189",
+      "asset": "audio/pro/pro_189.mp3",
+      "duration": 2.962,
+      "sha256": "260f4413ec0b7f498d175151bc943e917187fe2c08991239a5269dd07a8cc8ae",
+      "bytes": 24429
+    },
+    {
+      "key": "ein quadrat hat vier ecken. seine vier seiten sind gleich lang",
+      "text": "Ein Quadrat hat vier Ecken. Seine vier Seiten sind gleich lang.",
+      "id": "pro_190",
+      "asset": "audio/pro/pro_190.mp3",
+      "duration": 4.189,
+      "sha256": "2be88a5710dd1995f54f256160ae9e73f6a46308752a4d9811c8813efa264c71",
+      "bytes": 34221
+    },
+    {
+      "key": "dieser stern hat fünf äußere spitzen. dazwischen liegen die inneren ecken",
+      "text": "Dieser Stern hat fünf äußere Spitzen. Dazwischen liegen die inneren Ecken.",
+      "id": "pro_191",
+      "asset": "audio/pro/pro_191.mp3",
+      "duration": 5.342,
+      "sha256": "1da3f56eb3a25acbe603d90fcdde04e54737a5f0b21fac24b3b015158a467ee8",
+      "bytes": 43437
+    },
+    {
+      "key": "du hast die form untersucht. wie heißt sie",
+      "text": "Du hast die Form untersucht. Wie heißt sie?",
+      "id": "pro_192",
+      "asset": "audio/pro/pro_192.mp3",
+      "duration": 3.577,
+      "sha256": "909547315457cbf65e0025563c1ae9f8344e6f2401d240de152462a0246d99a9",
+      "bytes": 29421
+    },
+    {
+      "key": "schau auf die eigenschaften der form. ich zeige sie dir noch einmal",
+      "text": "Schau auf die Eigenschaften der Form. Ich zeige sie dir noch einmal.",
+      "id": "pro_193",
+      "asset": "audio/pro/pro_193.mp3",
+      "duration": 4.494,
+      "sha256": "19c4f11b61f8fa88dc78fd2025c5f968adf12e46d38d22cfce62217b3f085ab0",
+      "bytes": 36717
+    },
+    {
+      "key": "tippe die erste gruppe von links nach rechts an. was wiederholt sich",
+      "text": "Tippe die erste Gruppe von links nach rechts an. Was wiederholt sich?",
+      "id": "pro_194",
+      "asset": "audio/pro/pro_194.mp3",
+      "duration": 5.226,
+      "sha256": "3759de13ec23e63f7e4f6fb9e2e69b012e42318650f0b5329868c49aacf91346",
+      "bytes": 42477
+    },
+    {
+      "key": "schau auf das letzte bild. welches bild folgt in der wiederkehrenden gruppe",
+      "text": "Schau auf das letzte Bild. Welches Bild folgt in der wiederkehrenden Gruppe?",
+      "id": "pro_195",
+      "asset": "audio/pro/pro_195.mp3",
+      "duration": 5.028,
+      "sha256": "9a368e7551bb65f9bb2b63c33d80b557a13f81b81807b4238fd08998eb2a82f7",
+      "bytes": 40941
+    },
+    {
+      "key": "gehe die gruppe noch einmal durch. sie beginnt nach ihrem letzten bild wieder von vorn",
+      "text": "Gehe die Gruppe noch einmal durch. Sie beginnt nach ihrem letzten Bild wieder von vorn.",
+      "id": "pro_196",
+      "asset": "audio/pro/pro_196.mp3",
+      "duration": 5.237,
+      "sha256": "9a9fb1e1a089001860c330fddf360a7037c5117ccbd1f9297d73d75c18f55a6f",
+      "bytes": 42669
+    },
+    {
+      "key": "diese gruppe wiederholt sich immer wieder",
+      "text": "Diese Gruppe wiederholt sich immer wieder.",
+      "id": "pro_197",
+      "asset": "audio/pro/pro_197.mp3",
+      "duration": 2.648,
+      "sha256": "52b98ae97bf333e95bf0e761315268f6f62a073f71d06194ea88554a18c39927",
+      "bytes": 21933
+    },
+    {
+      "key": "finde zwei gleiche bilder. merke dir auch, wo sie liegen",
+      "text": "Finde zwei gleiche Bilder. Merke dir auch, wo sie liegen.",
+      "id": "pro_198",
+      "asset": "audio/pro/pro_198.mp3",
+      "duration": 4.68,
+      "sha256": "5eda54018364557336d25845d41ff8672e16dfc621eea159ebfe12de18f0f7b9",
+      "bytes": 38061
+    },
+    {
+      "key": "merke dir das bild und seinen platz. suche jetzt das gleiche bild",
+      "text": "Merke dir das Bild und seinen Platz. Suche jetzt das gleiche Bild.",
+      "id": "pro_199",
+      "asset": "audio/pro/pro_199.mp3",
+      "duration": 4.448,
+      "sha256": "8ccd473336d21f1b12e3793cbf461734bc3f65b53ab2a435abc1a3838c509017",
+      "bytes": 36333
+    },
+    {
+      "key": "die beiden bilder sind gleich. du hast ein paar gefunden",
+      "text": "Die beiden Bilder sind gleich. Du hast ein Paar gefunden.",
+      "id": "pro_200",
+      "asset": "audio/pro/pro_200.mp3",
+      "duration": 3.811,
+      "sha256": "1892459fada0054a1b5c4e66c052e1d824442a4c14b7d5a33cc3790a7eea8ed2",
+      "bytes": 31149
+    },
+    {
+      "key": "diese bilder sind verschieden. schau auf ihre plätze. wenn du bereit bist, deckst du sie zu und suchst weiter",
+      "text": "Diese Bilder sind verschieden. Schau auf ihre Plätze. Wenn du bereit bist, deckst du sie zu und suchst weiter.",
+      "id": "pro_201",
+      "asset": "audio/pro/pro_201.mp3",
+      "duration": 8.535,
+      "sha256": "a160b49f17e21fa0af6cec6062f73e23d461c0984fddadfd4987387fbd24eb73",
+      "bytes": 68973
+    },
+    {
+      "key": "hier liegen zwei gleiche bilder. merke dir ihre plätze. decke sie zu und suche das paar selbst",
+      "text": "Hier liegen zwei gleiche Bilder. Merke dir ihre Plätze. Decke sie zu und suche das Paar selbst.",
+      "id": "pro_202",
+      "asset": "audio/pro/pro_202.mp3",
+      "duration": 7.583,
+      "sha256": "137add8923220b034c9d59e0beb7290d2fae10002fe2b75070f445de424af2ad",
+      "bytes": 61293
+    },
+    {
+      "key": "schau dir die bilder und ihre plätze an. wenn du bereit bist, deckst du sie zu und suchst selbst",
+      "text": "Schau dir die Bilder und ihre Plätze an. Wenn du bereit bist, deckst du sie zu und suchst selbst.",
+      "id": "pro_203",
+      "asset": "audio/pro/pro_203.mp3",
+      "duration": 6.004,
+      "sha256": "7f9ae54998aff206467bfe8c09a9ad1460561391c17142e70afa9828496f450f",
+      "bytes": 48813
+    },
+    {
+      "key": "du hast alle paare gefunden. möchtest du deinen sticker sammeln",
+      "text": "Du hast alle Paare gefunden. Möchtest du deinen Sticker sammeln?",
+      "id": "pro_204",
+      "asset": "audio/pro/pro_204.mp3",
+      "duration": 3.879,
+      "sha256": "7e739e79963a97dff90816cffa3d3f7724a7fe6d443aff9daa57c17f348772f3",
+      "bytes": 31725
+    },
+    {
+      "key": "spielsachen",
+      "text": "Spielsachen",
+      "id": "pro_205",
+      "asset": "audio/pro/pro_205.mp3",
+      "duration": 1.197,
+      "sha256": "e3b579119c867cd19b4417549b8a22c67a7e2361aa844d6580359738047e757e",
+      "bytes": 10221
+    },
+    {
+      "key": "zahnbürste",
+      "text": "Zahnbürste",
+      "id": "pro_206",
+      "asset": "audio/pro/pro_206.mp3",
+      "duration": 1.139,
+      "sha256": "216fe970b631fa2c6a92344e82fb9499831275a297868cadc84bca908ed269a3",
+      "bytes": 9837
+    },
+    {
+      "key": "tasche",
+      "text": "Tasche",
+      "id": "pro_207",
+      "asset": "audio/pro/pro_207.mp3",
+      "duration": 0.756,
+      "sha256": "6db35bb3beae55b62b5d07ef1fc64168da821bbb064d69daf6939c97ee910ca8",
+      "bytes": 6765
+    },
+    {
+      "key": "wie könntest du dich in dieser geschichte fühlen",
+      "text": "Wie könntest du dich in dieser Geschichte fühlen?",
+      "id": "pro_208",
+      "asset": "audio/pro/pro_208.mp3",
+      "duration": 2.811,
+      "sha256": "9e3517f93811db6d56d02cb2fd9c02a9f8bf36d2f0faa9c0a149916e553e65da",
+      "bytes": 23277
+    },
+    {
+      "key": "menschen können in derselben situation verschieden fühlen. dein gefühl darf da sein",
+      "text": "Menschen können in derselben Situation verschieden fühlen. Dein Gefühl darf da sein.",
+      "id": "pro_209",
+      "asset": "audio/pro/pro_209.mp3",
+      "duration": 6.042,
+      "sha256": "4bc925f44fbbe24158a0d0ad63a8e0e3725442c48dda390a3f422133b9d8c472",
+      "bytes": 49005
+    },
+    {
+      "key": "was möchtest du jetzt mit mir ausprobieren",
+      "text": "Was möchtest du jetzt mit mir ausprobieren?",
+      "id": "pro_210",
+      "asset": "audio/pro/pro_210.mp3",
+      "duration": 2.475,
+      "sha256": "ec78777f4239ef6d12ccd33b325c842677948ce20149f81481a693be212fe014",
+      "bytes": 20589
+    },
+    {
+      "key": "traurig. vielleicht brauchst du trost oder zeit. du darfst hilfe holen",
+      "text": "Traurig. Vielleicht brauchst du Trost oder Zeit. Du darfst Hilfe holen.",
+      "id": "pro_211",
+      "asset": "audio/pro/pro_211.mp3",
+      "duration": 5.458,
+      "sha256": "ad0e13d2ed69c8357fb599d2bdf4509525f1a99278256c3ca65c8c95191aed58",
+      "bytes": 44397
+    },
+    {
+      "key": "wütend. wut darf da sein. wir halten unsere hände sicher und holen hilfe, wenn wir sie brauchen",
+      "text": "Wütend. Wut darf da sein. Wir halten unsere Hände sicher und holen Hilfe, wenn wir sie brauchen.",
+      "id": "pro_212",
+      "asset": "audio/pro/pro_212.mp3",
+      "duration": 7.292,
+      "sha256": "48452ded0515d292019af833206fea11cd5adaf3a986f6d63a8cc5aed377518b",
+      "bytes": 58989
+    },
+    {
+      "key": "müde. dein körper darf sich ausruhen. eine pause kann helfen",
+      "text": "Müde. Dein Körper darf sich ausruhen. Eine Pause kann helfen.",
+      "id": "pro_213",
+      "asset": "audio/pro/pro_213.mp3",
+      "duration": 5.4,
+      "sha256": "9de7a15c241739a8b9f70cb6c41aa98dbf540a4473e638ddc0cfa97c5362e451",
+      "bytes": 43821
+    },
+    {
+      "key": "stolz. du darfst dich über deinen versuch freuen und davon erzählen",
+      "text": "Stolz. Du darfst dich über deinen Versuch freuen und davon erzählen.",
+      "id": "pro_214",
+      "asset": "audio/pro/pro_214.mp3",
+      "duration": 5.087,
+      "sha256": "907a26e860cc21bc4a2a72ffdb464ed085532752da596787ed4947c7871cd827",
+      "bytes": 41325
+    },
+    {
+      "key": "unsicher. du musst noch nicht alles wissen. eine vertraute person kann dir helfen",
+      "text": "Unsicher. Du musst noch nicht alles wissen. Eine vertraute Person kann dir helfen.",
+      "id": "pro_215",
+      "asset": "audio/pro/pro_215.mp3",
+      "duration": 6.027,
+      "sha256": "3395c3bd1fd1fb956a2a7758070888b09173a8fcc28df8ff8f48a5b99bdc0805",
+      "bytes": 49005
+    },
+    {
+      "key": "glücklich. du darfst deine freude zeigen. andere dürfen sich anders fühlen",
+      "text": "Glücklich. Du darfst deine Freude zeigen. Andere dürfen sich anders fühlen.",
+      "id": "pro_216",
+      "asset": "audio/pro/pro_216.mp3",
+      "duration": 5.783,
+      "sha256": "5fdfd27e47cb012317f4a57abb8e81243c96631f3857a47d4c0c155c9e5b5325",
+      "bytes": 46893
+    },
+    {
+      "key": "du musst dein gefühl noch nicht kennen. du darfst dir zeit nehmen oder mit jemandem darüber sprechen",
+      "text": "Du musst dein Gefühl noch nicht kennen. Du darfst dir Zeit nehmen oder mit jemandem darüber sprechen.",
+      "id": "pro_217",
+      "asset": "audio/pro/pro_217.mp3",
+      "duration": 6.555,
+      "sha256": "dce083b30af74b505a1e0438e0780f27c0de819caf35497822c7f9e2b396622f",
+      "bytes": 53229
+    },
+    {
+      "key": "langsam atmen",
+      "text": "Langsam atmen",
+      "id": "pro_218",
+      "asset": "audio/pro/pro_218.mp3",
+      "duration": 1.534,
+      "sha256": "51b1d0b8e1b374845af84795486d261b785a444f56eec06c0ada374aaa684cd0",
+      "bytes": 12909
+    },
+    {
+      "key": "mit jemandem sprechen",
+      "text": "Mit jemandem sprechen",
+      "id": "pro_219",
+      "asset": "audio/pro/pro_219.mp3",
+      "duration": 1.522,
+      "sha256": "3a3733a5302550b22a6e3d612eca563d48c712a0089e717a46777ebd472e8970",
+      "bytes": 12909
+    },
+    {
+      "key": "eine pause machen",
+      "text": "Eine Pause machen",
+      "id": "pro_220",
+      "asset": "audio/pro/pro_220.mp3",
+      "duration": 1.394,
+      "sha256": "17276a6625bd9b24faf5133cd23e92028598782ce2bee0f4b1c3f46c5ae35fa8",
+      "bytes": 11949
+    },
+    {
+      "key": "wir atmen dreimal ruhig zusammen. tippe im tempo deines atems. halte die luft nicht an",
+      "text": "Wir atmen dreimal ruhig zusammen. Tippe im Tempo deines Atems. Halte die Luft nicht an.",
+      "id": "pro_221",
+      "asset": "audio/pro/pro_221.mp3",
+      "duration": 7.188,
+      "sha256": "fcc7c07379497f2fca37c896128ff16fde9fa210c9065dbf06097a8e07092fac",
+      "bytes": 58221
+    },
+    {
+      "key": "atme ruhig ein",
+      "text": "Atme ruhig ein.",
+      "id": "pro_222",
+      "asset": "audio/pro/pro_222.mp3",
+      "duration": 1.522,
+      "sha256": "a76d005d6b40517d07b80f1d186a51215186755d584d5e0673c4ac11e2f231cb",
+      "bytes": 12909
+    },
+    {
+      "key": "atme langsam aus",
+      "text": "Atme langsam aus.",
+      "id": "pro_223",
+      "asset": "audio/pro/pro_223.mp3",
+      "duration": 1.662,
+      "sha256": "9b4153c308c707c3fc99820c69622dcafaf706d93ab89fb46fe0eccb9ba555e6",
+      "bytes": 14061
+    },
+    {
+      "key": "wir haben ruhig geatmet. schau, wie es dir jetzt geht. du darfst dir weitere hilfe holen",
+      "text": "Wir haben ruhig geatmet. Schau, wie es dir jetzt geht. Du darfst dir weitere Hilfe holen.",
+      "id": "pro_224",
+      "asset": "audio/pro/pro_224.mp3",
+      "duration": 5.98,
+      "sha256": "49b92d97037654d8251fcc5af294b8840abfcb7c7c8d0a24378cac05b4e1b00d",
+      "bytes": 48621
+    },
+    {
+      "key": "wähle einen satz. hör ihn dir an und probiere, ihn selbst zu sagen. du brauchst dafür kein mikrofon",
+      "text": "Wähle einen Satz. Hör ihn dir an und probiere, ihn selbst zu sagen. Du brauchst dafür kein Mikrofon.",
+      "id": "pro_225",
+      "asset": "audio/pro/pro_225.mp3",
+      "duration": 6.607,
+      "sha256": "bb9b4f6a3db16791be0f08b14bcf06f8f4094e3c8340ed2e532a2a737c8ab566",
+      "bytes": 53613
+    },
+    {
+      "key": "ich möchte dir erzählen, wie ich mich fühle",
+      "text": "Ich möchte dir erzählen, wie ich mich fühle.",
+      "id": "pro_226",
+      "asset": "audio/pro/pro_226.mp3",
+      "duration": 2.974,
+      "sha256": "7112638ec6f6db87e92bc5c633ddec8604bd8556a1d43558a18758ea184e0094",
+      "bytes": 24429
+    },
+    {
+      "key": "kannst du bitte bei mir bleiben",
+      "text": "Kannst du bitte bei mir bleiben?",
+      "id": "pro_227",
+      "asset": "audio/pro/pro_227.mp3",
+      "duration": 2.056,
+      "sha256": "158946890d5fbfad2078a9d320b9fd679ac86ce6adce61646e3c0830c1db2e39",
+      "bytes": 17133
+    },
+    {
+      "key": "ich brauche gerade hilfe",
+      "text": "Ich brauche gerade Hilfe.",
+      "id": "pro_228",
+      "asset": "audio/pro/pro_228.mp3",
+      "duration": 1.917,
+      "sha256": "dc51ed42151de2400ed61f0693c976a58e82b314a2ccd127217387c4a77a826f",
+      "bytes": 15981
+    },
+    {
+      "key": "du hast einen satz zum hilfe holen geübt. eine vertraute person kann dir zuhören",
+      "text": "Du hast einen Satz zum Hilfe holen geübt. Eine vertraute Person kann dir zuhören.",
+      "id": "pro_229",
+      "asset": "audio/pro/pro_229.mp3",
+      "duration": 5.737,
+      "sha256": "4f7173f5f6771a0a28051fc44d88ff63dfca74352799966407ae7c63896ea3ea",
+      "bytes": 46701
+    },
+    {
+      "key": "mach es dir bequem. du darfst eine ruhige pause machen. tippe erst weiter, wenn du bereit bist",
+      "text": "Mach es dir bequem. Du darfst eine ruhige Pause machen. Tippe erst weiter, wenn du bereit bist.",
+      "id": "pro_230",
+      "asset": "audio/pro/pro_230.mp3",
+      "duration": 6.41,
+      "sha256": "8b49f22bc009e9ca83106ad8a426ea3783df17c1595b652912b1f7313fec6fd6",
+      "bytes": 52077
+    },
+    {
+      "key": "du hast dir zeit für eine pause genommen. du darfst immer wieder eine pause machen",
+      "text": "Du hast dir Zeit für eine Pause genommen. Du darfst immer wieder eine Pause machen.",
+      "id": "pro_231",
+      "asset": "audio/pro/pro_231.mp3",
+      "duration": 5.028,
+      "sha256": "3ab3b9935fcc5dadac23e6ed5684236c49b43c5927db0c94b1b6d882c1e56f67",
+      "bytes": 40941
+    },
+    {
+      "key": "jetzt üben wir einen satz für diese situation. hör zu und probiere, ihn selbst zu sagen",
+      "text": "Jetzt üben wir einen Satz für diese Situation. Hör zu und probiere, ihn selbst zu sagen.",
+      "id": "pro_232",
+      "asset": "audio/pro/pro_232.mp3",
+      "duration": 6.514,
+      "sha256": "a8c5e599095994e8a017c13200cdebb81b9031373253a88ebf72d92f4d243f1a",
+      "bytes": 52845
+    },
+    {
+      "key": "überlege noch einmal. freundliche worte und sichere hände helfen. ein nein zählt",
+      "text": "Überlege noch einmal. Freundliche Worte und sichere Hände helfen. Ein Nein zählt.",
+      "id": "pro_233",
+      "asset": "audio/pro/pro_233.mp3",
+      "duration": 6.584,
+      "sha256": "16cc2e40e4d600abdad0a9ebdbe75280c56bff2001e6e028d239717763ce5045",
+      "bytes": 53421
+    },
+    {
+      "key": "du darfst den satz laut oder leise üben. wenn du bereit bist, spielen wir weiter",
+      "text": "Du darfst den Satz laut oder leise üben. Wenn du bereit bist, spielen wir weiter.",
+      "id": "pro_234",
+      "asset": "audio/pro/pro_234.mp3",
+      "duration": 6.851,
+      "sha256": "94fe68b24c3ef7b137565c531bceb933f70d3c5e01bd00aa72d419320025d378",
+      "bytes": 55533
+    },
+    {
+      "key": "dein entdecker-sticker ist in deinem album. du kannst jederzeit weiter üben",
+      "text": "Dein Entdecker-Sticker ist in deinem Album. Du kannst jederzeit weiter üben.",
+      "id": "pro_235",
+      "asset": "audio/pro/pro_235.mp3",
+      "duration": 6.111,
+      "sha256": "8e5fc608cf8ef5d98d81a5478a2ef44079eb1108bfb65da812feca33014e92b8",
+      "bytes": 49581
+    },
+    {
+      "key": "weiß ich noch nicht",
+      "text": "Weiß ich noch nicht",
+      "id": "pro_236",
+      "asset": "audio/pro/pro_236.mp3",
+      "duration": 1.337,
+      "sha256": "814b03d87e6d6c22c485947b284c3519756fe16dffe1fa5b8645d7efca2080fe",
+      "bytes": 11373
+    },
+    {
+      "key": "dein turm fällt um",
+      "text": "Dein Turm fällt um.",
+      "id": "pro_237",
+      "asset": "audio/pro/pro_237.mp3",
+      "duration": 1.731,
+      "sha256": "81601f62756ac1cd7120d1030e486ebe31f232f1d00aa561fbd82d6500c31909",
+      "bytes": 14637
+    },
+    {
+      "key": "darf ich danach dran sein",
+      "text": "Darf ich danach dran sein?",
+      "id": "pro_238",
+      "asset": "audio/pro/pro_238.mp3",
+      "duration": 1.801,
+      "sha256": "f7243ebeba20ee772f554f4228a10eb5403fe1dfc4b36968320910c1871245af",
+      "bytes": 15213
+    },
+    {
+      "key": "dein freund sagt: ich spiele noch. was machst du",
+      "text": "Dein Freund sagt: Ich spiele noch. Was machst du?",
+      "id": "pro_239",
+      "asset": "audio/pro/pro_239.mp3",
+      "duration": 4.065,
+      "sha256": "90a869ecf813acb9c8e929241eda06838931ee585ed4bc1fbd7e3c37517376c3",
+      "bytes": 33261
+    },
+    {
+      "key": "du hast gefragt und das nein respektiert. ihr könnt später wieder fragen",
+      "text": "Du hast gefragt und das Nein respektiert. Ihr könnt später wieder fragen.",
+      "id": "pro_240",
+      "asset": "audio/pro/pro_240.mp3",
+      "duration": 5.179,
+      "sha256": "ad6ea5afdcff49fcd33e812aabb4edadbda82655aa34bf84a4481b4c541a887f",
+      "bytes": 42093
+    },
+    {
+      "key": "warten oder etwas anderes spielen",
+      "text": "Warten oder etwas anderes spielen.",
+      "id": "pro_241",
+      "asset": "audio/pro/pro_241.mp3",
+      "duration": 2.706,
+      "sha256": "494815db3181714cf56f4d3a73f8d263ff04aafdbc5e5ddb81a17cffe8353c71",
+      "bytes": 22317
+    },
+    {
+      "key": "das spielzeug doch wegnehmen",
+      "text": "Das Spielzeug doch wegnehmen.",
+      "id": "pro_242",
+      "asset": "audio/pro/pro_242.mp3",
+      "duration": 2.045,
+      "sha256": "dcf873060278021d3cf7b8051f032c0506ca7d07063d6afb1caf745cc2b10664",
+      "bytes": 17133
+    },
+    {
+      "key": "kannst du mir bitte helfen",
+      "text": "Kannst du mir bitte helfen?",
+      "id": "pro_243",
+      "asset": "audio/pro/pro_243.mp3",
+      "duration": 1.917,
+      "sha256": "334a0e9585fc5e302068497e8bd19cf1b2f1bb9f18a7c2926dcc8673ce0eadcb",
+      "bytes": 15981
+    },
+    {
+      "key": "eine vertraute person hilft dir beim anfang. was kannst du tun",
+      "text": "Eine vertraute Person hilft dir beim Anfang. Was kannst du tun?",
+      "id": "pro_244",
+      "asset": "audio/pro/pro_244.mp3",
+      "duration": 5.516,
+      "sha256": "35dbe71d439c294fe5401b681ad39eb6c85ae066cb3ec6ce0b871398975022e2",
+      "bytes": 44781
+    },
+    {
+      "key": "hilfe annehmen und weiter probieren gehören zum lernen",
+      "text": "Hilfe annehmen und weiter probieren gehören zum Lernen.",
+      "id": "pro_245",
+      "asset": "audio/pro/pro_245.mp3",
+      "duration": 3.879,
+      "sha256": "4dcdf0b7e2987e39e408d0a1c0c4c7562dea74e4377027f6118043976a122944",
+      "bytes": 31725
+    },
+    {
+      "key": "danke sagen und den rest gemeinsam probieren",
+      "text": "Danke sagen und den Rest gemeinsam probieren.",
+      "id": "pro_246",
+      "asset": "audio/pro/pro_246.mp3",
+      "duration": 3.298,
+      "sha256": "b24ea8c373d13bf95a67bb5ccdcf3f4302ad9ac0595de2bc0f44b9dcffae51a4",
+      "bytes": 27117
+    },
+    {
+      "key": "dich schimpfen, weil du hilfe gebraucht hast",
+      "text": "Dich schimpfen, weil du Hilfe gebraucht hast.",
+      "id": "pro_247",
+      "asset": "audio/pro/pro_247.mp3",
+      "duration": 2.603,
+      "sha256": "84907c4746e97e3160acc920fb48ff7803c7b8c7d6d234b9e851aa700a7738a6",
+      "bytes": 21549
+    },
+    {
+      "key": "ich habe wasser verschüttet. kannst du mir beim aufwischen helfen",
+      "text": "Ich habe Wasser verschüttet. Kannst du mir beim Aufwischen helfen?",
+      "id": "pro_248",
+      "asset": "audio/pro/pro_248.mp3",
+      "duration": 4.041,
+      "sha256": "d8f3f2cd0b5e0689043c519874c14801108713237423658c5f6025276567c947",
+      "bytes": 33069
+    },
+    {
+      "key": "eine erwachsene person bringt ein tuch. was machst du",
+      "text": "Eine erwachsene Person bringt ein Tuch. Was machst du?",
+      "id": "pro_249",
+      "asset": "audio/pro/pro_249.mp3",
+      "duration": 3.996,
+      "sha256": "cf5927a33c02d7cef36db09e93c9778a4dff0c37528033a70773e09191340e7a",
+      "bytes": 32685
+    },
+    {
+      "key": "du hast bescheid gesagt und hilfe angenommen. fehler dürfen passieren",
+      "text": "Du hast Bescheid gesagt und Hilfe angenommen. Fehler dürfen passieren.",
+      "id": "pro_250",
+      "asset": "audio/pro/pro_250.mp3",
+      "duration": 4.331,
+      "sha256": "347f5472f636e14a16b796032f20180125fa9a2ca3e6aa58ae655a6fd91ba920",
+      "bytes": 35373
+    },
+    {
+      "key": "mit ihrer hilfe aufwischen",
+      "text": "Mit ihrer Hilfe aufwischen.",
+      "id": "pro_251",
+      "asset": "audio/pro/pro_251.mp3",
+      "duration": 2.393,
+      "sha256": "0973d004e22355933f89c137b082c53abd5fa9c5618b3c5a9ea551ffa112948c",
+      "bytes": 19821
+    },
+    {
+      "key": "weglaufen und niemandem etwas sagen",
+      "text": "Weglaufen und niemandem etwas sagen.",
+      "id": "pro_252",
+      "asset": "audio/pro/pro_252.mp3",
+      "duration": 2.718,
+      "sha256": "0bac53a7ce07a93b8f122c89aeefebe1b3a80c9e66d85f1224b6b92aefb73012",
+      "bytes": 22509
+    },
+    {
+      "key": "nein, das möchte ich gerade nicht",
+      "text": "Nein, das möchte ich gerade nicht.",
+      "id": "pro_253",
+      "asset": "audio/pro/pro_253.mp3",
+      "duration": 2.172,
+      "sha256": "b2c202d8370c1d87fe5b332437ed6b39970b426cf8128a57c3cd594e1086483a",
+      "bytes": 18093
+    },
+    {
+      "key": "die andere person möchte dich trotzdem umarmen. was hilft",
+      "text": "Die andere Person möchte dich trotzdem umarmen. Was hilft?",
+      "id": "pro_254",
+      "asset": "audio/pro/pro_254.mp3",
+      "duration": 3.984,
+      "sha256": "895d07c250d94d0eb02009c41e1b2c3ee87f3dea37d07deee5fcf06b5024c487",
+      "bytes": 32493
+    },
+    {
+      "key": "deine grenze zählt. eine vertraute person kann dich unterstützen",
+      "text": "Deine Grenze zählt. Eine vertraute Person kann dich unterstützen.",
+      "id": "pro_255",
+      "asset": "audio/pro/pro_255.mp3",
+      "duration": 4.494,
+      "sha256": "c448cbb1d0f4b24ba6dbd0d155245b39f9dea64f8d07bcf6e95e5f5ed5598707",
+      "bytes": 36717
+    },
+    {
+      "key": "bei meinem nein bleiben und unterstützung holen",
+      "text": "Bei meinem Nein bleiben und Unterstützung holen.",
+      "id": "pro_256",
+      "asset": "audio/pro/pro_256.mp3",
+      "duration": 3.392,
+      "sha256": "11dec80cf0c420f5a3fb3c2efbe221391fc8d22c43e08a4c1e56aef7164da4fe",
+      "bytes": 27885
+    },
+    {
+      "key": "ja sagen, obwohl es sich nicht gut anfühlt",
+      "text": "Ja sagen, obwohl es sich nicht gut anfühlt.",
+      "id": "pro_257",
+      "asset": "audio/pro/pro_257.mp3",
+      "duration": 2.764,
+      "sha256": "f88c811abbda609d5c36cb79199d686c5b0a60e258d3c4f6bd8b5380b30e7712",
+      "bytes": 22893
+    },
+    {
+      "key": "möchtest du später mit mir abwechseln",
+      "text": "Möchtest du später mit mir abwechseln?",
+      "id": "pro_258",
+      "asset": "audio/pro/pro_258.mp3",
+      "duration": 2.277,
+      "sha256": "0f056c3e69a1e204de618f3a5b2d2e7a7716e15aed5a72277d2c60b02985c2e2",
+      "bytes": 18861
+    },
+    {
+      "key": "dein freund sagt: jetzt noch nicht. was machst du",
+      "text": "Dein Freund sagt: Jetzt noch nicht. Was machst du?",
+      "id": "pro_259",
+      "asset": "audio/pro/pro_259.mp3",
+      "duration": 4.03,
+      "sha256": "9d9519544b27eb94cf2dad6b54ebf010611f1e57eab42aa79e49efa16cb8a358",
+      "bytes": 32877
+    },
+    {
+      "key": "teilen ist freiwillig. ihr dürft gemeinsam nach einer anderen idee suchen",
+      "text": "Teilen ist freiwillig. Ihr dürft gemeinsam nach einer anderen Idee suchen.",
+      "id": "pro_260",
+      "asset": "audio/pro/pro_260.mp3",
+      "duration": 4.947,
+      "sha256": "1a6388c8ff4307334749e4937c7dda7cb8ef1a74522ba78166b3adbc6f71d3e1",
+      "bytes": 40365
+    },
+    {
+      "key": "sein nein achten und etwas anderes spielen",
+      "text": "Sein Nein achten und etwas anderes spielen.",
+      "id": "pro_261",
+      "asset": "audio/pro/pro_261.mp3",
+      "duration": 3.437,
+      "sha256": "79ff0da9826b98dbfebe3f51f62f6924fb88f6c0b9c6244901154e088ceebea9",
+      "bytes": 28269
+    },
+    {
+      "key": "ihn zum teilen zwingen",
+      "text": "Ihn zum Teilen zwingen.",
+      "id": "pro_262",
+      "asset": "audio/pro/pro_262.mp3",
+      "duration": 1.604,
+      "sha256": "0e5d1fd15ca47ce81f8feb46a66f850677514f016db0ae945bcc9cd502542fa4",
+      "bytes": 13485
+    },
+    {
+      "key": "das tut mir leid. brauchst du hilfe",
+      "text": "Das tut mir leid. Brauchst du Hilfe?",
+      "id": "pro_263",
+      "asset": "audio/pro/pro_263.mp3",
+      "duration": 2.637,
+      "sha256": "8e58110ca55ad7e4e274a46f433860d13678f620b1bf0d3bdf1169c43b579681",
+      "bytes": 21741
+    },
+    {
+      "key": "das andere kind hat schmerzen. was machst du jetzt",
+      "text": "Das andere Kind hat Schmerzen. Was machst du jetzt?",
+      "id": "pro_264",
+      "asset": "audio/pro/pro_264.mp3",
+      "duration": 3.136,
+      "sha256": "1c088b1b66ea1080e38cdaefb1a8117fac946ba745a24fc5c12ac8f18084a2a3",
+      "bytes": 25773
+    },
+    {
+      "key": "bei schmerzen holst du eine erwachsene person. sie kann sich kümmern",
+      "text": "Bei Schmerzen holst du eine erwachsene Person. Sie kann sich kümmern.",
+      "id": "pro_265",
+      "asset": "audio/pro/pro_265.mp3",
+      "duration": 4.204,
+      "sha256": "352865a73cb06d7a730319a037170d741af20ab160f7d145cffac6d3cabb4fd1",
+      "bytes": 34413
+    },
+    {
+      "key": "eine erwachsene person dazu holen",
+      "text": "Eine erwachsene Person dazu holen.",
+      "id": "pro_266",
+      "asset": "audio/pro/pro_266.mp3",
+      "duration": 2.324,
+      "sha256": "89b78b2f348aa1f0ed7e2e0fb386650c5be848a58c764371c035195edf3c3119",
+      "bytes": 19245
+    },
+    {
+      "key": "weiter spielen, ohne etwas zu sagen",
+      "text": "Weiter spielen, ohne etwas zu sagen.",
+      "id": "pro_267",
+      "asset": "audio/pro/pro_267.mp3",
+      "duration": 2.602,
+      "sha256": "90f42ed0c29165977a19afc1ac877ca3bbbb266e6ad3dbbe448d1dceda872b56",
+      "bytes": 21549
+    },
+    {
+      "key": "ich warte auf eine erwachsene person",
+      "text": "Ich warte auf eine erwachsene Person.",
+      "id": "pro_268",
+      "asset": "audio/pro/pro_268.mp3",
+      "duration": 2.498,
+      "sha256": "37a6463ae4ee0998bc51830ff349a4deb0dd968de97a4f948b9a4acf03e7ca87",
+      "bytes": 20781
+    },
+    {
+      "key": "dein ball rollt auf die straße. was machst du",
+      "text": "Dein Ball rollt auf die Straße. Was machst du?",
+      "id": "pro_269",
+      "asset": "audio/pro/pro_269.mp3",
+      "duration": 3.345,
+      "sha256": "7e25e214c19f7439a788d2e9a7003db6827537be7a93ae5de1018e4d2b0ad497",
+      "bytes": 27501
+    },
+    {
+      "key": "du bleibst sicher stehen. eine erwachsene person kümmert sich um den ball",
+      "text": "Du bleibst sicher stehen. Eine erwachsene Person kümmert sich um den Ball.",
+      "id": "pro_270",
+      "asset": "audio/pro/pro_270.mp3",
+      "duration": 5.307,
+      "sha256": "422493394d41130ee3eaf6a475dab380d082c10b5b2e781e7c2a7aa8d2c62cb7",
+      "bytes": 43245
+    },
+    {
+      "key": "anhalten und einer erwachsenen person bescheid sagen",
+      "text": "Anhalten und einer erwachsenen Person Bescheid sagen.",
+      "id": "pro_271",
+      "asset": "audio/pro/pro_271.mp3",
+      "duration": 3.624,
+      "sha256": "32e3abd35e2f48fe0a9f39266ac4d5d64f46db1692dac5ef7e61cf36c67fe274",
+      "bytes": 29613
+    },
+    {
+      "key": "schnell hinterher rennen",
+      "text": "Schnell hinterher rennen.",
+      "id": "pro_272",
+      "asset": "audio/pro/pro_272.mp3",
+      "duration": 1.743,
+      "sha256": "1bce0ed110fad2bb130cee17538fe5dc9ea43c89db854f047db4f6fae91ca253",
+      "bytes": 14637
+    },
+    {
+      "key": "mir ist unheimlich. bitte bleib bei mir",
+      "text": "Mir ist unheimlich. Bitte bleib bei mir.",
+      "id": "pro_273",
+      "asset": "audio/pro/pro_273.mp3",
+      "duration": 2.893,
+      "sha256": "12ac239d8a14071b0bba96896714d32e495ec144f62eebee4f274449b2807bae",
+      "bytes": 23853
+    },
+    {
+      "key": "eine vertraute person fragt: was brauchst du",
+      "text": "Eine vertraute Person fragt: Was brauchst du?",
+      "id": "pro_274",
+      "asset": "audio/pro/pro_274.mp3",
+      "duration": 3.275,
+      "sha256": "e2671d3c9944410df5cb25438e266c79646905700662cd1da835981837f219f3",
+      "bytes": 26925
+    },
+    {
+      "key": "du darfst sagen, was du brauchst. hilfe holen ist erlaubt",
+      "text": "Du darfst sagen, was du brauchst. Hilfe holen ist erlaubt.",
+      "id": "pro_275",
+      "asset": "audio/pro/pro_275.mp3",
+      "duration": 3.995,
+      "sha256": "1087838ed518da587bf3d17c4874084734bc4c8bc4693e5175f9cc80a94c69ff",
+      "bytes": 32685
+    },
+    {
+      "key": "erzählen und sagen, welche hilfe ich möchte",
+      "text": "Erzählen und sagen, welche Hilfe ich möchte.",
+      "id": "pro_276",
+      "asset": "audio/pro/pro_276.mp3",
+      "duration": 2.951,
+      "sha256": "022ecde5d4e4154a5ef7649e36506c34ff161bbb49d5d3c877e73e60f40aff6a",
+      "bytes": 24237
+    },
+    {
+      "key": "so tun, als müsste ich alles allein schaffen",
+      "text": "So tun, als müsste ich alles allein schaffen.",
+      "id": "pro_277",
+      "asset": "audio/pro/pro_277.mp3",
+      "duration": 2.683,
+      "sha256": "a167ff7761a94932954826451aaf4a74f36a8b2b4c46959bb5b37c1f2015c702",
+      "bytes": 22125
+    },
+    {
+      "key": "möchtest du, dass ich bei dir bleibe",
+      "text": "Möchtest du, dass ich bei dir bleibe?",
+      "id": "pro_278",
+      "asset": "audio/pro/pro_278.mp3",
+      "duration": 1.94,
+      "sha256": "47b0de26b46bbe02fd61de7c91f7587f91fd87bab721ab3825395db90020ab29",
+      "bytes": 16173
+    },
+    {
+      "key": "dein freund möchte lieber kurz allein sein. was machst du",
+      "text": "Dein Freund möchte lieber kurz allein sein. Was machst du?",
+      "id": "pro_279",
+      "asset": "audio/pro/pro_279.mp3",
+      "duration": 3.6,
+      "sha256": "787a5eadfbabbf39e367299f01644d34bdcc1e1f8e664d8ac36da7ae83907681",
+      "bytes": 29421
+    },
+    {
+      "key": "auch ein trauriges kind darf nein sagen. du kannst später hilfe anbieten",
+      "text": "Auch ein trauriges Kind darf Nein sagen. Du kannst später Hilfe anbieten.",
+      "id": "pro_280",
+      "asset": "audio/pro/pro_280.mp3",
+      "duration": 5.017,
+      "sha256": "4c210120d4307414cfb1885ae498d46990b09ed08890b2067b6e87cc0c608665",
+      "bytes": 40941
+    },
+    {
+      "key": "seinen wunsch achten und später wieder fragen",
+      "text": "Seinen Wunsch achten und später wieder fragen.",
+      "id": "pro_281",
+      "asset": "audio/pro/pro_281.mp3",
+      "duration": 3.194,
+      "sha256": "0dccdc468a3c3d543e0915d2ff0fe210eec16a4cea44a07d888f20ff54ddcef1",
+      "bytes": 26349
+    },
+    {
+      "key": "dich trotzdem ganz dicht daneben setzen",
+      "text": "Dich trotzdem ganz dicht daneben setzen.",
+      "id": "pro_282",
+      "asset": "audio/pro/pro_282.mp3",
+      "duration": 3.125,
+      "sha256": "84e9af38a4c2a566db29e36aee86b2e2dc1258e0aeab18f7c76c3c4db03e909f",
+      "bytes": 25773
+    },
+    {
+      "key": "ich bin wütend. ich brauche eine pause",
+      "text": "Ich bin wütend. Ich brauche eine Pause.",
+      "id": "pro_283",
+      "asset": "audio/pro/pro_283.mp3",
+      "duration": 3.066,
+      "sha256": "1b9fa29b8a7f1e2634325b5fcc8d374eca6b34c72297c80c4f17c1d09b7c983e",
+      "bytes": 25197
+    },
+    {
+      "key": "die wut ist noch da. was kannst du tun",
+      "text": "Die Wut ist noch da. Was kannst du tun?",
+      "id": "pro_284",
+      "asset": "audio/pro/pro_284.mp3",
+      "duration": 2.776,
+      "sha256": "9ca1c929287152f418e7b2e1c68687952a3be799520a3b9cd6e78073d8876cc4",
+      "bytes": 22893
+    },
+    {
+      "key": "gefühle müssen nicht sofort weggehen. deine hände bleiben sicher und du darfst hilfe holen",
+      "text": "Gefühle müssen nicht sofort weggehen. Deine Hände bleiben sicher und du darfst Hilfe holen.",
+      "id": "pro_285",
+      "asset": "audio/pro/pro_285.mp3",
+      "duration": 5.551,
+      "sha256": "56e6b4aad9d04a4a37779185186fcdd5e21e225761c7b57d459f279a1a002572",
+      "bytes": 45165
+    },
+    {
+      "key": "abstand halten und eine vertraute person um hilfe bitten",
+      "text": "Abstand halten und eine vertraute Person um Hilfe bitten.",
+      "id": "pro_286",
+      "asset": "audio/pro/pro_286.mp3",
+      "duration": 3.705,
+      "sha256": "1116b2ad6b5173630984731dfd61c62b44ee282d6d1ccb2e23dea4870cf5ade6",
+      "bytes": 30381
+    },
+    {
+      "key": "jemanden hauen, damit die wut weggeht",
+      "text": "Jemanden hauen, damit die Wut weggeht.",
+      "id": "pro_287",
+      "asset": "audio/pro/pro_287.mp3",
+      "duration": 2.636,
+      "sha256": "7d0bb10ee510bf752caa858a62ac46e7c82db5bd82547e12510cb3713701edb8",
+      "bytes": 21741
+    },
+    {
+      "key": "in dieser gruppe folgt auf gelber kreis: blauer kreis. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf gelber Kreis: blauer Kreis. Dann wiederholt sich die Gruppe.",
+      "id": "pro_288",
+      "asset": "audio/pro/pro_288.mp3",
+      "duration": 6.712,
+      "sha256": "c55369396d5c3b650ab2c98a715f3524aabc5dcc72c0eb6317d939843df797a7",
+      "bytes": 54381
+    },
+    {
+      "key": "in dieser gruppe folgt auf blauer kreis: gelber kreis. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf blauer Kreis: gelber Kreis. Dann wiederholt sich die Gruppe.",
+      "id": "pro_289",
+      "asset": "audio/pro/pro_289.mp3",
+      "duration": 6.294,
+      "sha256": "d6ec069206e600a7c81e0f4fc90acd4273ed65ffa6b5b678644893a12671dfee",
+      "bytes": 51117
+    },
+    {
+      "key": "in dieser gruppe folgt auf herz: stern. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf Herz: Stern. Dann wiederholt sich die Gruppe.",
+      "id": "pro_290",
+      "asset": "audio/pro/pro_290.mp3",
+      "duration": 5.934,
+      "sha256": "531b9e99aa854c1af608cd51c9483fe63fc256cc6a70e21feb58dcfd84784e10",
+      "bytes": 48237
+    },
+    {
+      "key": "in dieser gruppe folgt auf stern: herz. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf Stern: Herz. Dann wiederholt sich die Gruppe.",
+      "id": "pro_291",
+      "asset": "audio/pro/pro_291.mp3",
+      "duration": 5.447,
+      "sha256": "df1593f9662ca40b09ffda5234942666d23a7b05cdb58c36ceb443df26af4599",
+      "bytes": 44205
+    },
+    {
+      "key": "in dieser gruppe folgt auf baum: blume. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf Baum: Blume. Dann wiederholt sich die Gruppe.",
+      "id": "pro_292",
+      "asset": "audio/pro/pro_292.mp3",
+      "duration": 6.082,
+      "sha256": "0fbd583ea8beed2d2d30af2a78d33c80f21c28e77babf7c9145d5e3706b9aa10",
+      "bytes": 49389
+    },
+    {
+      "key": "in dieser gruppe folgt auf blume: baum. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf Blume: Baum. Dann wiederholt sich die Gruppe.",
+      "id": "pro_293",
+      "asset": "audio/pro/pro_293.mp3",
+      "duration": 5.725,
+      "sha256": "c0baaa8fd466f417718aaeed148156be0456fac19fa53321827b4411b621f122",
+      "bytes": 46509
+    },
+    {
+      "key": "in dieser gruppe folgt auf gelber kreis: lila kreis. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf gelber Kreis: lila Kreis. Dann wiederholt sich die Gruppe.",
+      "id": "pro_294",
+      "asset": "audio/pro/pro_294.mp3",
+      "duration": 6.828,
+      "sha256": "4a2e33f2c49a262b8730988f1da9871764c2752e3b07cba567b598cdf691cd0a",
+      "bytes": 55341
+    },
+    {
+      "key": "in dieser gruppe folgt auf lila kreis: grüner kreis. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf lila Kreis: grüner Kreis. Dann wiederholt sich die Gruppe.",
+      "id": "pro_295",
+      "asset": "audio/pro/pro_295.mp3",
+      "duration": 5.935,
+      "sha256": "04d531d23823dad1b3720b15ea95fc829d887d7bbc8bb8b6a5b81f4c41dfa298",
+      "bytes": 48237
+    },
+    {
+      "key": "in dieser gruppe folgt auf grüner kreis: gelber kreis. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf grüner Kreis: gelber Kreis. Dann wiederholt sich die Gruppe.",
+      "id": "pro_296",
+      "asset": "audio/pro/pro_296.mp3",
+      "duration": 5.192,
+      "sha256": "4dda624e26c320c0ad3a7c9917b4ec2b18116bfefd35e7a3f24a9c3ef8e282cc",
+      "bytes": 42285
+    },
+    {
+      "key": "in dieser gruppe folgt auf stern: teddybär. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf Stern: Teddybär. Dann wiederholt sich die Gruppe.",
+      "id": "pro_297",
+      "asset": "audio/pro/pro_297.mp3",
+      "duration": 5.075,
+      "sha256": "70ae974fb9aabaa11176851e8cc4e8c8e507f81b54d832fe38b01fa97996b6b1",
+      "bytes": 41325
+    },
+    {
+      "key": "in dieser gruppe folgt auf teddybär: buch. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf Teddybär: Buch. Dann wiederholt sich die Gruppe.",
+      "id": "pro_298",
+      "asset": "audio/pro/pro_298.mp3",
+      "duration": 5.12,
+      "sha256": "b090679e1ba04f93e3710fecfd844f669bdaf5df3ab78120e88e7b5b731ab723",
+      "bytes": 41709
+    },
+    {
+      "key": "in dieser gruppe folgt auf buch: stern. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf Buch: Stern. Dann wiederholt sich die Gruppe.",
+      "id": "pro_299",
+      "asset": "audio/pro/pro_299.mp3",
+      "duration": 4.704,
+      "sha256": "679e2f0c54ad19f2837d3856d767f785dccbbb0f83b95525e4b0ad4d02878732",
+      "bytes": 38253
+    },
+    {
+      "key": "in dieser gruppe folgt auf regenbogen: mond. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf Regenbogen: Mond. Dann wiederholt sich die Gruppe.",
+      "id": "pro_300",
+      "asset": "audio/pro/pro_300.mp3",
+      "duration": 5.992,
+      "sha256": "a8a6b9010257469e1f83865429cd5cca9a42f650a17b38ee496fc80ca7a1a7a7",
+      "bytes": 48621
+    },
+    {
+      "key": "in dieser gruppe folgt auf mond: sonne. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf Mond: Sonne. Dann wiederholt sich die Gruppe.",
+      "id": "pro_301",
+      "asset": "audio/pro/pro_301.mp3",
+      "duration": 5.597,
+      "sha256": "134fd545dceabcdf6ff9d4e808c27ce3d853eb96729caf7ecb16301b3ac2beda",
+      "bytes": 45549
+    },
+    {
+      "key": "in dieser gruppe folgt auf sonne: regenbogen. dann wiederholt sich die gruppe",
+      "text": "In dieser Gruppe folgt auf Sonne: Regenbogen. Dann wiederholt sich die Gruppe.",
+      "id": "pro_302",
+      "asset": "audio/pro/pro_302.mp3",
+      "duration": 5.69,
+      "sha256": "d18e4491296c14fe13ff20d491a4b0aea9c2c8544a9ef8c95558b1047acbdffe",
+      "bytes": 46317
+    }
+  ],
+  "learning_update": "5.1.0"
+}

@@ -1,11 +1,16 @@
 name: Android-App prüfen und bauen
 on:
   push:
-    branches: [main, master, fluff-v4]
+    branches: [main, master]
+    paths-ignore: ['**/*.md']
   pull_request:
+    paths-ignore: ['**/*.md']
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: android-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 jobs:
   android:
     runs-on: ubuntu-latest
@@ -22,11 +27,57 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
+      - name: Offline-Fluff-Stimmenpaket vorbereiten und prüfen
+        run: |
+          python3 -m py_compile scripts/build_fluff_voice_pack.py
+          python3 scripts/build_fluff_voice_pack.py
       - run: flutter analyze
-      - run: flutter test --concurrency=1
+      # Smaller suites report exactly where a regression fails instead of
+      # aborting one long test run without an actionable diagnosis.
+      - name: Daten, Sterne und Lernlogik prüfen
+        run: flutter test --concurrency=1 test/controller_test.dart test/companion_test.dart test/learning_test.dart test/enchanted_stories_test.dart
+        timeout-minutes: 4
+      - name: Navigation, Elternfreigabe und Wunschkiste prüfen
+        run: flutter test --concurrency=1 test/app_flow_test.dart
+        timeout-minutes: 4
+      - name: Pro-Stimme und Tonunterbrechungen prüfen
+        run: flutter test --concurrency=1 test/pro_voice_test.dart test/device_voice_test.dart
+        timeout-minutes: 4
+      - name: Lernspiele, Datenschutz und Malatelier prüfen
+        run: flutter test --concurrency=1 --dart-define=RENDER_PREVIEWS=true test/discovery_test.dart
+        timeout-minutes: 6
+      - name: Oberflächen und Animationen prüfen
+        run: flutter test --concurrency=1 --dart-define=RENDER_PREVIEWS=true test/visual_preview_test.dart
+        timeout-minutes: 5
       - run: flutter build apk --release --target-platform android-arm64
+      - run: flutter build appbundle --release
+      # Only for private phone testing; never distribute a debug-signed APK as a release.
+      - name: Installierbare Android-Test-APK bauen
+        run: flutter build apk --debug --target-platform android-arm64
+      - name: APK und Signierwerkzeug vorbereiten
+        run: |
+          mkdir -p delivery
+          cp build/app/outputs/flutter-apk/*.apk delivery/
+          cp build/app/outputs/bundle/release/*.aab delivery/
+          python3 - <<'PY'
+          import os, pathlib, shutil, re
+          root = pathlib.Path(os.environ['ANDROID_HOME']) / 'build-tools'
+          tools = sorted(root.glob('*/lib/apksigner.jar'), key=lambda p: [int(n) for n in re.findall(r'\d+', p.parts[-3])])
+          shutil.copyfile(tools[-1], 'delivery/apksigner.jar')
+          PY
       - uses: actions/upload-artifact@v4
         with:
-          name: Fluffs-Sternenwelt-Android
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: Fluffs-Sternenwelt-v5-Android
+          path: delivery/
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Fluffs-Sternenwelt-v5-Installierbare-Test-APK
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Fluffs-Sternenwelt-v5-Vorschau
+          path: previews/
           retention-days: 30

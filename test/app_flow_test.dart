@@ -221,10 +221,28 @@ void main() {
       await start(tester, c);
       await tap(tester, find.byKey(const ValueKey('nav-2')));
       await tap(tester, find.text('Meine Wunschkiste'));
+      // ListView builds rewards lazily: the fifth wish may not have an element
+      // until we scroll to it, especially at phone-sized viewports.
+      await tester.scrollUntilVisible(
+        find.text('Extra Vorlesezeit am Abend'),
+        180,
+        scrollable: find.byType(Scrollable).last,
+      );
       await tap(tester, find.text('Extra Vorlesezeit am Abend'));
-      await tap(tester, find.text('Wunsch anfragen'));
+      // The confirmation button also sits below the dialog's visible area.
+      await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('request-reward')),
+        180,
+        scrollable: find.byType(Scrollable).last,
+      );
+      await tap(tester, find.byKey(const ValueKey('request-reward')));
       expect(c.data.requests.single.status, 'offen');
       expect(c.balance(), 10);
+      await tester.scrollUntilVisible(
+        find.textContaining('Wartet auf'),
+        180,
+        scrollable: find.byType(Scrollable).last,
+      );
       expect(find.textContaining('Wartet auf'), findsWidgets);
       await parents(tester);
       await tap(tester, find.text('Belohnungen'));

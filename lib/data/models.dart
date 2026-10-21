@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'creative.dart';
 
 String dateKey(DateTime d) =>
     '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
@@ -236,6 +237,11 @@ class AppData {
   Map<String, List<String>> dailyPlans = {};
   String selectedId = '', pinHash = '', salt = '';
   bool motion = true, sound = true, haptics = true;
+  String proLicense = '';
+  Map<String, int> gameWins = {};
+  // Stories are personal to each child. They never grant or spend reward stars.
+  Set<String> storyCompleted = {};
+  List<SavedDrawing> drawings = [];
   int sequence = 0;
   String nextId(String prefix) => '$prefix${++sequence}';
   Map<String, dynamic> toJson() => {
@@ -256,6 +262,10 @@ class AppData {
     'sound': sound,
     'haptics': haptics,
     'sequence': sequence,
+    'proLicense': proLicense,
+    'gameWins': gameWins,
+    'storyCompleted': storyCompleted.toList()..sort(),
+    'drawings': drawings.map((x) => x.toJson()).toList(),
   };
   AppData copy() => AppData.fromJson(jsonDecode(jsonEncode(toJson())));
   factory AppData.fromJson(Map<String, dynamic> j) {
@@ -297,6 +307,12 @@ class AppData {
     d.sound = j['sound'];
     d.haptics = j['haptics'];
     d.sequence = j['sequence'];
+    d.proLicense = j['proLicense'] ?? '';
+    d.gameWins = Map<String, int>.from(j['gameWins'] ?? {});
+    // Optional for backward compatibility with older database and backups.
+    d.storyCompleted = Set<String>.from(j['storyCompleted'] as List? ?? const []);
+    d.drawings = (j['drawings'] as List? ?? []).map((x) =>
+      SavedDrawing.fromJson(Map<String, dynamic>.from(x))).toList();
     return d;
   }
 }

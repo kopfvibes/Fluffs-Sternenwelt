@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../data/controller.dart';
 import '../data/models.dart';
+import '../services/audio.dart';
 
 const ink = Color(0xff092653),
     blue = Color(0xff078dff),
@@ -671,6 +672,15 @@ class ChildNavigationBar extends StatelessWidget {
   );
 }
 
+class FluffInteractionScope extends InheritedWidget {
+  const FluffInteractionScope({super.key, required super.child, required this.onTap});
+  final VoidCallback onTap;
+  static FluffInteractionScope? maybeOf(BuildContext context) =>
+    context.dependOnInheritedWidgetOfExactType<FluffInteractionScope>();
+  @override
+  bool updateShouldNotify(FluffInteractionScope old) => old.onTap != onTap;
+}
+
 class FluffSprite extends StatefulWidget {
   const FluffSprite({
     super.key,
@@ -689,9 +699,10 @@ class FluffSprite extends StatefulWidget {
 }
 
 class _FluffSpriteState extends State<FluffSprite>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController animation;
-  DateTime? tapped;
+  late final AnimationController reaction;
+  bool get talking => !widget.faceOnly && FluffAudio.instance.speaking.value;
   @override
   void initState() {
     super.initState();
@@ -699,8 +710,13 @@ class _FluffSpriteState extends State<FluffSprite>
       vsync: this,
       duration: const Duration(milliseconds: 5600),
     );
+    reaction = AnimationController(vsync: this,
+      duration: const Duration(milliseconds: 1100));
+    FluffAudio.instance.speaking.addListener(_voiceChanged);
     if (widget.animate) animation.repeat();
   }
+
+  void _voiceChanged() { if (mounted) setState(() {}); }
 
   @override
   void didUpdateWidget(FluffSprite old) {
@@ -709,12 +725,16 @@ class _FluffSpriteState extends State<FluffSprite>
     if (!widget.animate) {
       animation.stop();
       animation.value = 0;
+      reaction.stop();
+      reaction.value = 0;
     }
   }
 
   @override
   void dispose() {
+    FluffAudio.instance.speaking.removeListener(_voiceChanged);
     animation.dispose();
+    reaction.dispose();
     super.dispose();
   }
 
@@ -723,59 +743,66 @@ class _FluffSpriteState extends State<FluffSprite>
     if (widget.pose != 'idle') return widget.pose;
     if (!widget.animate) return 'idle';
     if (t > .84 && t < .88) return 'blink';
-    if (t < .14 || (t > .24 && t < .33)) return 'wave-up';
-    if (t >= .14 && t <= .24) return 'wave-out';
     return 'idle';
   }
 
   @override
   Widget build(BuildContext context) => Semantics(
     image: true,
-    label: 'Fluff, dein blauer Begleiter',
+    button: !widget.faceOnly,
+    label: 'Fluff, dein blauer Begleiter. Tippe mich an.',
     child: GestureDetector(
       onTap: widget.faceOnly || (!widget.animate && widget.onTap == null)
           ? null
           : () {
-              if (widget.animate) setState(() => tapped = DateTime.now());
-              widget.onTap?.call();
+              if (widget.animate) reaction.forward(from: 0);
+              final action = widget.onTap ?? FluffInteractionScope.maybeOf(context)?.onTap;
+              action?.call();
             },
       child: AnimatedBuilder(
-        animation: animation,
+        animation: Listenable.merge([animation, reaction]),
         builder: (context, _) {
           final t = animation.value;
           final breath = widget.animate ? sin(t * pi * 4) : 0.0;
-          final excited =
-              widget.animate &&
-              tapped != null &&
-              DateTime.now().difference(tapped!).inMilliseconds < 1200;
+          final excited = widget.animate && reaction.isAnimating;
+          final response = sin(reaction.value * pi) *
+            sin(reaction.value * pi * 6).abs();
           final bounce = excited
-              ? sin(t * pi * 26).abs() * 18
+              ? response * 16
               : widget.pose == 'celebrate'
               ? breath * 6
               : breath * 2;
-          final Widget art = widget.pose == 'welcome'
+          final Widget original = widget.pose == 'welcome'
               ? _WelcomePuppet(
                   size: widget.size,
                   angle: widget.animate ? sin(t * pi * 8) * .10 : 0,
                 )
-              : Image.asset(
+              : AnimatedSwitcher(
+                duration: const Duration(milliseconds: 140),
+                child: Image.asset(
                   'assets/art/fluff-${frame(t)}.png',
+                  key: ValueKey(frame(t)),
                   width: widget.size,
                   height: widget.size,
                   fit: BoxFit.contain,
                   gaplessPlayback: true,
                   excludeFromSemantics: true,
-                );
+                ));
+          final Widget art = talking && widget.animate &&
+            ['idle', 'welcome'].contains(widget.pose)
+              ? _SpeakingPuppet(size: widget.size, pose: widget.pose,
+                  opening: sin(t * pi * 36).abs() * .12, child: original)
+              : original;
           return Transform.translate(
             offset: Offset(0, -bounce),
             child: Transform.rotate(
               angle: excited
-                  ? sin(t * pi * 26) * .035
+                  ? sin(reaction.value * pi * 6) * .035 * sin(reaction.value * pi)
                   : widget.pose == 'celebrate' && widget.animate
                   ? breath * .022
                   : 0,
               child: Transform.scale(
-                scale: 1 + breath * .008,
+                scale: 1 + breath * .008 + (talking && widget.animate ? .004 * sin(t * pi * 18) : 0),
                 child: widget.faceOnly
                     ? LayoutBuilder(
                         builder: (context, bounds) {
@@ -807,16 +834,60 @@ class _FluffSpriteState extends State<FluffSprite>
   );
 }
 
+class _SpeakingPuppet extends StatelessWidget {
+  const _SpeakingPuppet({required this.size, required this.pose,
+    required this.opening, required this.child});
+  final double size, opening;
+  final String pose;
+  final Widget child;
+  @override
+  Widget build(BuildContext context) => SizedBox(width: size, height: size,
+    child: Stack(children: [child,
+      Transform.scale(scaleY: 1 + opening, alignment: const Alignment(.10, -.03),
+        child: ClipPath(clipper: const _MouthClipper(),
+          child: Image.asset('assets/art/fluff-$pose.png', width: size, height: size,
+            fit: BoxFit.contain, excludeFromSemantics: true))),
+    ]));
+}
+class _MouthClipper extends CustomClipper<Path> {
+  const _MouthClipper();
+  @override
+  Path getClip(Size s) => Path()..addOval(Rect.fromLTWH(
+    s.width * .418, s.height * .415, s.width * .287, s.height * .158));
+  @override
+  bool shouldReclip(_MouthClipper old) => false;
+}
+
+/// A numbered star represents a bundle of that many stars; the sum is exact.
+List<int> jarTokens(int count) {
+  if (count <= 0) return [];
+  if (count <= 30) return List.filled(count, 1);
+  final tokens = <int>[];
+  var value = count, place = 1;
+  while (value > 0) {
+    tokens.insertAll(0, List.filled(value % 10, place));
+    value ~/= 10;
+    place *= 10;
+  }
+  return tokens.length <= 40 ? tokens : [count];
+}
+
 class StarJar extends StatelessWidget {
   const StarJar({super.key, required this.count, this.animate = true});
   final int count;
   final bool animate;
   @override
-  Widget build(BuildContext context) => AspectRatio(
+  Widget build(BuildContext context) => Semantics(
+    label: '$count ${count == 1 ? 'Stern' : 'Sterne'} im Glas',
+    child: TweenAnimationBuilder<double>(
+      tween: Tween(begin: count.toDouble(), end: count.toDouble()),
+      duration: animate ? const Duration(milliseconds: 700) : Duration.zero,
+      builder: (_, number, _) => AspectRatio(
     aspectRatio: .72,
     child: LayoutBuilder(
       builder: (context, b) {
-        final n = min(count, 34);
+        final tokens = jarTokens(number.round());
+        final columns = tokens.length > 30 ? 6 : 5;
         return Stack(
           children: [
             Positioned.fill(
@@ -825,11 +896,11 @@ class StarJar extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             ),
-            for (var i = 0; i < n; i++)
+            for (var i = 0; i < tokens.length; i++)
               Positioned(
-                left: b.maxWidth * (.18 + (i % 5) * .135) + sin(i * 4.7) * 4,
+                left: b.maxWidth * (.18 + (i % columns) * (columns == 6 ? .115 : .135)) + sin(i * 4.7) * 2,
                 bottom:
-                    b.maxHeight * (.13 + (i ~/ 5) * .077) + cos(i * 2.9) * 4,
+                    b.maxHeight * (.16 + (i ~/ columns) * .072) + cos(i * 2.9) * 2,
                 child: Transform.rotate(
                   angle: sin(i * 2.7) * .20,
                   child: Container(
@@ -842,7 +913,17 @@ class StarJar extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: ArtIcon('star', size: b.maxWidth * .19),
+                    child: SizedBox(width: b.maxWidth * .18, height: b.maxWidth * .18,
+                      child: Stack(alignment: Alignment.center, children: [
+                        ArtIcon('star', size: b.maxWidth * .18),
+                        if (tokens[i] > 1) Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
+                          decoration: BoxDecoration(color: cream,
+                            borderRadius: BorderRadius.circular(6)),
+                          child: Text('${tokens[i]}', textScaler: TextScaler.noScaling,
+                            style: TextStyle(fontSize: tokens[i] > 999 ? 8 : 11,
+                              fontWeight: FontWeight.w900))),
+                      ])),
                   ),
                 ),
               ),
@@ -858,10 +939,18 @@ class StarJar extends StatelessWidget {
                 ),
               ),
             ),
+            Positioned(left: 0, right: 0, bottom: b.maxHeight * .045,
+              child: Center(child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                decoration: BoxDecoration(color: cream,
+                  borderRadius: BorderRadius.circular(18)),
+                child: Text('${number.round()} ${number.round() == 1 ? 'Stern' : 'Sterne'}',
+                  textScaler: TextScaler.noScaling,
+                  style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900))))),
           ],
         );
       },
-    ),
+    ))),
   );
 }
 
