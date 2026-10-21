@@ -7,6 +7,7 @@ import 'repository.dart';
 import 'backup_validation.dart';
 import 'creative.dart';
 import 'discovery.dart';
+import 'enchanted_stories.dart';
 import '../services/pro_license.dart';
 
 class AppController extends ChangeNotifier {
@@ -475,6 +476,20 @@ class AppController extends ChangeNotifier {
     _proActive = true;
     notifyListeners();
   }
+  bool storyDone(int index, {String? childId}) =>
+      data.storyCompleted.contains('${childId ?? child.id}|$index');
+
+  /// The daily story is replayable. A finished story is recorded once per child.
+  /// No stars are awarded; parent-managed task rewards remain unchanged.
+  Future<void> completeStory(int index, {required String childId}) => _change((d) {
+    if (index < 0 || index >= enchantedStories.length ||
+        !d.children.any((child) => child.id == childId) ||
+        (index != dailyEnchantedStory(now) &&
+          !d.storyCompleted.contains('$childId|$index'))) {
+      throw StateError('Diese Geschichte ist heute nicht freigeschaltet.');
+    }
+    d.storyCompleted.add('$childId|$index');
+  });
   int gameCount(String id, {String? childId}) =>
       data.gameWins['${childId ?? child.id}|$id'] ?? 0;
   Future<void> completeGame(String id, {required String childId}) => _change((d) {

@@ -9,6 +9,15 @@ class EnchantedStory {
   final String optionA, optionB, answerA, answerB, ending, heart;
 }
 
+/// The 60-day calendar is shared by all profiles; completion is not.
+/// Use UTC midnights built from the local date to avoid DST changes.
+int dailyEnchantedStory(DateTime date) {
+  final localDate = DateTime.utc(date.year, date.month, date.day);
+  final first = DateTime.utc(2026, 10, 21);
+  final days = localDate.difference(first).inDays;
+  return days < 0 ? 0 : days % enchantedStories.length;
+}
+
 const enchantedStories = <EnchantedStory>[
   EnchantedStory('Der verirrte Stern', 'Sternchen', 'Fluff entdeckt ein Licht zwischen den Bäumen. Es ist Sternchen.', 'Sternchen hat den Weg zum Himmel vergessen. Sein Leuchten wird ganz klein.', 'Wie können wir Sternchen helfen?', 'Ein Licht zeigen', 'Ihn begleiten', 'Fluff hält eine kleine Laterne hoch. Sternchen sieht wieder den Weg.', 'Fluff bleibt an Sternchens Seite. Zusammen finden sie den hellen Hügel.', 'Oben erkennt Sternchen seine Sternenfreunde. Er strahlt wieder und winkt.', 'Zusammen fühlt sich ein schwerer Weg leichter an.'),
   EnchantedStory('Dottis Regentag', 'Dotti', 'Dotti der kleine Pilz freut sich auf ein Picknick.', 'Plötzlich fällt Regen. Dotti schaut traurig auf seine trockenen Kekse.', 'Was machen die Freunde jetzt?', 'Ein Dach bauen', 'Drinnen picknicken', 'Fluff legt große Blätter über den Tisch. Die Tropfen bleiben draußen.', 'Dotti stellt die Kekse unter einen Baum mit dichtem Blätterdach.', 'Der Regen trommelt Musik. Fluff und Dotti knabbern gemütlich zusammen.', 'Manchmal wird ein anderer Plan auch schön.'),

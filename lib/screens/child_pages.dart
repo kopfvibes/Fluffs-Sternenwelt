@@ -12,6 +12,8 @@ import 'discovery_pages.dart';
 import '../data/companion.dart';
 import '../widgets/child_narration.dart';
 import 'fluff_day.dart';
+import 'enchanted_story_pages.dart';
+import '../data/enchanted_stories.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key, required this.controller, required this.onStart});
@@ -85,6 +87,12 @@ class HomePage extends StatelessWidget {
           GlossyButton('Mein Tag mit Fluff',
             key: const ValueKey('fluff-day'), icon: Icons.waving_hand_rounded,
             color: gold, onPressed: () => showFluffDay(context, controller)),
+          const SizedBox(height: 9),
+          GlossyButton('Die heutige Zaubergeschichte',
+            key: const ValueKey('daily-story-home'),
+            icon: Icons.auto_stories_rounded, color: const Color(0xffffd56e),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(
+              builder: (_) => EnchantedStoryLibrary(controller: controller)))),
           const SizedBox(height: 9),
           GlossyButton(
             'Los geht’s!',
@@ -610,6 +618,12 @@ class MorePage extends StatelessWidget {
           children: [
             for (final item in <(String, String, VoidCallback)>[
               (
+                '60 Zaubergeschichten',
+                'book',
+                () => openChildPage(context, controller,
+                  () => EnchantedStoryLibrary(controller: controller)),
+              ),
+              (
                 'Fluffs Entdeckerwelt',
                 'game',
                 () => openChildPage(context, controller,
@@ -755,6 +769,8 @@ Future<void> openChildPage(
 }
 
 List<String> childPageIntro(AppController c, Widget page) => switch (page) {
+  EnchantedStoryLibrary() => ['Willkommen in Fluffs Geschichtenwald.',
+    'Jeden Tag wartet eine neue Geschichte zum Mitmachen auf dich.'],
   WishlistPage() => ['Das ist deine Wunschkiste.',
     'Such dir ein Bild aus. Ich sage dir, wie viele Sterne dein Wunsch kostet.',
     'Wir fragen deine Erwachsenen. Ein Wunsch wird erst nach ihrer Zustimmung erfüllt.'],

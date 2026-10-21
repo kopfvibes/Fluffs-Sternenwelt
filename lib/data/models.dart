@@ -239,6 +239,8 @@ class AppData {
   bool motion = true, sound = true, haptics = true;
   String proLicense = '';
   Map<String, int> gameWins = {};
+  // Stories are personal to each child. They never grant or spend reward stars.
+  Set<String> storyCompleted = {};
   List<SavedDrawing> drawings = [];
   int sequence = 0;
   String nextId(String prefix) => '$prefix${++sequence}';
@@ -262,6 +264,7 @@ class AppData {
     'sequence': sequence,
     'proLicense': proLicense,
     'gameWins': gameWins,
+    'storyCompleted': storyCompleted.toList()..sort(),
     'drawings': drawings.map((x) => x.toJson()).toList(),
   };
   AppData copy() => AppData.fromJson(jsonDecode(jsonEncode(toJson())));
@@ -306,6 +309,8 @@ class AppData {
     d.sequence = j['sequence'];
     d.proLicense = j['proLicense'] ?? '';
     d.gameWins = Map<String, int>.from(j['gameWins'] ?? {});
+    // Optional for backward compatibility with older database and backups.
+    d.storyCompleted = Set<String>.from(j['storyCompleted'] as List? ?? const []);
     d.drawings = (j['drawings'] as List? ?? []).map((x) =>
       SavedDrawing.fromJson(Map<String, dynamic>.from(x))).toList();
     return d;
