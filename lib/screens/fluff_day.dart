@@ -108,7 +108,8 @@ class _FluffDayDialogState extends State<FluffDayDialog> {
                   GlossyButton('Mit dieser Aufgabe anfangen', icon: Icons.play_arrow_rounded,
                     onPressed: () {
                       final navigator = Navigator.of(context);
-                        Navigator.pop(context);
+                      final ownerContext = navigator.context;
+                      navigator.pop();
                       openTask(ownerContext, c, next.first);
                     }),
                 if (next.isEmpty)
@@ -119,7 +120,6 @@ class _FluffDayDialogState extends State<FluffDayDialog> {
                   icon: Icons.auto_stories_rounded, color: gold,
                   onPressed: () {
                     final navigator = Navigator.of(context);
-                    final ownerContext = navigator.context;
                     navigator.pop();
                     navigator.push(MaterialPageRoute<void>(
                       builder: (_) => EnchantedStoryLibrary(controller: c)));
