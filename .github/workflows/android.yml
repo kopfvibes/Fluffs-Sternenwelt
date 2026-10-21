@@ -35,7 +35,7 @@ jobs:
       # Smaller suites report exactly where a regression fails instead of
       # aborting one long test run without an actionable diagnosis.
       - name: Daten, Sterne und Lernlogik prüfen
-        run: flutter test --concurrency=1 test/controller_test.dart test/companion_test.dart test/learning_test.dart
+        run: flutter test --concurrency=1 test/controller_test.dart test/companion_test.dart test/learning_test.dart test/enchanted_stories_test.dart
         timeout-minutes: 4
       - name: Navigation, Elternfreigabe und Wunschkiste prüfen
         run: flutter test --concurrency=1 test/app_flow_test.dart

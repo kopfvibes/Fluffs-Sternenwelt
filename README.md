@@ -44,6 +44,25 @@ abweichende Sternestaende koennen nicht durch feste Aufnahmen vollstaendig
 abgedeckt werden; dafuer ist eine separat freizugebende, abgesicherte
 Online-Spracherzeugung oder weiterhin die Systemstimme notwendig.
 
+## Fluffs Geschichtenwald (Version 5.3)
+
+60 unterschiedliche, liebevolle Mini-Geschichten sind fest in der App enthalten.
+Je Kalendertag (ab dem 21.10.2026) wartet eine neue Geschichte mit
+**drei Szenen**, zwei sicheren Mitmach-Moeglichkeiten und einer nachvollziehbaren
+Loesung. Die Figur Fluff bleibt die bereits vorhandene originale App-Figur.
+Der Zauberwald benutzt die vorhandene Nachtwald-Grafik, Sterne und warme
+Goldakzente als Stilvorlage; **60 separate neue Szenenillustrationen wurden
+nicht generiert**. Die Kinder koennen geloeste Geschichten aus ihrem eigenen
+Geschichtenschatz erneut oeffnen. Fortschritt wird pro Kind lokal gespeichert,
+bleibt in Backups erhalten und vergibt **keine Belohnungssterne**.
+
+Die Vorlesefunktion verwendet Fluffs original aufgenommene Stimme, **wenn**
+eine passende Audioaufnahme als Asset vorhanden ist. Der Offline-Sprachkatalog
+`voice/fluff_narration_lines.json` wurde fuer alle 60 Geschichten erweitert.
+Diese neuen gesprochenen Geschichten sind **noch nicht aufgenommen** und werden
+bis zum explizit freigegebenen Ton-Generierungslauf ueber die deutsche
+Geraetestimme vorgelesen. Der Ton-Generator laeuft niemals ungefragt im CI.
+
 ## Starten
 
 1. Die signierte APK auf einem ARM64-Android-Geraet ab Android 7 installieren.

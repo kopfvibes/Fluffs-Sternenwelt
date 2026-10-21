@@ -138,12 +138,14 @@ class _EnchantedStoryReaderState extends State<EnchantedStoryReader> {
   }
   String get text => scene == 0 ? story.opening
     : scene == 1 ? story.challenge : story.ending;
+  // Full-sentence clips are synthesized with the ORIGINAL Fluff voice and
+  // shipped offline. Until these clips exist, device TTS remains an explicitly
+  // temporary fallback for story narration.
   List<String> get spoken => [
-    text,
-    if (scene == 1) story.question,
+    scene == 1 ? '${story.challenge} ${story.question}'
+      : scene == 2 ? '${story.ending} ${story.heart}' : story.opening,
     if (scene == 1 && chosen != null)
       chosen == 0 ? story.answerA : story.answerB,
-    if (scene == 2) story.heart,
   ];
   void _read() {
     if (!mounted || !widget.controller.data.sound ||
